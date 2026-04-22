@@ -1650,6 +1650,93 @@
       radial-gradient(400px 200px at 100% 0%, rgba(58, 181, 105, 0.08), transparent),
       var(--card);
   }
+
+  /* Stock-for-2-days card at the top of Shopping */
+  .stock-card {
+    background:
+      radial-gradient(500px 200px at 100% -20%, rgba(255, 122, 89, 0.12), transparent 60%),
+      linear-gradient(180deg, #fff7f4 0%, #ffffff 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 16px 18px 14px;
+    border: 1px solid rgba(255, 122, 89, 0.18);
+  }
+  .stock-card::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  }
+  .stock-head { margin-bottom: 14px; }
+  .stock-head-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .stock-head h2 { margin: 0; }
+  .stock-days-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: rgba(255, 122, 89, 0.14);
+    color: var(--accent);
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .stock-days-chip .sep {
+    color: rgba(255, 122, 89, 0.5);
+    font-weight: 500;
+  }
+  .stock-section { margin-bottom: 14px; }
+  .stock-section:last-child { margin-bottom: 0; }
+  .stock-cat {
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    margin: 0 0 4px;
+  }
+  .stock-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .stock-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 2px;
+    border-bottom: 1px dashed var(--border);
+    gap: 10px;
+  }
+  .stock-row:last-child { border-bottom: 0; }
+  .stock-name {
+    font-size: 14px;
+    color: var(--text-2);
+    font-weight: 500;
+    flex: 1;
+    min-width: 0;
+    line-height: 1.35;
+  }
+  .stock-qty {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    background: var(--bg);
+    padding: 4px 11px;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
   .shop-status-ring {
     width: 56px; height: 56px;
     border-radius: 50%;
@@ -2691,6 +2778,98 @@
     ],
   };
 
+  /* ===== Ingredient stock map =====
+     Keyed by the exact item name as it appears in MEAL_PLAN.
+     Value: array of [stockName, qty, unit] tuples → what you need in the
+     fridge / pantry to prepare that item. Used by the "Next 2 days" stock
+     section in Shopping. Ready-made items (chaas, coffee, etc.) pass through
+     as their underlying raw stock. Water is intentionally excluded. */
+  const ITEM_STOCK = {
+    // Wake
+    'Chia water (1 tbsp soaked overnight)': [['Chia seeds', 15, 'g']],
+    'Water 500ml': [],
+
+    // Breakfast mains
+    'Paneer bhurji (120g paneer + 5ml oil)': [['Paneer', 120, 'g'], ['Oil', 5, 'ml'], ['Onion + tomato', 1, 'set']],
+    '1 paneer paratha (40g atta + 60g paneer + 5ml oil)': [['Atta', 40, 'g'], ['Paneer', 60, 'g'], ['Oil', 5, 'ml']],
+    'Poha 50g + 15g peanuts + 5ml oil': [['Poha', 50, 'g'], ['Peanuts', 15, 'g'], ['Oil', 5, 'ml'], ['Onion', 1, 'small']],
+    'Upma 50g suji + 5ml oil': [['Suji', 50, 'g'], ['Oil', 5, 'ml'], ['Onion', 1, 'small']],
+    'Oats 40g + 300ml milk + 30g whey': [['Rolled oats', 40, 'g'], ['Toned milk', 300, 'ml'], ['Whey protein', 30, 'g']],
+    'Moong dal chilla (50g dal batter) + 80g paneer stuffing + 5ml oil': [['Moong dal', 50, 'g'], ['Paneer', 80, 'g'], ['Oil', 5, 'ml']],
+
+    // Rotis + rice
+    '1 roti (30g dough)': [['Atta', 30, 'g']],
+    '1 roti': [['Atta', 30, 'g']],
+    '2 rotis': [['Atta', 60, 'g']],
+    '100g cooked rice': [['Basmati rice', 45, 'g']],
+
+    // Dals (cooked → dry equivalent)
+    'Moong dal (150g)': [['Moong dal (dry)', 30, 'g']],
+    'Chana dal (150g)': [['Chana dal (dry)', 30, 'g']],
+    'Toor dal (150g)': [['Toor dal (dry)', 30, 'g']],
+    'Masoor dal (150g)': [['Masoor dal (dry)', 30, 'g']],
+    'Dal 150g': [['Any dal (dry)', 30, 'g']],
+
+    // Beans
+    'Rajma (150g)': [['Rajma (dry)', 40, 'g']],
+    'Chole (150g)': [['Chole (dry)', 40, 'g']],
+
+    // Sabzis (cooked 150g ≈ 200g raw veg for most; leafy/baingan denser)
+    'Bhindi sabzi (150g) + 5ml oil': [['Bhindi', 200, 'g'], ['Oil', 5, 'ml']],
+    'Lauki sabzi (150g) + 5ml oil': [['Lauki', 200, 'g'], ['Oil', 5, 'ml']],
+    'Mixed veg sabzi (150g) + 5ml oil': [['Mixed veggies', 200, 'g'], ['Oil', 5, 'ml']],
+    '150g mixed veg sabzi + 5ml oil': [['Mixed veggies', 200, 'g'], ['Oil', 5, 'ml']],
+    'Baingan bharta (150g) + 5ml oil': [['Baingan', 300, 'g'], ['Oil', 5, 'ml']],
+    'Palak sabzi (150g) + 5ml oil': [['Spinach', 300, 'g'], ['Oil', 5, 'ml']],
+
+    // Sprouts / chana
+    '50g sprouted moong': [['Whole moong (sprout)', 25, 'g']],
+    '50g sprouted moong chaat': [['Whole moong (sprout)', 25, 'g']],
+    '30g roasted chana': [['Roasted chana', 30, 'g']],
+
+    // Whey shakes
+    'Whey shake: 30g + 250ml toned milk': [['Whey protein', 30, 'g'], ['Toned milk', 250, 'ml']],
+    'Whey 60g (2 scoops) + 250ml toned milk': [['Whey protein', 60, 'g'], ['Toned milk', 250, 'ml']],
+
+    // Dairy solo
+    '250ml toned milk': [['Toned milk', 250, 'ml']],
+    '200g low-fat curd': [['Low-fat curd', 200, 'g']],
+    '200g regular curd': [['Regular curd', 200, 'g']],
+    '150g plain Greek yogurt': [['Greek yogurt', 150, 'g']],
+    'Chaas 250ml': [['Regular curd', 60, 'g']],
+
+    // Dinner dishes
+    'Palak tofu-paneer (75g tofu + 75g paneer)': [['Tofu', 75, 'g'], ['Paneer', 75, 'g'], ['Spinach', 200, 'g'], ['Oil', 5, 'ml']],
+    'Soya chunk curry (50g dry)': [['Soya chunks', 50, 'g'], ['Oil', 5, 'ml'], ['Onion + tomato', 1, 'set']],
+    'Tofu tikka (150g) + capsicum-onion': [['Tofu', 150, 'g'], ['Capsicum', 50, 'g'], ['Onion', 1, 'small'], ['Oil', 5, 'ml']],
+    'Tofu bhurji (150g) + 5ml oil': [['Tofu', 150, 'g'], ['Oil', 5, 'ml'], ['Onion + tomato', 1, 'set']],
+    '100g tofu bhurji + 5ml oil': [['Tofu', 100, 'g'], ['Oil', 5, 'ml']],
+    'Soya pulao (90g rice + 50g soya)': [['Basmati rice', 90, 'g'], ['Soya chunks', 50, 'g'], ['Oil', 5, 'ml'], ['Mixed veggies', 100, 'g']],
+    '100g paneer sabzi + 5ml oil (fat for D absorption)': [['Paneer', 100, 'g'], ['Oil', 5, 'ml']],
+
+    // Snacks / nuts
+    '30g peanuts': [['Peanuts', 30, 'g']],
+    '10g almonds (~8 pcs)': [['Almonds', 10, 'g']],
+
+    // Fruits
+    '1 apple (~150g)': [['Apples', 1, 'piece']],
+    '1 banana (~120g)': [['Bananas', 1, 'piece']],
+    '200g papaya cubes': [['Papaya', 200, 'g']],
+
+    // Salad
+    'Salad 200g': [['Salad veggies (cucumber/tomato/onion/carrot/lemon)', 1, 'serving']],
+    'Big salad 250g': [['Salad veggies (cucumber/tomato/onion/carrot/lemon)', 1, 'serving']],
+
+    // Drinks
+    '150ml black coffee': [['Coffee', 1, 'serving']],
+    '150ml coffee': [['Coffee', 1, 'serving']],
+    '150ml green tea': [['Green tea', 1, 'bag']],
+
+    // Supplements
+    'Nurokind-OD 1500 mcg sublingual': [['Nurokind-OD', 1, 'tablet']],
+    'Uprise-D3 60,000 IU sachet in 30ml milk': [['Uprise-D3', 1, 'sachet'], ['Toned milk', 30, 'ml']],
+  };
+
   /* ===== Exercise ===== */
   const EXERCISE_WEEK = [
     { key: 'mon', session: 'Strength A (full body)', duration: '40 min', time: '6:00 PM' },
@@ -3065,6 +3244,73 @@
       else if (c.blockId === 'cardio' || c.blockId === 'satLong') got.cardio++;
     });
     return { want, got };
+  }
+
+  /* ============================================================
+   *  STOCK FOR 2 DAYS helpers (Today + Tomorrow)
+   * ============================================================ */
+
+  function tomorrowDayKey() {
+    return DAYS[(new Date().getDay() + 1) % 7].key;
+  }
+
+  // Sums raw ingredients across the selected day's meals.
+  function buildStockFor2Days() {
+    const todayKey = todayDayKey();
+    const tomKey = tomorrowDayKey();
+    const agg = new Map();
+
+    function add(dayKey) {
+      MEAL_PLAN[dayKey].forEach(meal => {
+        meal.items.forEach(item => {
+          const list = ITEM_STOCK[item.name];
+          if (!list || !list.length) return;
+          list.forEach(tup => {
+            const [name, qty, unit] = tup;
+            const k = name + '::' + unit;
+            if (agg.has(k)) agg.get(k).qty += qty;
+            else agg.set(k, { name, qty, unit });
+          });
+        });
+      });
+    }
+    add(todayKey);
+    add(tomKey);
+
+    // Category buckets — ordered for display
+    const catDefs = [
+      { label: 'Dairy',                matches: ['Toned milk', 'Low-fat curd', 'Regular curd', 'Paneer', 'Greek yogurt'] },
+      { label: 'Protein specialty',    matches: ['Whey protein', 'Tofu', 'Soya chunks'] },
+      { label: 'Dals & beans',         matches: ['Moong dal', 'Chana dal', 'Toor dal', 'Masoor dal', 'Any dal', 'Whole moong', 'Rajma', 'Chole'] },
+      { label: 'Grains',               matches: ['Atta', 'Basmati rice', 'Rolled oats', 'Poha', 'Suji'] },
+      { label: 'Veggies',              matches: ['Bhindi', 'Lauki', 'Mixed veggies', 'Baingan', 'Spinach', 'Capsicum', 'Onion + tomato', 'Onion', 'Salad veggies'] },
+      { label: 'Fruits',               matches: ['Apples', 'Bananas', 'Papaya'] },
+      { label: 'Nuts / seeds / snacks',matches: ['Peanuts', 'Almonds', 'Chia seeds', 'Roasted chana'] },
+      { label: 'Fats & drinks',        matches: ['Oil', 'Coffee', 'Green tea'] },
+      { label: 'Supplements',          matches: ['Nurokind-OD', 'Uprise-D3'] },
+    ];
+    const all = [...agg.values()];
+
+    const grouped = catDefs.map(c => ({
+      label: c.label,
+      items: all.filter(i => c.matches.some(m => i.name.startsWith(m)))
+                .sort((a, b) => a.name.localeCompare(b.name))
+    })).filter(g => g.items.length > 0);
+
+    return { grouped, todayKey, tomKey };
+  }
+
+  function formatStockQty(qty, unit) {
+    if (unit === 'g' && qty >= 1000) {
+      const kg = qty / 1000;
+      return (kg % 1 === 0 ? kg.toFixed(0) : kg.toFixed(2)) + ' kg';
+    }
+    if (unit === 'ml' && qty >= 1000) {
+      const l = qty / 1000;
+      return (l % 1 === 0 ? l.toFixed(0) : l.toFixed(2)) + ' L';
+    }
+    const q = qty % 1 === 0 ? String(qty) : qty.toFixed(1);
+    return q + ' ' + unit;
   }
 
   /* ============================================================
@@ -4261,6 +4507,45 @@
     const root = document.getElementById('view-shopping');
     root.innerHTML = '';
 
+    // === Stock for next 2 days (today + tomorrow) ===
+    const stock = buildStockFor2Days();
+    const todayDay = DAYS.find(d => d.key === stock.todayKey);
+    const tomDay = DAYS.find(d => d.key === stock.tomKey);
+
+    const stockCard = el('div', 'card stock-card');
+    stockCard.innerHTML =
+      '<div class="stock-head">'
+      +   '<div class="stock-head-top">'
+      +     '<h2>Stock for next 2 days</h2>'
+      +     '<span class="stock-days-chip">'
+      +       '<span>' + todayDay.short + '</span>'
+      +       '<span class="sep">→</span>'
+      +       '<span>' + tomDay.short + '</span>'
+      +     '</span>'
+      +   '</div>'
+      +   '<p class="muted small" style="margin:0">'
+      +     'Raw ingredients assuming you follow the plan for <b>today</b> and <b>tomorrow</b>. Keeps you from running out mid-cook.'
+      +   '</p>'
+      + '</div>';
+
+    stock.grouped.forEach(g => {
+      const sec = el('div', 'stock-section');
+      sec.innerHTML = '<h3 class="stock-cat">' + g.label + '</h3>';
+      const list = el('div', 'stock-list');
+      g.items.forEach(i => {
+        const row = el('div', 'stock-row');
+        row.innerHTML =
+          '<span class="stock-name">' + i.name + '</span>'
+          + '<span class="stock-qty">' + formatStockQty(i.qty, i.unit) + '</span>';
+        list.appendChild(row);
+      });
+      sec.appendChild(list);
+      stockCard.appendChild(sec);
+    });
+
+    root.appendChild(stockCard);
+
+    // === Weekly shopping list ===
     // Counts + toolbar
     let total = 0, done = 0;
     SHOPPING.forEach((sec, si) => {
