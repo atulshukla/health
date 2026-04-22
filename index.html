@@ -1450,18 +1450,23 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 6px;
-    margin-top: 10px;
+    margin-top: 6px;
   }
   .wk-cell {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    padding: 10px 2px;
+    padding: 12px 2px 10px;
     border-radius: 12px;
     background: var(--bg);
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, transform 0.1s ease;
+    border: 0;
+    cursor: pointer;
+    min-height: 80px;
+    width: 100%;
   }
+  .wk-cell:active { transform: scale(0.94); }
   .wk-cell .d {
     font-size: 10px;
     color: var(--muted);
@@ -1470,22 +1475,90 @@
     letter-spacing: 0.5px;
   }
   .wk-cell .dot {
-    width: 12px; height: 12px; border-radius: 50%;
+    width: 14px; height: 14px; border-radius: 50%;
     background: var(--border-strong);
+    transition: background 0.2s ease, box-shadow 0.2s ease;
   }
-  .wk-cell.done {
-    background: linear-gradient(135deg, rgba(58, 181, 105, 0.12), rgba(95, 211, 140, 0.06));
+  .wk-cell .wk-count {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    margin-top: -1px;
   }
-  .wk-cell.done .dot {
+  .wk-cell .wk-count.muted { color: var(--muted-2); }
+
+  .wk-cell.partial .dot {
+    background: linear-gradient(135deg, var(--yellow), #f6d673);
+    box-shadow: 0 2px 6px rgba(242, 201, 76, 0.4);
+  }
+  .wk-cell.partial {
+    background: linear-gradient(135deg, rgba(242, 201, 76, 0.12), rgba(246, 214, 115, 0.04));
+  }
+  .wk-cell.full .dot {
     background: linear-gradient(135deg, var(--green), var(--green-2));
-    box-shadow: 0 2px 6px rgba(58, 181, 105, 0.35);
+    box-shadow: 0 2px 6px rgba(58, 181, 105, 0.4);
+  }
+  .wk-cell.full {
+    background: linear-gradient(135deg, rgba(58, 181, 105, 0.14), rgba(95, 211, 140, 0.06));
+  }
+  .wk-cell.rest .dot {
+    background: transparent;
+    border: 2px dashed var(--border-strong);
+    box-shadow: none;
   }
   .wk-cell.today {
-    background: var(--primary-soft);
     outline: 2px solid var(--primary-3);
     outline-offset: -2px;
   }
   .wk-cell.today .d { color: var(--primary-3); }
+
+  /* Weekly goal card */
+  .goal-row {
+    margin-bottom: 14px;
+  }
+  .goal-row:last-child { margin-bottom: 0; }
+  .goal-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .goal-icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+  .goal-label {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .goal-count {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .goal-count.hit {
+    color: var(--green);
+  }
+  .goal-pips {
+    display: flex;
+    gap: 6px;
+    padding-left: 28px;
+  }
+  .goal-pip {
+    flex: 1;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--bg-deep);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+  .goal-pip.on {
+    background: var(--c);
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--c) 30%, transparent);
+  }
 
   .bigred-btn {
     min-height: 44px;
@@ -2183,7 +2256,9 @@
      videoId → YouTube id for inline embed (fallback: YouTube search if broken).
      Replace any videoId below with your own preferred form-tutorial. */
   const STRENGTH_A = {
+    id: 'strA',
     title: 'Strength A — Mon + Fri',
+    short: 'Strength A',
     meta: 'Full body · 40 min',
     warmup: 'Warm-up: 5 min treadmill at 4.5 km/h',
     cooldown: 'Cool-down: 10 min treadmill walk at 5 km/h',
@@ -2207,7 +2282,9 @@
   };
 
   const STRENGTH_B = {
+    id: 'strB',
     title: 'Strength B — Wed',
+    short: 'Strength B',
     meta: 'Full body · 40 min',
     warmup: 'Warm-up: 5 min treadmill at 4.5 km/h',
     cooldown: 'Cool-down: 10 min treadmill walk at 5 km/h',
@@ -2231,7 +2308,9 @@
   };
 
   const CARDIO_DAY = {
+    id: 'cardio',
     title: 'Cardio days — Tue + Thu',
+    short: 'Cardio',
     meta: 'Treadmill · 40 min split',
     exercises: [
       { name: 'Morning walk', desc: '7 AM — 20 min at 5 km/h', sets: '20 min', rest: '—' },
@@ -2241,7 +2320,9 @@
   };
 
   const SATURDAY_LONG = {
+    id: 'satLong',
     title: 'Saturday long cardio',
+    short: 'Long cardio',
     meta: 'Intervals · 50 min',
     exercises: [
       { name: 'Warm-up', desc: '5 min at 4.5 km/h', sets: '5 min', rest: '—' },
@@ -2429,6 +2510,7 @@
     shopping:  'atul_shopping',
     weight:    'atul_weight_log',
     rhr:       'atul_rhr_log',
+    waist:     'atul_waist_log',
     supps:     'atul_supplements',
     workouts:  'atul_workout_done',
     symptoms:  'atul_symptoms',
@@ -2452,6 +2534,7 @@
     shopping:  load(STORAGE.shopping, {}),
     weight:    load(STORAGE.weight, []),
     rhr:       load(STORAGE.rhr, []),
+    waist:     load(STORAGE.waist, []),
     supps:     load(STORAGE.supps, {}),
     workouts:  load(STORAGE.workouts, {}),
     symptoms:  load(STORAGE.symptoms, {}),
@@ -2488,6 +2571,50 @@
     if (cls) n.className = cls;
     if (text != null) n.textContent = text;
     return n;
+  }
+
+  /* ---------- Workout helpers ---------- */
+
+  // Storage key format for a checked exercise:
+  //   `YYYY-MM-DD-<blockId>-e<exerciseIdx>`
+  function workoutKey(dateIso, blockId, exIdx) {
+    return dateIso + '-' + blockId + '-e' + exIdx;
+  }
+
+  // Planned session(s) for a given day-of-week.
+  // Mon/Fri → Strength A, Wed → Strength B, Tue/Thu → Cardio, Sat → Long cardio, Sun → rest.
+  function plannedBlockForDay(dayKey) {
+    if (dayKey === 'mon' || dayKey === 'fri') return STRENGTH_A;
+    if (dayKey === 'wed') return STRENGTH_B;
+    if (dayKey === 'tue' || dayKey === 'thu') return CARDIO_DAY;
+    if (dayKey === 'sat') return SATURDAY_LONG;
+    return null; // sun: rest
+  }
+
+  // Count {done, total} for the planned block on a given day of this week.
+  function workoutCountForDay(dayKey) {
+    const block = plannedBlockForDay(dayKey);
+    if (!block) return { done: 0, total: 0, blockId: null };
+    const dateIso = dateKeyForDayOfWeek(dayKey);
+    let done = 0;
+    for (let i = 0; i < block.exercises.length; i++) {
+      if (state.workouts[workoutKey(dateIso, block.id, i)]) done++;
+    }
+    return { done, total: block.exercises.length, blockId: block.id };
+  }
+
+  // Weekly totals by session type, to drive the "Weekly goal" card.
+  function weeklyWorkoutTotals() {
+    const want = { strength: 3, cardio: 3 };
+    const got = { strength: 0, cardio: 0 };
+    DAYS.forEach(d => {
+      const c = workoutCountForDay(d.key);
+      // A session "counts" for the weekly goal if ≥ half its exercises done.
+      if (c.total === 0 || c.done < Math.ceil(c.total / 2)) return;
+      if (c.blockId === 'strA' || c.blockId === 'strB') got.strength++;
+      else if (c.blockId === 'cardio' || c.blockId === 'satLong') got.cardio++;
+    });
+    return { want, got };
   }
 
   /* ============================================================
@@ -3024,12 +3151,12 @@
       blocks.push(STRENGTH_A, STRENGTH_B, CARDIO_DAY, SATURDAY_LONG);
     }
 
-    blocks.forEach((block, idx) => {
-      root.appendChild(buildExerciseBlock(block, idx, todayIso));
+    blocks.forEach((block) => {
+      root.appendChild(buildExerciseBlock(block, todayIso));
     });
   }
 
-  function buildExerciseBlock(block, blockIdx, todayIso) {
+  function buildExerciseBlock(block, todayIso) {
     const card = el('div', 'card ex-card');
     card.innerHTML =
       '<div class="meta">' + block.meta + '</div>'
@@ -3039,7 +3166,7 @@
       card.appendChild(w);
     }
     block.exercises.forEach((ex, i) => {
-      const rowKey = todayIso + '-b' + blockIdx + '-e' + i;
+      const rowKey = workoutKey(todayIso, block.id, i);
       const done = !!state.workouts[rowKey];
       const row = el('div', 'ex-row' + (done ? ' done' : ''));
 
@@ -3081,6 +3208,150 @@
       card.appendChild(c);
     }
     return card;
+  }
+
+  /* ============================================================
+   *  TRACKER helpers
+   * ============================================================ */
+
+  function buildGoalRow(icon, label, got, want, color) {
+    const pips = [];
+    for (let i = 0; i < want; i++) {
+      pips.push('<span class="goal-pip' + (i < got ? ' on' : '') + '" style="--c:' + color + '"></span>');
+    }
+    const hit = got >= want;
+    return (
+      '<div class="goal-row">'
+      +   '<div class="goal-head">'
+      +     '<span class="goal-icon">' + icon + '</span>'
+      +     '<span class="goal-label">' + label + '</span>'
+      +     '<span class="goal-count' + (hit ? ' hit' : '') + '">' + got + ' / ' + want + (hit ? ' ✓' : '') + '</span>'
+      +   '</div>'
+      +   '<div class="goal-pips">' + pips.join('') + '</div>'
+      + '</div>'
+    );
+  }
+
+  function openWorkoutDaySheet(dayKey) {
+    const day = DAYS.find(d => d.key === dayKey);
+    const block = plannedBlockForDay(dayKey);
+    const dateIso = dateKeyForDayOfWeek(dayKey);
+
+    sheetTitle.textContent = day.name;
+    sheetSub.textContent = block
+      ? block.short + ' · ' + (block.meta || '')
+      : 'Rest day · optional 20 min walk';
+
+    sheetBody.innerHTML = '';
+
+    if (!block) {
+      // Rest day — offer one toggle for the optional walk.
+      const wrap = el('div');
+      wrap.style.padding = '8px 10px';
+      const note = el('div');
+      note.className = 'warmup-note';
+      note.style.margin = '8px 0 14px';
+      note.textContent = 'Rest day. Optional 20 min walk keeps the habit going — tap below if you did one.';
+      wrap.appendChild(note);
+
+      const walkKey = workoutKey(dateIso, 'restWalk', 0);
+      const walkOn = !!state.workouts[walkKey];
+      const row = el('button', 'toggle-row');
+      row.style.padding = '14px';
+      row.style.border = '1px solid var(--border)';
+      row.style.borderRadius = '12px';
+      row.innerHTML =
+        '<div class="toggle-info">'
+        +   '<div class="toggle-name">20-min recovery walk</div>'
+        +   '<div class="toggle-sub">Easy pace · outside or treadmill</div>'
+        + '</div>'
+        + '<div class="toggle-switch' + (walkOn ? ' on' : '') + '"></div>';
+      row.addEventListener('click', () => {
+        if (state.workouts[walkKey]) delete state.workouts[walkKey];
+        else state.workouts[walkKey] = true;
+        save(STORAGE.workouts, state.workouts);
+        openWorkoutDaySheet(dayKey); // re-render sheet
+        // and also refresh tracker underneath
+        if (state.currentView === 'tracker') renderTracker();
+      });
+      wrap.appendChild(row);
+      sheetBody.appendChild(wrap);
+      openSheet();
+      return;
+    }
+
+    // Active day — show the block's exercises as toggleable rows.
+    const count = workoutCountForDay(dayKey);
+    const meta = el('div', 'video-meta');
+    meta.style.marginTop = '4px';
+    meta.appendChild(el('span', 'video-chip strong', count.done + ' / ' + count.total + ' done'));
+    if (block.meta) meta.appendChild(el('span', 'video-chip', block.meta));
+    sheetBody.appendChild(meta);
+
+    // Bulk action buttons
+    const bulk = el('div');
+    bulk.style.display = 'flex';
+    bulk.style.gap = '8px';
+    bulk.style.margin = '14px 8px 6px';
+
+    const markAll = el('button', 'shop-btn primary');
+    markAll.textContent = 'Mark all done';
+    markAll.addEventListener('click', () => {
+      block.exercises.forEach((_, i) => {
+        state.workouts[workoutKey(dateIso, block.id, i)] = true;
+      });
+      save(STORAGE.workouts, state.workouts);
+      openWorkoutDaySheet(dayKey);
+      if (state.currentView === 'tracker') renderTracker();
+    });
+
+    const clearAll = el('button', 'shop-btn');
+    clearAll.textContent = 'Clear all';
+    clearAll.addEventListener('click', () => {
+      block.exercises.forEach((_, i) => {
+        delete state.workouts[workoutKey(dateIso, block.id, i)];
+      });
+      save(STORAGE.workouts, state.workouts);
+      openWorkoutDaySheet(dayKey);
+      if (state.currentView === 'tracker') renderTracker();
+    });
+
+    bulk.appendChild(markAll);
+    bulk.appendChild(clearAll);
+    sheetBody.appendChild(bulk);
+
+    // Exercise rows
+    const list = el('div');
+    list.style.padding = '4px 6px 8px';
+    block.exercises.forEach((ex, i) => {
+      const k = workoutKey(dateIso, block.id, i);
+      const done = !!state.workouts[k];
+      const row = el('button', 'ex-row');
+      row.style.padding = '12px 6px';
+      row.style.textAlign = 'left';
+      row.style.width = '100%';
+      if (done) row.classList.add('done');
+
+      row.innerHTML =
+        '<span class="ex-check' + (done ? ' done' : '') + '"></span>'
+        + '<div class="ex-body">'
+        +   '<div class="ex-name">' + ex.name + '</div>'
+        +   '<div class="ex-desc">' + ex.desc + '</div>'
+        +   '<div class="ex-sets">' + ex.sets + (ex.rest && ex.rest !== '—' ? ' · rest ' + ex.rest : '') + '</div>'
+        + '</div>';
+
+      row.addEventListener('click', () => {
+        if (state.workouts[k]) delete state.workouts[k];
+        else state.workouts[k] = true;
+        save(STORAGE.workouts, state.workouts);
+        openWorkoutDaySheet(dayKey);
+        if (state.currentView === 'tracker') renderTracker();
+      });
+      list.appendChild(row);
+    });
+    sheetBody.appendChild(list);
+
+    openSheet();
   }
 
   /* ============================================================
@@ -3274,6 +3545,48 @@
     });
     root.appendChild(suppsCard);
 
+    // === Weekly goal ===
+    const totals = weeklyWorkoutTotals();
+    const goalCard = el('div', 'card');
+    goalCard.innerHTML =
+      '<h2>Weekly goal</h2>'
+      + '<p class="muted small" style="margin-bottom:12px">Target from your plan: 3 strength + 3 cardio sessions.</p>'
+      + buildGoalRow('💪', 'Strength', totals.got.strength, totals.want.strength, 'var(--protein)')
+      + buildGoalRow('🚶', 'Cardio',   totals.got.cardio,   totals.want.cardio,   'var(--carbs)');
+    root.appendChild(goalCard);
+
+    // === Workouts this week (interactive) ===
+    const wkCard = el('div', 'card');
+    wkCard.innerHTML =
+      '<h2>Workouts this week</h2>'
+      + '<p class="muted small" style="margin-bottom:10px">Tap any day to check off exercises.</p>';
+    const wSum = el('div', 'workout-sum');
+    const today = todayDayKey();
+    DAYS.forEach(d => {
+      const count = workoutCountForDay(d.key);
+      let state3 = 'none';
+      if (count.total === 0) state3 = 'rest';
+      else if (count.done === 0) state3 = 'none';
+      else if (count.done >= count.total) state3 = 'full';
+      else state3 = 'partial';
+
+      const block = plannedBlockForDay(d.key);
+      const cell = el('button',
+        'wk-cell ' + state3 + (d.key === today ? ' today' : ''));
+      cell.setAttribute('aria-label', d.name + (block ? ' — ' + block.short : ' — rest day'));
+      const countLabel = count.total > 0
+        ? '<span class="wk-count">' + count.done + '/' + count.total + '</span>'
+        : '<span class="wk-count muted">rest</span>';
+      cell.innerHTML =
+        '<span class="d">' + d.short + '</span>'
+        + '<span class="dot"></span>'
+        + countLabel;
+      cell.addEventListener('click', () => openWorkoutDaySheet(d.key));
+      wSum.appendChild(cell);
+    });
+    wkCard.appendChild(wSum);
+    root.appendChild(wkCard);
+
     // === Weight log ===
     const wLog = el('div', 'card');
     wLog.innerHTML = '<h2>Weight log</h2><p class="muted small" style="margin-bottom:8px">Log Sunday 7 AM, after toilet, before eating.</p>';
@@ -3366,23 +3679,78 @@
     }
     root.appendChild(rLog);
 
-    // === Workouts this week ===
-    const wkCard = el('div', 'card');
-    wkCard.innerHTML = '<h2>Workouts this week</h2>';
-    const wSum = el('div', 'workout-sum');
-    const today = todayDayKey();
-    DAYS.forEach(d => {
-      // Consider a workout "done" if any exercise done on that date
-      const thisDate = dateKeyForDayOfWeek(d.key);
-      const didAny = Object.keys(state.workouts).some(k => k.startsWith(thisDate + '-'));
-      const cell = el('div', 'wk-cell' + (didAny ? ' done' : '') + (d.key === today ? ' today' : ''));
-      cell.innerHTML =
-        '<span class="d">' + d.short + '</span>'
-        + '<span class="dot"></span>';
-      wSum.appendChild(cell);
+    // === Waist log (monthly measurement from the plan) ===
+    const waistCard = el('div', 'card');
+    const latestWaist = state.waist[state.waist.length - 1];
+    const prevWaist = state.waist[state.waist.length - 2];
+    let waistDelta = '';
+    if (latestWaist && prevWaist) {
+      const d = latestWaist.cm - prevWaist.cm;
+      if (d < 0) waistDelta = '<span class="stat-sub down">▼ ' + Math.abs(d).toFixed(1) + ' cm from last</span>';
+      else if (d > 0) waistDelta = '<span class="stat-sub up">▲ ' + d.toFixed(1) + ' cm from last</span>';
+      else waistDelta = '<span class="stat-sub">no change</span>';
+    } else if (latestWaist) {
+      waistDelta = '<span class="stat-sub">first entry</span>';
+    }
+    waistCard.innerHTML =
+      '<div class="row-flex-between" style="margin-bottom:8px">'
+      +   '<div>'
+      +     '<h2 style="margin-bottom:2px">Waist</h2>'
+      +     '<p class="muted small" style="margin:0">Measure monthly. Use a tape measure at navel level.</p>'
+      +   '</div>'
+      +   '<div style="text-align:right">'
+      +     '<div class="stat-value" style="font-size:22px">'
+      +       (latestWaist ? latestWaist.cm.toFixed(1) : '—')
+      +       '<span class="unit">cm</span></div>'
+      +     waistDelta
+      +   '</div>'
+      + '</div>';
+    const waistRow = el('div', 'inline-input-row');
+    const waistInput = el('input', 'inline-input');
+    waistInput.type = 'number';
+    waistInput.inputMode = 'decimal';
+    waistInput.step = '0.1';
+    waistInput.placeholder = 'cm (e.g. 102.5)';
+    const waistBtn = el('button', 'btn-primary', 'Add');
+    waistBtn.addEventListener('click', () => {
+      const v = parseFloat(waistInput.value);
+      if (!v || v < 40 || v > 200) { waistInput.focus(); return; }
+      state.waist.push({ date: todayISO(), cm: v });
+      state.waist.sort((a, b) => a.date.localeCompare(b.date));
+      save(STORAGE.waist, state.waist);
+      waistInput.value = '';
+      renderTracker();
     });
-    wkCard.appendChild(wSum);
-    root.appendChild(wkCard);
+    waistRow.appendChild(waistInput);
+    waistRow.appendChild(waistBtn);
+    waistCard.appendChild(waistRow);
+
+    if (state.waist.length === 0) {
+      waistCard.appendChild(el('div', 'no-data', 'No waist entries yet.'));
+    } else {
+      const list = el('div', 'log-list');
+      const sorted = [...state.waist].sort((a, b) => b.date.localeCompare(a.date));
+      sorted.forEach((entry) => {
+        const origIdx = state.waist.findIndex(e => e.date === entry.date && e.cm === entry.cm);
+        const row = el('div', 'log-row');
+        row.innerHTML =
+          '<span class="log-date">' + fmtDate(entry.date) + '</span>'
+          + '<span><span class="log-val">' + entry.cm.toFixed(1) + ' cm</span>'
+          + '<button class="log-del" data-i="' + origIdx + '" aria-label="Delete">×</button></span>';
+        list.appendChild(row);
+      });
+      list.addEventListener('click', (e) => {
+        const btn = e.target.closest('.log-del');
+        if (!btn) return;
+        if (!confirm('Delete this entry?')) return;
+        state.waist.splice(parseInt(btn.dataset.i, 10), 1);
+        save(STORAGE.waist, state.waist);
+        renderTracker();
+      });
+      waistCard.appendChild(list);
+    }
+    root.appendChild(waistCard);
+
 
     // === Sunday review symptoms ===
     const sympCard = el('div', 'card');
@@ -3426,7 +3794,7 @@
       if (!confirm('Erase ALL saved data (swaps, shopping, weights, RHR, supplements, workouts)? This cannot be undone.')) return;
       Object.values(STORAGE).forEach(k => { try { localStorage.removeItem(k); } catch(_){} });
       state.swaps = {}; state.shopping = {}; state.weight = []; state.rhr = [];
-      state.supps = {}; state.workouts = {}; state.symptoms = {};
+      state.waist = []; state.supps = {}; state.workouts = {}; state.symptoms = {};
       renderTracker();
     });
     dangerCard.appendChild(resetAll);
@@ -3454,6 +3822,7 @@
       shopping: state.shopping,
       weight: state.weight,
       rhr: state.rhr,
+      waist: state.waist,
       supps: state.supps,
       workouts: state.workouts,
       symptoms: state.symptoms,
