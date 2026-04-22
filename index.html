@@ -1971,6 +1971,88 @@
   .shop-status-ring span { position: relative; z-index: 1; }
 
   /* ===== Tracker ===== */
+  .phase-banner {
+    background: linear-gradient(135deg, var(--primary) 0%, #2a6396 100%);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+  }
+  .phase-banner h2 { color: #fff; }
+  .phase-banner .muted { color: rgba(255,255,255,0.75); }
+  .phase-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+    gap: 12px;
+  }
+  .phase-week {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .phase-name {
+    font-size: 13px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.18);
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .phase-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .phase-fill {
+    height: 100%;
+    background: #fff;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+  .phase-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+  }
+  .phase-reset-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.85);
+    text-decoration: underline;
+    padding: 0 2px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .milestones-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+  }
+  .milestones-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    gap: 10px;
+    align-items: baseline;
+  }
+  .milestones-list li:last-child { border-bottom: none; }
+  .milestones-list .ms-week {
+    font-weight: 800;
+    color: var(--primary);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+  .milestones-list .ms-goal { color: var(--text); }
+  .milestones-list .ms-goal b { color: var(--text); }
   .tracker-grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -3863,13 +3945,19 @@
   ];
 
   const SYMPTOMS_WATCH = [
-    { key: 'burning_feet', name: 'Burning feet' },
-    { key: 'tingling', name: 'Tingling / pins and needles' },
-    { key: 'balance', name: 'Balance problem (one-leg test)' },
-    { key: 'palpitations', name: 'Palpitations at rest' },
-    { key: 'tremor', name: 'Hand tremor' },
+    // Gut / v4 red flags (top of list — most likely to fire in Weeks 1-2)
+    { key: 'gut_cramps',    name: 'Gut cramps / distension' },
+    { key: 'diarrhea',      name: 'Diarrhea / loose stools' },
+    { key: 'constipation',  name: 'Constipation (3+ days)' },
+    { key: 'heartburn',     name: 'Heartburn / acid reflux' },
+    // B12 / thyroid red flags
+    { key: 'burning_feet',  name: 'Burning feet' },
+    { key: 'tingling',      name: 'Tingling / pins and needles' },
+    { key: 'balance',       name: 'Balance problem (one-leg test)' },
+    { key: 'palpitations',  name: 'Palpitations at rest' },
+    { key: 'tremor',        name: 'Hand tremor' },
     { key: 'muscle_weakness', name: 'Muscle weakness (stairs / lifting)' },
-    { key: 'sleep_issue', name: 'Sleep issue (<5 h or restless)' },
+    { key: 'sleep_issue',   name: 'Sleep issue (<5 h or restless)' },
     { key: 'heat_intolerance', name: 'Heat intolerance' },
   ];
 
@@ -3890,6 +3978,9 @@
     symptoms:  'atul_symptoms',
     skips:     'atul_skips',
     plEnergy:  'atul_pl_energy',
+    bloat:     'atul_bloat_log',
+    planStart: 'atul_plan_start',
+    enzyme:    'atul_enzyme_log',
   };
 
   function load(key, fallback) {
@@ -3916,6 +4007,9 @@
     symptoms:  load(STORAGE.symptoms, {}),
     skips:     load(STORAGE.skips, {}),
     plEnergy:  load(STORAGE.plEnergy, {}),
+    bloat:     load(STORAGE.bloat, {}),
+    planStart: load(STORAGE.planStart, null),
+    enzyme:    load(STORAGE.enzyme, {}),
   };
 
   /* ============================================================
@@ -3937,6 +4031,24 @@
     const start = new Date(d.getFullYear(), 0, 1);
     const diff = Math.floor((d - start) / 86400000);
     return d.getFullYear() + '-W' + Math.ceil((diff + start.getDay() + 1) / 7);
+  }
+
+  // v4 phase tracker. Returns null until Atul hits "Start plan today"
+  // in the tracker. Once set, computes week number (1-based) + phase name.
+  function planWeekInfo() {
+    if (!state.planStart) return null;
+    const start = new Date(state.planStart + 'T00:00:00');
+    if (isNaN(start.getTime())) return null;
+    const today = new Date(todayISO() + 'T00:00:00');
+    const daysSince = Math.max(0, Math.floor((today - start) / 86400000));
+    const weekNum = Math.floor(daysSince / 7) + 1;
+    let phase;
+    if (weekNum <= 2)      phase = 'Gut adaptation';
+    else if (weekNum <= 4) phase = 'Reintroduction';
+    else if (weekNum <= 8) phase = 'Build';
+    else if (weekNum <= 12) phase = 'Fat loss';
+    else                    phase = 'Post-plan maintenance';
+    return { weekNum, phase, daysSince };
   }
   function fmtDate(iso) {
     const d = new Date(iso);
@@ -5253,12 +5365,37 @@
    *  TRACKER helpers
    * ============================================================ */
 
-  /* Post-lunch energy tracking (1-10). Helps validate whether
-     Simple Mode is actually improving afternoon focus. */
+  /* Post-lunch energy tracking (1-10). Target 7+ means the meal
+     isn't blowing up afternoon focus. */
   function plBand(v) {
     if (v >= 8) return 'high';
     if (v >= 5) return 'mid';
     return 'low';
+  }
+
+  /* Bloating band — inverted vs plenergy since low bloat is the goal.
+     1-3 = green (target), 4-6 = amber, 7-10 = red. */
+  function bloatBand(v) {
+    if (v <= 3) return 'high';  // green in the shared CSS
+    if (v <= 6) return 'mid';   // amber
+    return 'low';                // red
+  }
+  function bloatLast14Days() {
+    const pts = [];
+    const now = new Date();
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(now.getDate() - i);
+      const iso = d.getFullYear() + '-' + padT(d.getMonth()+1) + '-' + padT(d.getDate());
+      pts.push({ iso, val: state.bloat[iso] || null });
+    }
+    return pts;
+  }
+  function bloatRecentAvg(days) {
+    const pts = bloatLast14Days().slice(-days).filter(p => p.val != null);
+    if (pts.length < 3) return null;
+    const sum = pts.reduce((s, p) => s + p.val, 0);
+    return sum / pts.length;
   }
   function plEnergyLast14Days() {
     const pts = [];
@@ -5620,6 +5757,40 @@
     const root = document.getElementById('view-tracker');
     root.innerHTML = '';
 
+    // === Phase banner (Week N of 12) ===
+    const info = planWeekInfo();
+    const phaseCard = el('div', 'phase-banner');
+    if (info) {
+      const capWeek = Math.min(info.weekNum, 12);
+      const pct = Math.min(100, Math.round((info.daysSince / 84) * 100));
+      phaseCard.innerHTML =
+        '<div class="phase-top">'
+        +   '<span class="phase-week">Week ' + capWeek + ' / 12</span>'
+        +   '<span class="phase-name">' + info.phase + '</span>'
+        + '</div>'
+        + '<div class="phase-bar"><div class="phase-fill" style="width:' + pct + '%"></div></div>'
+        + '<div class="phase-sub">Day ' + info.daysSince + ' · started ' + fmtDate(state.planStart) + ' · <button class="phase-reset-btn" type="button">reset</button></div>';
+      phaseCard.querySelector('.phase-reset-btn').addEventListener('click', () => {
+        if (!confirm('Reset plan start date? Progress bar resets to zero.')) return;
+        state.planStart = null;
+        save(STORAGE.planStart, null);
+        renderTracker();
+      });
+    } else {
+      phaseCard.innerHTML =
+        '<h2 style="margin:0 0 4px 0; color:#fff">Plan not started</h2>'
+        + '<p class="phase-sub" style="margin:0 0 10px 0">Mark today as your v4 Day 1. This drives the 12-week phase tracker: gut adaptation → reintroduction → build → fat loss.</p>';
+      const startBtn = el('button', 'btn-primary', 'Start plan today');
+      startBtn.style.width = '100%';
+      startBtn.addEventListener('click', () => {
+        state.planStart = todayISO();
+        save(STORAGE.planStart, state.planStart);
+        renderTracker();
+      });
+      phaseCard.appendChild(startBtn);
+    }
+    root.appendChild(phaseCard);
+
     // Summary stats row
     const grid = el('div', 'tracker-grid-2');
     const latestW = state.weight[state.weight.length - 1];
@@ -5690,6 +5861,35 @@
       });
       suppsCard.appendChild(row);
     });
+
+    // Digestive enzyme — only shows during the Weeks 1-2 gut adaptation window.
+    // Keyed per-day with lunch + dinner sub-entries in state.enzyme.
+    if (info && info.weekNum <= 2) {
+      const enToday = state.enzyme[date] || {};
+      [
+        { key: 'lunch',  name: 'Digestive enzyme · lunch',  sub: 'Unienzyme / Aristozyme · 1 tab with lunch' },
+        { key: 'dinner', name: 'Digestive enzyme · dinner', sub: 'Unienzyme / Aristozyme · 1 tab with dinner' },
+      ].forEach(s => {
+        const on = !!enToday[s.key];
+        const row = el('button', 'toggle-row');
+        row.innerHTML =
+          '<div class="toggle-info">'
+          +   '<div class="toggle-name">' + s.name + '</div>'
+          +   '<div class="toggle-sub">' + s.sub + '</div>'
+          + '</div>'
+          + '<div class="toggle-switch' + (on ? ' on' : '') + '"></div>';
+        row.addEventListener('click', () => {
+          const rec = state.enzyme[date] ? { ...state.enzyme[date] } : {};
+          if (rec[s.key]) delete rec[s.key];
+          else rec[s.key] = true;
+          if (Object.keys(rec).length === 0) delete state.enzyme[date];
+          else state.enzyme[date] = rec;
+          save(STORAGE.enzyme, state.enzyme);
+          renderTracker();
+        });
+        suppsCard.appendChild(row);
+      });
+    }
     root.appendChild(suppsCard);
 
     // === Weekly goal ===
@@ -5826,7 +6026,7 @@
     }
     root.appendChild(rLog);
 
-    // === Post-lunch energy log (new in Simple Mode era) ===
+    // === Post-lunch energy log ===
     const plCard = el('div', 'card');
     const plToday = todayISO();
     const plTodayVal = state.plEnergy[plToday] || null;
@@ -5837,7 +6037,7 @@
       '<div class="row-flex-between" style="margin-bottom:4px">'
       +   '<div>'
       +     '<h2 style="margin-bottom:2px">Post-lunch energy</h2>'
-      +     '<p class="muted small" style="margin:0">How alert do you feel ~2 PM? Simple Mode targets 7+.</p>'
+      +     '<p class="muted small" style="margin:0">How alert ~2 PM? Target 7+ — sleepiness means lunch was too heavy.</p>'
       +   '</div>'
       +   '<div class="plenergy-current' + (plTodayVal ? ' has' : '') + '">'
       +     '<span class="plenergy-num">' + (plTodayVal != null ? plTodayVal : '—') + '</span>'
@@ -5872,6 +6072,49 @@
     }
 
     root.appendChild(plCard);
+
+    // === Bloating log (daily 1-10, inverse of plenergy — low = good) ===
+    const blCard = el('div', 'card');
+    const blToday = todayISO();
+    const blTodayVal = state.bloat[blToday] || null;
+    const bl14 = bloatLast14Days();
+    const blAvg = bloatRecentAvg(7);
+
+    blCard.innerHTML =
+      '<div class="row-flex-between" style="margin-bottom:4px">'
+      +   '<div>'
+      +     '<h2 style="margin-bottom:2px">Bloating</h2>'
+      +     '<p class="muted small" style="margin:0">Rate ~9 PM. Target &lt;3 by end of Week 2. If &gt;5 for 3 days, simplify lunch.</p>'
+      +   '</div>'
+      +   '<div class="plenergy-current' + (blTodayVal ? ' has' : '') + '">'
+      +     '<span class="plenergy-num">' + (blTodayVal != null ? blTodayVal : '—') + '</span>'
+      +     '<span class="plenergy-unit">/10 today</span>'
+      +   '</div>'
+      + '</div>';
+
+    const blScale = el('div', 'plenergy-scale');
+    for (let i = 1; i <= 10; i++) {
+      const b = el('button', 'plenergy-btn' + (blTodayVal === i ? ' active' : '') + ' band-' + bloatBand(i));
+      b.textContent = String(i);
+      b.addEventListener('click', () => {
+        if (state.bloat[blToday] === i) delete state.bloat[blToday];
+        else state.bloat[blToday] = i;
+        save(STORAGE.bloat, state.bloat);
+        renderTracker();
+      });
+      blScale.appendChild(b);
+    }
+    blCard.appendChild(blScale);
+
+    if (bl14.some(p => p.val != null)) {
+      const cap = el('div', 'plenergy-caption');
+      cap.innerHTML = '14-day tracking · '
+        + (blAvg != null ? '7-day avg: <b>' + blAvg.toFixed(1) + '</b>' : 'need 3+ days');
+      blCard.appendChild(cap);
+    } else {
+      blCard.appendChild(el('div', 'no-data', 'Log today\'s value to start tracking.'));
+    }
+    root.appendChild(blCard);
 
     // === Waist log (monthly measurement from the plan) ===
     const waistCard = el('div', 'card');
@@ -5973,6 +6216,28 @@
     });
     root.appendChild(sympCard);
 
+    // === 12-week milestones ===
+    const msCard = el('div', 'card');
+    msCard.innerHTML =
+      '<h2 style="margin-bottom:2px">12-week milestones</h2>'
+      + '<p class="muted small" style="margin-bottom:4px">Checkpoints to know the plan is working. Missing one = redesign, not push harder.</p>';
+    const msList = el('ul', 'milestones-list');
+    const milestones = [
+      { wk: 'Week 2',  goal: '<b>Bloating &lt;3</b> most days. Post-lunch energy 7+. If not → lunch still too heavy, drop roti or dal.' },
+      { wk: 'Week 4',  goal: 'All v4 foods reintroduced (chaas, sprouts, chana). Off the digestive enzyme. If bloating returns, roll back that food.' },
+      { wk: 'Week 6',  goal: '<b>-3 kg</b> from start. Waist down ~2 cm. Strength lifts feel lighter at same weight.' },
+      { wk: 'Week 8',  goal: '<b>RHR &lt;75</b> for a full week. Cardio comfortable at higher speed. Thyroid re-check with doctor.' },
+      { wk: 'Week 10', goal: 'Lift progression: add 2.5 kg on main lifts. Sleep 7+ h. Morning energy stable.' },
+      { wk: 'Week 12', goal: '<b>-6 kg</b> total. Waist -5 cm. Bloodwork: B12 &gt;500, LFT improving, TSH in range.' },
+    ];
+    milestones.forEach(m => {
+      const li = document.createElement('li');
+      li.innerHTML = '<span class="ms-week">' + m.wk + '</span><span class="ms-goal">' + m.goal + '</span>';
+      msList.appendChild(li);
+    });
+    msCard.appendChild(msList);
+    root.appendChild(msCard);
+
     // === Export / reset ===
     const dangerCard = el('div', 'card');
     dangerCard.innerHTML = '<h2>Data</h2>'
@@ -5985,11 +6250,12 @@
 
     const resetAll = el('button', 'bigred-btn', 'Reset all saved data');
     resetAll.addEventListener('click', () => {
-      if (!confirm('Erase ALL saved data (swaps, shopping, weights, RHR, supplements, workouts)? This cannot be undone.')) return;
+      if (!confirm('Erase ALL saved data (swaps, shopping, weights, RHR, supplements, workouts, bloat, enzyme, plan start)? This cannot be undone.')) return;
       Object.values(STORAGE).forEach(k => { try { localStorage.removeItem(k); } catch(_){} });
       state.swaps = {}; state.shopping = {}; state.weight = []; state.rhr = [];
       state.waist = []; state.supps = {}; state.workouts = {}; state.symptoms = {};
       state.skips = {}; state.plEnergy = {};
+      state.bloat = {}; state.planStart = null; state.enzyme = {};
       renderTracker();
     });
     dangerCard.appendChild(resetAll);
@@ -6013,6 +6279,7 @@
   function exportData() {
     const data = {
       exportedAt: new Date().toISOString(),
+      planStart: state.planStart,
       swaps: state.swaps,
       shopping: state.shopping,
       weight: state.weight,
@@ -6023,6 +6290,8 @@
       symptoms: state.symptoms,
       skips: state.skips,
       plEnergy: state.plEnergy,
+      bloat: state.bloat,
+      enzyme: state.enzyme,
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
