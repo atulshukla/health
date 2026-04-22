@@ -1681,19 +1681,33 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 11px;
+    padding: 4px 4px;
     border-radius: 999px;
-    background: rgba(255, 122, 89, 0.14);
-    color: var(--accent);
-    font-size: 11.5px;
+    background: var(--bg);
+    font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     white-space: nowrap;
   }
+  .stock-days-chip .chip-today,
+  .stock-days-chip .chip-tom {
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  .stock-days-chip .chip-today {
+    background: var(--accent);
+    color: #fff;
+  }
+  .stock-days-chip .chip-tom {
+    background: var(--primary-3);
+    color: #fff;
+  }
   .stock-days-chip .sep {
-    color: rgba(255, 122, 89, 0.5);
+    color: var(--muted-2);
     font-weight: 500;
+    font-size: 13px;
+    padding: 0 2px;
   }
   .stock-section { margin-bottom: 14px; }
   .stock-section:last-child { margin-bottom: 0; }
@@ -1712,19 +1726,45 @@
   .stock-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 9px 2px;
+    align-items: flex-start;
+    padding: 10px 2px;
     border-bottom: 1px dashed var(--border);
     gap: 10px;
   }
   .stock-row:last-child { border-bottom: 0; }
+  .stock-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
   .stock-name {
     font-size: 14px;
     color: var(--text-2);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .stock-breakdown {
+    font-size: 11.5px;
+    color: var(--muted);
     font-weight: 500;
-    flex: 1;
-    min-width: 0;
     line-height: 1.35;
+    font-variant-numeric: tabular-nums;
+  }
+  .stock-breakdown .bd-today {
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+  .stock-breakdown .bd-tom {
+    color: var(--primary-3);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+  .stock-breakdown .bd-sep {
+    color: var(--muted-2);
+    margin: 0 1px;
   }
   .stock-qty {
     font-size: 12.5px;
@@ -1736,6 +1776,7 @@
     border-radius: 999px;
     white-space: nowrap;
     flex: 0 0 auto;
+    margin-top: 1px;
   }
   .shop-status-ring {
     width: 56px; height: 56px;
@@ -3254,13 +3295,14 @@
     return DAYS[(new Date().getDay() + 1) % 7].key;
   }
 
-  // Sums raw ingredients across the selected day's meals.
+  // Sums raw ingredients for today + tomorrow, tracking per-day qty.
   function buildStockFor2Days() {
     const todayKey = todayDayKey();
     const tomKey = tomorrowDayKey();
-    const agg = new Map();
+    const aggT = new Map();  // today
+    const aggM = new Map();  // tomorrow
 
-    function add(dayKey) {
+    function addDay(dayKey, into) {
       MEAL_PLAN[dayKey].forEach(meal => {
         meal.items.forEach(item => {
           const list = ITEM_STOCK[item.name];
@@ -3268,14 +3310,30 @@
           list.forEach(tup => {
             const [name, qty, unit] = tup;
             const k = name + '::' + unit;
-            if (agg.has(k)) agg.get(k).qty += qty;
-            else agg.set(k, { name, qty, unit });
+            if (into.has(k)) into.get(k).qty += qty;
+            else into.set(k, { name, qty, unit });
           });
         });
       });
     }
-    add(todayKey);
-    add(tomKey);
+    addDay(todayKey, aggT);
+    addDay(tomKey, aggM);
+
+    // Merge into a single list carrying per-day breakdown + total
+    const allKeys = new Set([...aggT.keys(), ...aggM.keys()]);
+    const merged = [];
+    allKeys.forEach(k => {
+      const t = aggT.get(k);
+      const m = aggM.get(k);
+      const sample = t || m;
+      merged.push({
+        name: sample.name,
+        unit: sample.unit,
+        today: t ? t.qty : 0,
+        tomorrow: m ? m.qty : 0,
+        total: (t ? t.qty : 0) + (m ? m.qty : 0),
+      });
+    });
 
     // Category buckets — ordered for display
     const catDefs = [
@@ -3289,12 +3347,11 @@
       { label: 'Fats & drinks',        matches: ['Oil', 'Coffee', 'Green tea'] },
       { label: 'Supplements',          matches: ['Nurokind-OD', 'Uprise-D3'] },
     ];
-    const all = [...agg.values()];
 
     const grouped = catDefs.map(c => ({
       label: c.label,
-      items: all.filter(i => c.matches.some(m => i.name.startsWith(m)))
-                .sort((a, b) => a.name.localeCompare(b.name))
+      items: merged.filter(i => c.matches.some(m => i.name.startsWith(m)))
+                   .sort((a, b) => a.name.localeCompare(b.name))
     })).filter(g => g.items.length > 0);
 
     return { grouped, todayKey, tomKey };
@@ -4518,13 +4575,13 @@
       +   '<div class="stock-head-top">'
       +     '<h2>Stock for next 2 days</h2>'
       +     '<span class="stock-days-chip">'
-      +       '<span>' + todayDay.short + '</span>'
+      +       '<span class="chip-today">' + todayDay.short + '</span>'
       +       '<span class="sep">→</span>'
-      +       '<span>' + tomDay.short + '</span>'
+      +       '<span class="chip-tom">' + tomDay.short + '</span>'
       +     '</span>'
       +   '</div>'
       +   '<p class="muted small" style="margin:0">'
-      +     'Raw ingredients assuming you follow the plan for <b>today</b> and <b>tomorrow</b>. Keeps you from running out mid-cook.'
+      +     'Each row shows the total across both days, with a per-day split underneath.'
       +   '</p>'
       + '</div>';
 
@@ -4534,9 +4591,23 @@
       const list = el('div', 'stock-list');
       g.items.forEach(i => {
         const row = el('div', 'stock-row');
+        let bd;
+        if (i.today > 0 && i.tomorrow > 0) {
+          bd =
+            '<span class="bd-today">Today</span> ' + formatStockQty(i.today, i.unit)
+            + ' <span class="bd-sep">·</span> '
+            + '<span class="bd-tom">Tomorrow</span> ' + formatStockQty(i.tomorrow, i.unit);
+        } else if (i.today > 0) {
+          bd = '<span class="bd-today">Today only</span>';
+        } else {
+          bd = '<span class="bd-tom">Tomorrow only</span>';
+        }
         row.innerHTML =
-          '<span class="stock-name">' + i.name + '</span>'
-          + '<span class="stock-qty">' + formatStockQty(i.qty, i.unit) + '</span>';
+          '<div class="stock-main">'
+          +   '<span class="stock-name">' + i.name + '</span>'
+          +   '<span class="stock-breakdown">' + bd + '</span>'
+          + '</div>'
+          + '<span class="stock-qty">' + formatStockQty(i.total, i.unit) + '</span>';
         list.appendChild(row);
       });
       sec.appendChild(list);
