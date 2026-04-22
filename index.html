@@ -144,7 +144,8 @@
   /* ===== Main ===== */
   main {
     padding-top: calc(var(--header-h) + var(--safe-top));
-    padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px);
+    /* Extra clearance so content doesn't hide behind the floating Today button */
+    padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + 80px);
     min-height: 100vh;
     min-height: 100dvh;
   }
@@ -613,6 +614,267 @@
     stroke-width: 2.2;
   }
   .bottom-nav button:active { transform: scale(0.92); }
+
+  /* ===== Floating Today button ===== */
+  .today-fab {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: calc(var(--safe-bottom) + var(--nav-h) + 14px);
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--grad-primary);
+    color: #fff;
+    z-index: 25;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      0 0 0 5px var(--bg),
+      0 8px 22px rgba(10, 37, 64, 0.32),
+      0 4px 10px rgba(10, 37, 64, 0.18);
+    transition: transform 0.2s cubic-bezier(0.2,0.8,0.3,1), box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .today-fab:active {
+    transform: translateX(-50%) scale(0.93);
+  }
+  .today-fab.active {
+    background: var(--grad-accent);
+    box-shadow:
+      0 0 0 5px var(--bg),
+      0 8px 24px rgba(255, 122, 89, 0.45),
+      0 4px 10px rgba(255, 122, 89, 0.24);
+  }
+  .today-fab svg {
+    width: 26px; height: 26px;
+    stroke: #fff;
+    fill: none;
+  }
+  .today-fab-label {
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .today-fab.active + /* no-op: fab-label follows fab */
+  .today-fab-label { color: var(--accent); }
+  .today-fab.active .today-fab-label { color: var(--accent); }
+
+  /* ===== Today view ===== */
+  .today-header {
+    padding: 6px 2px 14px;
+  }
+  .today-eyebrow {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .today-greeting {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin: 0 0 10px;
+    line-height: 1.1;
+  }
+  .today-header .badge {
+    margin-top: 2px;
+  }
+
+  .today-next {
+    background: var(--grad-primary);
+    color: #fff;
+    padding: 18px 20px;
+    border: 0;
+    width: 100%;
+    text-align: left;
+    display: block;
+    box-shadow: 0 6px 20px rgba(10, 37, 64, 0.25), 0 12px 36px rgba(31, 90, 154, 0.18);
+    transition: transform 0.12s ease;
+    margin-bottom: 14px;
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+  }
+  .today-next:active { transform: scale(0.99); }
+  .today-next::before {
+    content: "";
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(255, 122, 89, 0.4), transparent 60%);
+    pointer-events: none;
+  }
+  .next-label {
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.85;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .next-time {
+    font-size: 12.5px;
+    opacity: 0.85;
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .next-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+  .next-sub {
+    font-size: 13px;
+    opacity: 0.9;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* Timeline */
+  .today-tl-card { padding: 14px 10px 8px; }
+  .today-tl-card h2 { margin: 4px 6px 10px; }
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item {
+    display: grid;
+    grid-template-columns: 66px 20px 1fr;
+    gap: 0;
+    align-items: stretch;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+  }
+  .tl-item:not(:last-child) .tl-line::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 22px;
+    bottom: -6px;
+    width: 2px;
+    background: var(--border);
+    transform: translateX(-50%);
+  }
+  .tl-time {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--muted);
+    padding-top: 16px;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    padding-right: 10px;
+    letter-spacing: 0.02em;
+  }
+  .tl-line {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .tl-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    margin-top: 14px;
+    z-index: 1;
+    position: relative;
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 1px var(--border-strong);
+    transition: all 0.2s ease;
+  }
+  .tl-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    border-radius: 12px;
+    background: var(--card);
+    margin: 6px 0 6px 6px;
+    border: 1px solid var(--border);
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .tl-item:active .tl-content { transform: scale(0.98); }
+  .tl-icon { font-size: 18px; line-height: 1; flex: 0 0 auto; }
+  .tl-text { flex: 1; min-width: 0; }
+  .tl-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .tl-sub {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 2px;
+    line-height: 1.35;
+  }
+  .tl-arrow {
+    font-size: 20px;
+    color: var(--muted-2);
+    font-weight: 400;
+    padding: 0 2px;
+    flex: 0 0 auto;
+  }
+
+  /* Type-specific dot colors */
+  .tl-item.type-water .tl-dot    { background: var(--carbs);  box-shadow: 0 0 0 1px var(--carbs); }
+  .tl-item.type-meal .tl-dot     { background: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .tl-item.type-walk .tl-dot     { background: var(--green);  box-shadow: 0 0 0 1px var(--green); }
+  .tl-item.type-workout .tl-dot  { background: var(--protein); box-shadow: 0 0 0 1px var(--protein); }
+  .tl-item.type-supp .tl-dot     { background: var(--purple); box-shadow: 0 0 0 1px var(--purple); }
+
+  /* Past → faded */
+  .tl-item.past .tl-content { background: transparent; border-color: transparent; }
+  .tl-item.past .tl-time,
+  .tl-item.past .tl-title,
+  .tl-item.past .tl-sub,
+  .tl-item.past .tl-icon { opacity: 0.45; }
+  .tl-item.past .tl-dot {
+    background: var(--border-strong);
+    box-shadow: 0 0 0 1px var(--border-strong);
+  }
+
+  /* Now → highlighted with pulse */
+  .tl-item.now .tl-content {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    box-shadow: 0 4px 14px rgba(255, 122, 89, 0.18);
+  }
+  .tl-item.now .tl-title { color: #a93e25; }
+  .tl-item.now .tl-time {
+    color: var(--accent);
+    font-weight: 800;
+  }
+  .tl-item.now .tl-dot {
+    transform: scale(1.25);
+    animation: tlPulse 2s ease-in-out infinite;
+  }
+  @keyframes tlPulse {
+    0%, 100% { box-shadow: 0 0 0 1px var(--accent), 0 0 0 4px rgba(255, 122, 89, 0.25); }
+    50%      { box-shadow: 0 0 0 1px var(--accent), 0 0 0 10px rgba(255, 122, 89, 0.03); }
+  }
+
+  /* No nav — timeline without pointer hand if non-navigable */
+  .tl-item.no-nav { cursor: default; }
+  .tl-item.no-nav .tl-arrow { display: none; }
 
   /* ===== Bottom sheet ===== */
   .sheet-backdrop {
@@ -1633,12 +1895,21 @@
 </header>
 
 <main>
+  <section class="view" id="view-today"></section>
   <section class="view active" id="view-meals"></section>
   <section class="view" id="view-exercise"></section>
   <section class="view" id="view-tips"></section>
   <section class="view" id="view-shopping"></section>
   <section class="view" id="view-tracker"></section>
 </main>
+
+<button class="today-fab" id="today-fab" aria-label="Today's schedule">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 11.5 L12 4 L21 11.5"/>
+    <path d="M5 10 V20 H9.5 V14 H14.5 V20 H19 V10"/>
+  </svg>
+  <span class="today-fab-label">Today</span>
+</button>
 
 <nav class="bottom-nav" id="bottom-nav">
   <button data-view="meals" class="active" aria-label="Meals">
@@ -2659,10 +2930,171 @@
   }
 
   /* ============================================================
+   *  TODAY TIMELINE helpers
+   * ============================================================ */
+
+  function padT(n) { return String(n).padStart(2, '0'); }
+  function minuteOfDay(hhmm) {
+    const [h, m] = hhmm.split(':').map(Number);
+    return h * 60 + m;
+  }
+  function currentMinute() {
+    const d = new Date();
+    return d.getHours() * 60 + d.getMinutes();
+  }
+  function formatTime12(hhmm) {
+    const [h, m] = hhmm.split(':').map(Number);
+    const period = h >= 12 ? 'PM' : 'AM';
+    const h12 = h === 0 ? 12 : (h > 12 ? h - 12 : h);
+    return h12 + ':' + padT(m) + ' ' + period;
+  }
+  function addMinutesHHMM(hhmm, mins) {
+    const total = minuteOfDay(hhmm) + mins;
+    return padT(Math.floor(total / 60)) + ':' + padT(total % 60);
+  }
+  function greeting() {
+    const h = new Date().getHours();
+    if (h < 12) return 'Good morning';
+    if (h < 17) return 'Good afternoon';
+    if (h < 21) return 'Good evening';
+    return 'Good night';
+  }
+  function iconForTimelineType(t) {
+    return { water: '💧', meal: '🍽️', walk: '🚶', workout: '💪', supp: '💊' }[t] || '•';
+  }
+
+  // Timeline for a given day-of-week. Each item: { time, type, title, subtitle, navMi, navTo }
+  //   navMi  → meal-card index to scroll to in Meals tab
+  //   navTo  → tab name to switch to (e.g. 'exercise', 'tracker')
+  function buildTodayTimeline(dayKey) {
+    const plannedWorkout = plannedBlockForDay(dayKey);
+    const isSun = dayKey === 'sun';
+    const isSat = dayKey === 'sat';
+    const isStrength = dayKey === 'mon' || dayKey === 'wed' || dayKey === 'fri';
+    const isCardioSplit = dayKey === 'tue' || dayKey === 'thu';
+    const meals = MEAL_PLAN[dayKey];
+    const mealsCount = meals.length;
+    const items = [];
+
+    // 06:30 — wake
+    items.push({ time: '06:30', type: 'water', title: 'Chia water + 500 ml water',
+                 subtitle: '1 tbsp chia soaked overnight · 90 min before Nurokind',
+                 navMi: 0 });
+
+    // 07:00 — morning movement (Sat replaces with long cardio)
+    if (isSat) {
+      items.push({ time: '07:00', type: 'workout', title: 'Long cardio intervals',
+                   subtitle: '50 min · warm-up → 10× intervals → cool-down',
+                   navTo: 'exercise' });
+    } else {
+      items.push({ time: '07:00', type: 'walk', title: '20-min morning treadmill walk',
+                   subtitle: '5 km/h · wakes up NEAT for the day',
+                   navTo: 'exercise' });
+    }
+
+    // 07:45 — pre-breakfast water
+    items.push({ time: '07:45', type: 'water', title: '250 ml water',
+                 subtitle: 'Before breakfast' });
+
+    // 08:00 / 09:00 — breakfast + Nurokind
+    const bkTime = isSun ? '09:00' : '08:00';
+    items.push({ time: bkTime, type: 'meal', title: 'Breakfast',
+                 subtitle: isSun ? 'Moong dal chilla + paneer + curd' : null,
+                 navMi: 1 });
+    items.push({ time: addMinutesHHMM(bkTime, 5), type: 'supp',
+                 title: 'Nurokind-OD 1500 mcg',
+                 subtitle: 'Sublingual 1–2 min · no water for 10 min',
+                 navTo: 'tracker' });
+
+    // 10:30 — mid-morning water
+    items.push({ time: '10:30', type: 'water', title: '250 ml water', subtitle: null });
+
+    // 11:00 — mid-morning snack
+    items.push({ time: '11:00', type: 'meal', title: 'Mid-morning',
+                 subtitle: 'Whey shake + sprouts/chana',
+                 navMi: 2 });
+
+    // 13:15 — pre-lunch water
+    items.push({ time: '13:15', type: 'water', title: '250 ml water',
+                 subtitle: 'Before lunch' });
+
+    // 13:30 — lunch (+ Uprise-D on Sunday)
+    items.push({ time: '13:30', type: 'meal',
+                 title: 'Lunch' + (isSun ? ' + Uprise-D3 sachet' : ''),
+                 subtitle: isSun ? 'Weekly vitamin D — take with paneer sabzi' : null,
+                 navMi: 3 });
+
+    // 13:45 — post-lunch walk
+    items.push({ time: '13:45', type: 'walk', title: '10-min slow walk',
+                 subtitle: 'Post-lunch glucose control',
+                 navTo: 'exercise' });
+
+    // 14:00 — chaas
+    items.push({ time: '14:00', type: 'meal', title: 'Chaas',
+                 subtitle: '60g dahi + water + salt + jeera',
+                 navMi: 4 });
+
+    // 15:30 — water
+    items.push({ time: '15:30', type: 'water', title: '250 ml water', subtitle: null });
+
+    // 17:00 — pre-workout fuel / evening snack
+    items.push({ time: '17:00', type: 'meal',
+                 title: isStrength ? 'Pre-workout fuel' : 'Evening snack',
+                 subtitle: isStrength ? 'Coffee + apple/banana, 45–60 min before lifting' : null,
+                 navMi: 5 });
+
+    // 17:45 — water
+    items.push({ time: '17:45', type: 'water', title: '250 ml water', subtitle: null });
+
+    // 18:00 — strength workout
+    if (isStrength && plannedWorkout) {
+      items.push({ time: '18:00', type: 'workout', title: plannedWorkout.short,
+                   subtitle: '40 min · ' + plannedWorkout.exercises.length + ' exercises',
+                   navTo: 'exercise' });
+      items.push({ time: '19:00', type: 'meal', title: 'Post-workout shake',
+                   subtitle: '60g whey + 250 ml toned milk — within 60 min',
+                   navMi: 6 });
+    }
+
+    // 20:15 — pre-dinner water
+    items.push({ time: '20:15', type: 'water', title: '250 ml water',
+                 subtitle: 'Before dinner' });
+
+    // Dinner (Sunday earlier)
+    const dinnerTime = isSun ? '20:00' : '20:30';
+    items.push({ time: dinnerTime, type: 'meal',
+                 title: 'Dinner' + (isSun ? ' (earlier)' : ''),
+                 subtitle: null,
+                 navMi: mealsCount - 1 });
+
+    // Post-dinner walk
+    items.push({ time: addMinutesHHMM(dinnerTime, 30), type: 'walk',
+                 title: '15-min walk after dinner',
+                 subtitle: null,
+                 navTo: 'exercise' });
+
+    // 21:00 — cardio split evening walk
+    if (isCardioSplit) {
+      items.push({ time: '21:00', type: 'workout', title: 'Evening walk (PM split)',
+                   subtitle: '20 min at 5 km/h',
+                   navTo: 'exercise' });
+    }
+
+    // Late-evening hydration
+    items.push({ time: '21:30', type: 'water', title: '500 ml water (split in 2)',
+                 subtitle: null });
+    items.push({ time: '22:30', type: 'water', title: '250 ml water',
+                 subtitle: 'Before bed' });
+
+    return items.sort((a, b) => a.time.localeCompare(b.time));
+  }
+
+  /* ============================================================
    *  ROUTER
    * ============================================================ */
 
   const TAB_META = {
+    today:    { title: 'Today',    render: renderToday },
     meals:    { title: 'Meals',    render: renderMeals },
     exercise: { title: 'Exercise', render: renderExercise },
     tips:     { title: 'Tips',     render: renderTips },
@@ -2671,30 +3103,49 @@
   };
 
   const nav = document.getElementById('bottom-nav');
+  const fabToday = document.getElementById('today-fab');
   const headerTitle = document.getElementById('header-title');
   const headerSubtitle = document.getElementById('header-subtitle');
 
-  function setView(key) {
+  function setView(key, options) {
+    options = options || {};
     state.currentView = key;
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById('view-' + key).classList.add('active');
     nav.querySelectorAll('button').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.view === key);
     });
+    fabToday.classList.toggle('active', key === 'today');
     headerTitle.textContent = TAB_META[key].title;
     updateHeaderSubtitle();
 
     TAB_META[key].render();
     save(STORAGE.lastTab, key);
-    window.scrollTo(0, 0);
+
+    if (options.scrollToId) {
+      requestAnimationFrame(() => {
+        const target = document.getElementById(options.scrollToId);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.scrollTo(0, 0);
+        }
+      });
+    } else {
+      window.scrollTo(0, 0);
+    }
   }
+
+  // FAB click
+  document.getElementById('today-fab').addEventListener('click', () => setView('today'));
 
   function updateHeaderSubtitle() {
     if (state.currentView === 'meals' && state.currentDay) {
       const d = DAYS.find(x => x.key === state.currentDay);
       headerSubtitle.textContent = d ? d.name : '';
-    } else if (state.currentView === 'exercise') {
-      headerSubtitle.textContent = '';
+    } else if (state.currentView === 'today') {
+      const d = DAYS.find(x => x.key === todayDayKey());
+      headerSubtitle.textContent = d ? d.name : '';
     } else {
       headerSubtitle.textContent = '';
     }
@@ -2705,6 +3156,104 @@
     if (!btn) return;
     setView(btn.dataset.view);
   });
+
+  /* ============================================================
+   *  TODAY TAB
+   * ============================================================ */
+
+  function navFromTimeline(item, dayKey) {
+    if (item.navTo) {
+      setView(item.navTo);
+      return;
+    }
+    if (item.navMi !== undefined) {
+      state.currentDay = dayKey;
+      save(STORAGE.curDay, dayKey);
+      setView('meals', { scrollToId: 'meal-' + dayKey + '-' + item.navMi });
+    }
+  }
+
+  function renderToday() {
+    const root = document.getElementById('view-today');
+    root.innerHTML = '';
+
+    const dayKey = todayDayKey();
+    const day = DAYS.find(d => d.key === dayKey);
+    const timeline = buildTodayTimeline(dayKey);
+    const now = currentMinute();
+
+    // Header
+    const header = el('div', 'today-header');
+    const dateStr = new Date().toLocaleDateString(undefined,
+      { weekday: 'long', month: 'long', day: 'numeric' });
+    header.innerHTML =
+      '<div class="today-eyebrow">' + dateStr + '</div>'
+      + '<h1 class="today-greeting">' + greeting() + ', Atul</h1>'
+      + '<span class="badge ' + day.type + '">' + day.badge + '</span>';
+    root.appendChild(header);
+
+    // Next-up card (shows the first future item)
+    const nextIdx = timeline.findIndex(t => minuteOfDay(t.time) > now);
+    if (nextIdx >= 0) {
+      const next = timeline[nextIdx];
+      const mins = minuteOfDay(next.time) - now;
+      const whenStr = mins < 60
+        ? 'in ' + mins + ' min'
+        : 'in ' + Math.floor(mins / 60) + 'h ' + (mins % 60) + 'm';
+      const nextCard = el('button', 'today-next');
+      nextCard.innerHTML =
+        '<div class="next-label">' + iconForTimelineType(next.type) + ' Coming up</div>'
+        + '<div class="next-time">' + formatTime12(next.time) + ' · ' + whenStr + '</div>'
+        + '<div class="next-title">' + next.title + '</div>'
+        + (next.subtitle ? '<div class="next-sub">' + next.subtitle + '</div>' : '');
+      if (next.navMi !== undefined || next.navTo) {
+        nextCard.addEventListener('click', () => navFromTimeline(next, dayKey));
+      } else {
+        nextCard.style.cursor = 'default';
+      }
+      root.appendChild(nextCard);
+    } else {
+      // End of day
+      const done = el('div', 'card');
+      done.innerHTML =
+        '<h2>That\'s a wrap</h2>'
+        + '<p class="muted small" style="margin:0">All of today\'s milestones have passed. '
+        + 'Tomorrow\'s plan will appear after midnight.</p>';
+      root.appendChild(done);
+    }
+
+    // Timeline
+    const tlCard = el('div', 'card today-tl-card');
+    tlCard.innerHTML = '<h2>Today\'s timeline</h2>';
+    const tl = el('div', 'timeline');
+    timeline.forEach(item => {
+      const mm = minuteOfDay(item.time);
+      let stateClass = 'future';
+      if (mm < now - 15) stateClass = 'past';
+      else if (mm >= now - 15 && mm <= now + 15) stateClass = 'now';
+
+      const hasNav = item.navMi !== undefined || item.navTo;
+      const row = el('button',
+        'tl-item type-' + item.type + ' ' + stateClass + (hasNav ? '' : ' no-nav'));
+      row.innerHTML =
+        '<div class="tl-time">' + formatTime12(item.time) + '</div>'
+        + '<div class="tl-line"><div class="tl-dot"></div></div>'
+        + '<div class="tl-content">'
+        +   '<div class="tl-icon">' + iconForTimelineType(item.type) + '</div>'
+        +   '<div class="tl-text">'
+        +     '<div class="tl-title">' + item.title + '</div>'
+        +     (item.subtitle ? '<div class="tl-sub">' + item.subtitle + '</div>' : '')
+        +   '</div>'
+        +   (hasNav ? '<div class="tl-arrow">›</div>' : '')
+        + '</div>';
+      if (hasNav) {
+        row.addEventListener('click', () => navFromTimeline(item, dayKey));
+      }
+      tl.appendChild(row);
+    });
+    tlCard.appendChild(tl);
+    root.appendChild(tlCard);
+  }
 
   /* ============================================================
    *  MEALS TAB
@@ -2900,6 +3449,7 @@
 
   function buildMealCard(dayKey, mi, meal) {
     const card = el('div', 'meal ' + mealTypeClass(meal));
+    card.id = 'meal-' + dayKey + '-' + mi;
 
     const head = el('div', 'meal-head');
     head.innerHTML =
@@ -3943,10 +4493,13 @@
   state.currentDay = load(STORAGE.curDay, todayDayKey());
   if (!MEAL_PLAN[state.currentDay]) state.currentDay = todayDayKey();
 
-  let initial = 'meals';
+  let initial = 'today';
   try {
     const saved = localStorage.getItem(STORAGE.lastTab);
-    if (saved && TAB_META[JSON.parse(saved)]) initial = JSON.parse(saved);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (TAB_META[parsed]) initial = parsed;
+    }
   } catch (_) {}
   setView(initial);
 
