@@ -210,50 +210,6 @@
     font-weight: 700;
   }
 
-  /* ===== Meal mode toggle (Simple / Full) ===== */
-  .mode-toggle {
-    display: flex;
-    background: var(--bg-deep);
-    border-radius: 13px;
-    padding: 4px;
-    margin: 0 0 14px;
-    gap: 4px;
-    box-shadow: inset 0 1px 2px rgba(12, 30, 55, 0.04);
-  }
-  .mode-btn {
-    flex: 1;
-    min-height: 52px;
-    padding: 8px 10px;
-    border-radius: 10px;
-    background: transparent;
-    color: var(--muted);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-    text-align: center;
-  }
-  .mode-btn:active { transform: scale(0.97); }
-  .mode-btn.active {
-    background: var(--card);
-    color: var(--primary-3);
-    box-shadow: 0 2px 6px rgba(12, 30, 55, 0.08), 0 1px 2px rgba(12, 30, 55, 0.04);
-  }
-  .mode-btn .mode-label {
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-  }
-  .mode-btn .mode-sub {
-    font-size: 10.5px;
-    font-weight: 600;
-    opacity: 0.75;
-    letter-spacing: 0.01em;
-  }
-  .mode-btn.active .mode-sub { color: var(--muted); opacity: 1; }
-
   /* ===== Day selector pills ===== */
   .day-strip {
     display: flex;
@@ -662,56 +618,7 @@
     border-color: var(--accent);
   }
 
-  /* Simple Mode welcome card (shown once, then dismissed forever) */
-  .welcome-card {
-    background:
-      radial-gradient(600px 240px at 100% -20%, rgba(255, 122, 89, 0.14), transparent 60%),
-      linear-gradient(180deg, #fef5f0 0%, #ffffff 100%);
-    border: 1px solid rgba(255, 122, 89, 0.22);
-    padding: 18px 20px;
-    position: relative;
-    overflow: hidden;
-  }
-  .welcome-card::before {
-    content: "";
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    background: linear-gradient(180deg, var(--accent), var(--accent-2));
-  }
-  .welcome-eyebrow {
-    font-size: 10.5px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .welcome-card h2 {
-    margin: 0 0 12px;
-    font-size: 19px;
-    letter-spacing: -0.02em;
-  }
-  .welcome-list {
-    margin: 0 0 16px;
-    padding-left: 22px;
-  }
-  .welcome-list li {
-    font-size: 13.5px;
-    line-height: 1.5;
-    margin-bottom: 7px;
-    color: var(--text-2);
-  }
-  .welcome-list li:last-child { margin-bottom: 0; }
-  .welcome-list b { color: var(--text); font-weight: 700; }
-  .welcome-dismiss {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Eating-order banner on Simple Mode lunch card */
+  /* Eating-order banner on lunch card */
   .eating-order-banner {
     display: flex;
     align-items: flex-start;
@@ -2544,12 +2451,13 @@
     ],
 
     dal_150: [
+      /* Weeks 1-2 gut adaptation: moong/toor/masoor only.
+         Chana, mixed, urad stay on the bench until week 3+ reintroduction. */
       { name: 'Moong dal (150g)', p: 14, f: 1, c: 18 },
       { name: 'Toor dal (150g)', p: 14, f: 1, c: 18 },
-      { name: 'Chana dal (150g)', p: 15, f: 2, c: 20 },
       { name: 'Masoor dal (150g)', p: 13, f: 1, c: 18 },
-      { name: 'Mixed dal (150g)', p: 14, f: 1, c: 19 },
-      { name: 'Urad dal (150g)', p: 15, f: 2, c: 19 },
+      { name: 'Mixed moong + toor (150g)', p: 14, f: 1, c: 18 },
+      { name: 'Skip dal today', p: 0, f: 0, c: 0 },
     ],
 
     beans_150: [
@@ -2561,15 +2469,18 @@
     ],
 
     sabzi_150: [
+      /* Weeks 1-2: low-FODMAP only. Cauliflower, cabbage, broccoli avoided. */
       { name: 'Bhindi sabzi (150g) + 5ml oil', p: 3, f: 10, c: 8 },
       { name: 'Lauki sabzi (150g) + 5ml oil', p: 2, f: 10, c: 5 },
-      { name: 'Mixed veg sabzi (150g) + 5ml oil', p: 3, f: 10, c: 10 },
-      { name: 'Baingan bharta (150g) + 5ml oil', p: 2, f: 11, c: 8 },
-      { name: 'Palak sabzi (150g) + 5ml oil', p: 4, f: 10, c: 6 },
-      { name: 'Cauliflower sabzi (150g) + 5ml oil', p: 3, f: 10, c: 7 },
-      { name: 'Cabbage sabzi (150g) + 5ml oil', p: 2, f: 10, c: 7 },
-      { name: 'Methi / saag (150g) + 5ml oil', p: 4, f: 10, c: 5 },
+      { name: 'Tori sabzi (150g) + 5ml oil', p: 2, f: 10, c: 6 },
+      { name: 'Tinda sabzi (150g) + 5ml oil', p: 2, f: 10, c: 5 },
+      { name: 'French beans (150g) + 5ml oil', p: 3, f: 10, c: 8 },
       { name: 'Gajar-matar (150g) + 5ml oil', p: 3, f: 10, c: 12 },
+      { name: 'Pumpkin sabzi (150g) + 5ml oil', p: 2, f: 10, c: 10 },
+      { name: 'Palak sabzi (150g) + 5ml oil', p: 4, f: 10, c: 6 },
+      { name: 'Baingan bharta (150g) + 5ml oil', p: 2, f: 11, c: 8 },
+      { name: 'Methi / saag (150g) + 5ml oil', p: 4, f: 10, c: 5 },
+      { name: 'Mixed low-FODMAP veg (150g) + 5ml oil', p: 3, f: 10, c: 10 },
     ],
 
     paneer_bhurji_120: [
@@ -2780,12 +2691,165 @@
       { name: 'Salad 200g + 30g roasted chana', p: 12, f: 2, c: 22 },
       { name: 'Raita 200g + cucumber', p: 7, f: 2, c: 12 },
     ],
+
+    /* ===== v4 altKeys (single-mode plan, Weeks 1-2 gut adaptation) ===== */
+
+    bkfast_paneer_80: [
+      { name: 'Paneer bhurji (80g paneer + 5ml oil)', p: 15, f: 20, c: 3 },
+      { name: 'Tofu bhurji (120g tofu + 5ml oil)', p: 14, f: 12, c: 4 },
+      { name: 'Mixed bhurji (50g paneer + 50g tofu + 5ml oil)', p: 14, f: 14, c: 3 },
+      { name: 'Scrambled paneer-veggie (80g paneer + 5ml oil)', p: 15, f: 20, c: 4 },
+      { name: 'Paneer tikka (80g + 5ml oil)', p: 15, f: 18, c: 3 },
+    ],
+
+    bkfast_poha: [
+      { name: 'Poha 50g + 10g peanuts + 5ml oil', p: 7, f: 11, c: 40 },
+      { name: 'Upma 50g suji + 5ml oil', p: 6, f: 6, c: 37 },
+      { name: 'Daliya 40g veggie + 5ml oil', p: 6, f: 6, c: 30 },
+      { name: '2 small idlis + sambhar (50ml)', p: 5, f: 1, c: 30 },
+      { name: '1 ragi dosa + 5ml oil', p: 4, f: 6, c: 22 },
+    ],
+
+    bkfast_oats_water: [
+      { name: 'Oats 40g in water + 25g whey + cinnamon + 1 date', p: 27, f: 4, c: 40 },
+      { name: 'Daliya 40g in water + 25g whey', p: 26, f: 3, c: 34 },
+      { name: 'Quinoa porridge 40g in water + 25g whey', p: 25, f: 4, c: 30 },
+      { name: 'Chia pudding 20g in water + 25g whey', p: 26, f: 8, c: 14 },
+    ],
+
+    sunday_chilla: [
+      { name: 'Moong chilla (50g batter) + 50g paneer + 5ml oil', p: 22, f: 14, c: 30 },
+      { name: 'Oats chilla + 60g paneer + 5ml oil', p: 20, f: 14, c: 32 },
+      { name: 'Ragi dosa + 60g paneer + 5ml oil', p: 18, f: 13, c: 32 },
+      { name: 'Mixed veg chilla + 60g paneer', p: 19, f: 13, c: 28 },
+    ],
+
+    lunch_carb: [
+      { name: '1 roti (30g dough)', p: 3, f: 1, c: 15 },
+      { name: '70g cooked rice', p: 2, f: 1, c: 20 },
+      { name: '1 multigrain roti', p: 3, f: 1, c: 14 },
+      { name: '1 bajra/jowar roti', p: 3, f: 1, c: 15 },
+      { name: '½ cup quinoa (70g cooked)', p: 3, f: 1, c: 15 },
+      { name: 'Skip carb today', p: 0, f: 0, c: 0 },
+    ],
+
+    salad_150: [
+      { name: 'Salad 150g (cucumber/tomato/carrot/lemon — no raw onion)', p: 2, f: 0, c: 6 },
+      { name: 'Salad 150g + 5g pumpkin seeds', p: 3, f: 2, c: 7 },
+      { name: 'Kachumber 150g (no onion)', p: 2, f: 0, c: 6 },
+      { name: 'Cucumber raita 150g (plain curd)', p: 5, f: 2, c: 8 },
+      { name: 'Steamed salad 150g (lauki/carrot/beans)', p: 2, f: 0, c: 6 },
+    ],
+
+    fennel_tea: [
+      { name: 'Fennel-ajwain tea (300ml)', p: 0, f: 0, c: 0 },
+      { name: 'Plain fennel tea (300ml)', p: 0, f: 0, c: 0 },
+      { name: 'Ginger tea (300ml, no milk)', p: 0, f: 0, c: 0 },
+      { name: 'Jeera water (300ml warm)', p: 0, f: 0, c: 0 },
+      { name: 'Warm water + lemon', p: 0, f: 0, c: 1 },
+      { name: 'Chaas 200ml (Week 3+ only)', p: 2, f: 1, c: 3 },
+      { name: 'Skip', p: 0, f: 0, c: 0 },
+    ],
+
+    mid_morning: [
+      { name: 'Whey 25g + 200ml water (if hungry)', p: 21, f: 1, c: 3 },
+      { name: '150g plain Greek yogurt', p: 15, f: 2, c: 6 },
+      { name: '100g low-fat curd', p: 4, f: 1, c: 5 },
+      { name: '10g almonds (~8 pcs)', p: 2, f: 6, c: 2 },
+      { name: 'Skip (best if not hungry)', p: 0, f: 0, c: 0 },
+    ],
+
+    toned_milk_200: [
+      { name: '200ml toned milk', p: 6, f: 6, c: 10 },
+      { name: '200ml toned milk + 10g whey stirred in', p: 14, f: 6, c: 11 },
+      { name: '150ml toned milk', p: 5, f: 5, c: 8 },
+      { name: '200ml almond milk (unsweetened)', p: 1, f: 3, c: 1 },
+      { name: 'Skip', p: 0, f: 0, c: 0 },
+    ],
+
+    pre_workout_fruit: [
+      { name: '1 banana (~120g)', p: 1, f: 0, c: 27 },
+      { name: '1 apple (~150g)', p: 1, f: 0, c: 22 },
+      { name: '1 small orange', p: 1, f: 0, c: 15 },
+      { name: '2 dates + 5g almonds', p: 1, f: 3, c: 20 },
+      { name: '150g papaya cubes', p: 1, f: 0, c: 15 },
+      { name: 'Skip (just coffee)', p: 0, f: 0, c: 0 },
+    ],
+
+    pwo_water_30: [
+      /* v4 shake: 30g whey + water (no milk — reducing dairy load) */
+      { name: 'Whey 30g (1 scoop) + 250ml water', p: 25, f: 1, c: 3 },
+      { name: 'Whey 25g + 250ml water', p: 21, f: 1, c: 3 },
+      { name: 'Whey 30g + 150g Greek yogurt', p: 40, f: 3, c: 9 },
+      { name: 'Whey 30g + 200ml toned milk (if no dairy earlier)', p: 31, f: 6, c: 13 },
+    ],
+
+    dinner_tofu_150: [
+      { name: 'Tofu tikka (150g) + capsicum-onion + 5ml oil', p: 18, f: 12, c: 8 },
+      { name: 'Tofu bhurji (150g) + 5ml oil', p: 18, f: 11, c: 5 },
+      { name: 'Palak tofu (150g) + 5ml oil', p: 18, f: 11, c: 8 },
+      { name: 'Tofu curry (150g) + 5ml oil', p: 18, f: 11, c: 6 },
+      { name: 'Mixed 75g tofu + 75g paneer', p: 22, f: 16, c: 8 },
+      { name: 'Soya chunk curry (50g dry)', p: 26, f: 6, c: 10 },
+    ],
+
+    dinner_rajma_chole: [
+      { name: 'Rajma (150g)', p: 15, f: 5, c: 22 },
+      { name: 'Chole (150g)', p: 15, f: 3, c: 22 },
+      { name: 'Kala chana (150g)', p: 16, f: 5, c: 22 },
+      { name: 'Lobia (150g)', p: 13, f: 2, c: 20 },
+      { name: 'Mixed beans (150g)', p: 15, f: 4, c: 22 },
+    ],
+
+    dinner_paneer_100: [
+      { name: '100g paneer sabzi + 5ml oil', p: 18, f: 25, c: 5 },
+      { name: 'Paneer tikka (100g) + 5ml oil', p: 18, f: 22, c: 4 },
+      { name: 'Kadhai paneer (100g)', p: 18, f: 22, c: 7 },
+      { name: 'Palak paneer (100g)', p: 18, f: 22, c: 7 },
+      { name: 'Mixed 60g paneer + 40g tofu', p: 16, f: 18, c: 5 },
+    ],
+
+    sunday_dinner_tofu: [
+      { name: 'Tofu bhurji (100g) + 5ml oil', p: 12, f: 9, c: 4 },
+      { name: 'Tofu tikka (100g) + 5ml oil', p: 12, f: 8, c: 5 },
+      { name: 'Paneer bhurji (80g) + 5ml oil', p: 15, f: 20, c: 3 },
+      { name: 'Mushroom tofu (100g + 50g mushroom)', p: 10, f: 8, c: 6 },
+      { name: 'Soya bhurji (30g dry soya)', p: 16, f: 4, c: 7 },
+    ],
+
+    curd_100: [
+      { name: '100g low-fat curd', p: 4, f: 1, c: 5 },
+      { name: '100g regular curd', p: 4, f: 4, c: 5 },
+      { name: '100g plain Greek yogurt', p: 10, f: 2, c: 4 },
+      { name: 'Chaas 200ml (Week 3+ reintroduction)', p: 2, f: 1, c: 3 },
+      { name: 'Skip (reduce dairy today)', p: 0, f: 0, c: 0 },
+    ],
+
+    evening_snack: [
+      { name: '150ml black coffee', p: 0, f: 0, c: 0 },
+      { name: '150ml green tea', p: 0, f: 0, c: 0 },
+      { name: '30g roasted chana', p: 10, f: 2, c: 15 },
+      { name: '10g almonds (~8 pcs)', p: 2, f: 6, c: 2 },
+      { name: '15g peanuts (Fri only)', p: 4, f: 7, c: 2 },
+      { name: 'Skip', p: 0, f: 0, c: 0 },
+    ],
   };
 
   /* Each meal: { time, title, items: [{ name, p, f, c, altKey?, supp? }], optional? }
      Macro totals computed from items at render time.
-     Two plans exist — Simple is the default, Full is available via toggle. */
-  const MEAL_PLAN_FULL = {
+
+     v4 plan (single-mode): light lunch, bigger dinner. Built for a 40yo
+     software builder — protects afternoon focus, respects lactose
+     sensitivity (≤2 dairy events/day Weeks 1-2), keeps legumes to ≤2/day,
+     and runs on low-FODMAP veg + moong/toor/masoor dal while the gut
+     adapts. PWO shake (Mon/Wed/Fri) is 30g whey + 250ml water.
+     Reintroductions (chaas, sprouts, cauliflower, chana) happen Week 3+
+     per the 4-week phasing in the Tips tab. */
+  const MEAL_PLAN = {
+
+    /* Mon — Strength A day (30-40 min home workout at 7 PM).
+       Dairy events: paneer at breakfast + curd 100g at dinner = 2 (within Weeks 1-2 cap).
+       Legumes: moong lunch + moong dinner = 2 (safe, same dal type). */
     mon: [
       { time: '6:30 AM', title: 'Wake',
         items: [
@@ -2794,45 +2858,47 @@
         ]},
       { time: '8:00 AM', title: 'Breakfast',
         items: [
-          { name: 'Paneer bhurji (120g paneer + 5ml oil)', p: 22, f: 27, c: 3, altKey: 'paneer_bhurji_120' },
+          { name: 'Paneer bhurji (80g paneer + 5ml oil)', p: 15, f: 20, c: 3, altKey: 'bkfast_paneer_80' },
           { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-          { name: '250ml toned milk', p: 8, f: 7, c: 12, altKey: 'toned_milk_250' },
           { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
         ]},
-      { time: '11:00 AM', title: 'Mid-morning',
+      { time: '11:00 AM', title: 'Mid-morning (optional)', optional: true,
         items: [
-          { name: 'Whey shake: 30g + 250ml toned milk', p: 33, f: 7, c: 15, altKey: 'whey_shake_30' },
-          { name: '50g sprouted moong', p: 7, f: 0, c: 9, altKey: 'sprouts_50' },
+          { name: 'Whey 25g + 200ml water (if hungry)', p: 21, f: 1, c: 3, altKey: 'mid_morning' },
         ]},
       { time: '1:30 PM', title: 'Lunch',
         items: [
-          { name: '2 rotis', p: 6, f: 2, c: 30, altKey: 'roti_2' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'lunch_carb' },
           { name: 'Moong dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
           { name: 'Bhindi sabzi (150g) + 5ml oil', p: 3, f: 10, c: 8, altKey: 'sabzi_150' },
-          { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: 'Salad 150g (cucumber/tomato/carrot/lemon — no raw onion)', p: 2, f: 0, c: 6, altKey: 'salad_150' },
         ]},
-      { time: '2:00 PM', title: 'Post-lunch',
+      { time: '2:00 PM', title: 'Digestive',
         items: [
-          { name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' },
+          { name: 'Fennel-ajwain tea (300ml)', p: 0, f: 0, c: 0, altKey: 'fennel_tea' },
         ]},
       { time: '5:00 PM', title: 'Pre-workout',
         items: [
           { name: '150ml black coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
-          { name: '1 apple (~150g)', p: 1, f: 0, c: 22, altKey: 'apple' },
+          { name: '1 apple (~150g)', p: 1, f: 0, c: 22, altKey: 'pre_workout_fruit' },
         ]},
       { time: '7:00 PM', title: 'Post-workout',
         items: [
-          { name: 'Whey 60g (2 scoops) + 250ml toned milk', p: 57, f: 9, c: 18, altKey: 'whey_shake_60' },
+          { name: 'Whey 30g (1 scoop) + 250ml water', p: 25, f: 1, c: 3, altKey: 'pwo_water_30' },
         ]},
       { time: '8:30 PM', title: 'Dinner',
         items: [
-          { name: 'Palak tofu-paneer (75g tofu + 75g paneer)', p: 22, f: 16, c: 8, altKey: 'palak_paneer_tofu' },
-          { name: '1 roti', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: 'Tofu tikka (150g) + capsicum-onion + 5ml oil', p: 18, f: 12, c: 8, altKey: 'dinner_tofu_150' },
+          { name: 'Moong dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
+          { name: '100g low-fat curd', p: 4, f: 1, c: 5, altKey: 'curd_100' },
         ]},
     ],
 
+    /* Tue — Cardio day (30-40 min walk/cycle after work).
+       Dairy events: 200ml milk at breakfast + curd 100g at dinner = 2.
+       Legumes: toor lunch + rajma dinner = 2. */
     tue: [
       { time: '6:30 AM', title: 'Wake',
         items: [
@@ -2841,38 +2907,42 @@
         ]},
       { time: '8:00 AM', title: 'Breakfast',
         items: [
-          { name: 'Poha 50g + 15g peanuts + 5ml oil', p: 8, f: 13, c: 40, altKey: 'poha_50' },
-          { name: 'Whey shake: 30g + 250ml toned milk', p: 33, f: 7, c: 15, altKey: 'whey_shake_30' },
+          { name: 'Poha 50g + 10g peanuts + 5ml oil', p: 7, f: 11, c: 40, altKey: 'bkfast_poha' },
+          { name: '200ml toned milk', p: 6, f: 6, c: 10, altKey: 'toned_milk_200' },
           { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
         ]},
-      { time: '11:00 AM', title: 'Mid-morning',
+      { time: '11:00 AM', title: 'Mid-morning (optional)', optional: true,
         items: [
-          { name: '150g plain Greek yogurt', p: 15, f: 2, c: 6, altKey: 'greek_150' },
-          { name: '50g sprouted moong', p: 7, f: 0, c: 9, altKey: 'sprouts_50' },
+          { name: '100g low-fat curd (skip if not hungry)', p: 4, f: 1, c: 5, altKey: 'mid_morning' },
         ]},
       { time: '1:30 PM', title: 'Lunch',
         items: [
-          { name: '100g cooked rice', p: 3, f: 1, c: 28, altKey: 'rice_half' },
-          { name: 'Rajma (150g)', p: 15, f: 5, c: 22, altKey: 'beans_150' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'lunch_carb' },
+          { name: 'Toor dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
           { name: 'Lauki sabzi (150g) + 5ml oil', p: 2, f: 10, c: 5, altKey: 'sabzi_150' },
-          { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
         ]},
-      { time: '2:00 PM', title: 'Post-lunch',
-        items: [{ name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' }]},
+      { time: '2:00 PM', title: 'Digestive',
+        items: [
+          { name: 'Fennel-ajwain tea (300ml)', p: 0, f: 0, c: 0, altKey: 'fennel_tea' },
+        ]},
       { time: '5:00 PM', title: 'Evening',
         items: [
-          { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'roasted_chana_30' },
-          { name: '150ml green tea', p: 0, f: 0, c: 0, altKey: 'green_tea_150' },
+          { name: '150ml black coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
+          { name: '10g almonds (~8 pcs)', p: 2, f: 6, c: 2, altKey: 'evening_snack' },
         ]},
       { time: '8:30 PM', title: 'Dinner',
         items: [
-          { name: 'Soya chunk curry (50g dry)', p: 26, f: 6, c: 10, altKey: 'soya_curry' },
-          { name: '1 roti', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: 'Rajma (150g)', p: 15, f: 5, c: 22, altKey: 'dinner_rajma_chole' },
+          { name: '70g cooked rice', p: 2, f: 1, c: 20, altKey: 'lunch_carb' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
+          { name: '100g low-fat curd', p: 4, f: 1, c: 5, altKey: 'curd_100' },
         ]},
     ],
 
+    /* Wed — Strength B day (30-40 min home workout at 7 PM).
+       Dairy events: curd 100g at dinner = 1 (lowest-dairy day — oats in water).
+       Legumes: masoor lunch + moong dinner = 2. */
     wed: [
       { time: '6:30 AM', title: 'Wake',
         items: [
@@ -2881,42 +2951,46 @@
         ]},
       { time: '8:00 AM', title: 'Breakfast',
         items: [
-          { name: '1 paneer paratha (40g atta + 60g paneer + 5ml oil)', p: 14, f: 13, c: 25, altKey: 'paneer_paratha' },
-          { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
+          { name: 'Oats 40g in water + 25g whey + cinnamon + 1 date', p: 27, f: 4, c: 40, altKey: 'bkfast_oats_water' },
           { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
         ]},
-      { time: '11:00 AM', title: 'Mid-morning',
+      { time: '11:00 AM', title: 'Mid-morning (optional)', optional: true,
         items: [
-          { name: 'Whey shake: 30g + 250ml toned milk', p: 33, f: 7, c: 15, altKey: 'whey_shake_30' },
-          { name: '50g sprouted moong', p: 7, f: 0, c: 9, altKey: 'sprouts_50' },
+          { name: 'Whey 25g + 200ml water (if hungry)', p: 21, f: 1, c: 3, altKey: 'mid_morning' },
         ]},
       { time: '1:30 PM', title: 'Lunch',
         items: [
-          { name: '2 rotis', p: 6, f: 2, c: 30, altKey: 'roti_2' },
-          { name: 'Chana dal (150g)', p: 15, f: 2, c: 20, altKey: 'dal_150' },
-          { name: 'Mixed veg sabzi (150g) + 5ml oil', p: 3, f: 10, c: 10, altKey: 'sabzi_150' },
-          { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'lunch_carb' },
+          { name: 'Masoor dal (150g)', p: 13, f: 1, c: 18, altKey: 'dal_150' },
+          { name: 'Tori sabzi (150g) + 5ml oil', p: 3, f: 10, c: 6, altKey: 'sabzi_150' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
         ]},
-      { time: '2:00 PM', title: 'Post-lunch',
-        items: [{ name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' }]},
+      { time: '2:00 PM', title: 'Digestive',
+        items: [
+          { name: 'Fennel-ajwain tea (300ml)', p: 0, f: 0, c: 0, altKey: 'fennel_tea' },
+        ]},
       { time: '5:00 PM', title: 'Pre-workout',
         items: [
           { name: '150ml black coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
-          { name: '1 banana (~120g)', p: 1, f: 0, c: 27, altKey: 'banana' },
+          { name: '1 banana (~120g)', p: 1, f: 0, c: 27, altKey: 'pre_workout_fruit' },
         ]},
       { time: '7:00 PM', title: 'Post-workout',
         items: [
-          { name: 'Whey 60g (2 scoops) + 250ml toned milk', p: 57, f: 9, c: 18, altKey: 'whey_shake_60' },
+          { name: 'Whey 30g (1 scoop) + 250ml water', p: 25, f: 1, c: 3, altKey: 'pwo_water_30' },
         ]},
       { time: '8:30 PM', title: 'Dinner',
         items: [
-          { name: 'Tofu tikka (150g) + capsicum-onion', p: 18, f: 12, c: 8, altKey: 'tofu_tikka' },
-          { name: '1 roti', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: 'Tofu bhurji (150g) + 5ml oil', p: 18, f: 11, c: 5, altKey: 'dinner_tofu_150' },
+          { name: 'Moong dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
+          { name: '100g low-fat curd', p: 4, f: 1, c: 5, altKey: 'curd_100' },
         ]},
     ],
 
+    /* Thu — Cardio day.
+       Dairy events: paneer at breakfast + curd 100g at dinner = 2.
+       Legumes: toor lunch + chole dinner = 2. */
     thu: [
       { time: '6:30 AM', title: 'Wake',
         items: [
@@ -2925,38 +2999,42 @@
         ]},
       { time: '8:00 AM', title: 'Breakfast',
         items: [
-          { name: 'Upma 50g suji + 5ml oil', p: 6, f: 6, c: 37, altKey: 'upma_50' },
-          { name: 'Whey shake: 30g + 250ml toned milk', p: 33, f: 7, c: 15, altKey: 'whey_shake_30' },
+          { name: 'Paneer bhurji (80g paneer + 5ml oil)', p: 15, f: 20, c: 3, altKey: 'bkfast_paneer_80' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
           { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
         ]},
-      { time: '11:00 AM', title: 'Mid-morning',
+      { time: '11:00 AM', title: 'Mid-morning (optional)', optional: true,
         items: [
-          { name: '150g plain Greek yogurt', p: 15, f: 2, c: 6, altKey: 'greek_150' },
-          { name: '50g sprouted moong', p: 7, f: 0, c: 9, altKey: 'sprouts_50' },
+          { name: '10g almonds (~8 pcs)', p: 2, f: 6, c: 2, altKey: 'mid_morning' },
         ]},
       { time: '1:30 PM', title: 'Lunch',
         items: [
-          { name: '2 rotis', p: 6, f: 2, c: 30, altKey: 'roti_2' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'lunch_carb' },
           { name: 'Toor dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
           { name: 'Baingan bharta (150g) + 5ml oil', p: 2, f: 11, c: 8, altKey: 'sabzi_150' },
-          { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
         ]},
-      { time: '2:00 PM', title: 'Post-lunch',
-        items: [{ name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' }]},
+      { time: '2:00 PM', title: 'Digestive',
+        items: [
+          { name: 'Fennel-ajwain tea (300ml)', p: 0, f: 0, c: 0, altKey: 'fennel_tea' },
+        ]},
       { time: '5:00 PM', title: 'Evening',
         items: [
-          { name: '250ml toned milk', p: 8, f: 7, c: 12, altKey: 'toned_milk_250' },
-          { name: '10g almonds (~8 pcs)', p: 2, f: 6, c: 2, altKey: 'almonds_10' },
+          { name: '150ml black coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
+          { name: '10g almonds (~8 pcs)', p: 2, f: 6, c: 2, altKey: 'evening_snack' },
         ]},
       { time: '8:30 PM', title: 'Dinner',
         items: [
-          { name: 'Rajma (150g)', p: 15, f: 5, c: 22, altKey: 'rajma_dinner' },
-          { name: '1 roti', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-          { name: 'Big salad 250g', p: 3, f: 0, c: 10, altKey: 'salad_250' },
+          { name: 'Chole (150g)', p: 15, f: 3, c: 22, altKey: 'dinner_rajma_chole' },
+          { name: '70g cooked rice', p: 2, f: 1, c: 20, altKey: 'lunch_carb' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
+          { name: '100g low-fat curd', p: 4, f: 1, c: 5, altKey: 'curd_100' },
         ]},
     ],
 
+    /* Fri — Strength A day.
+       Dairy events: 200ml milk at breakfast + curd 100g at dinner = 2.
+       Legumes: moong lunch + moong dinner = 2. */
     fri: [
       { time: '6:30 AM', title: 'Wake',
         items: [
@@ -2965,42 +3043,47 @@
         ]},
       { time: '8:00 AM', title: 'Breakfast',
         items: [
-          { name: '1 paneer paratha (40g atta + 60g paneer + 5ml oil)', p: 14, f: 13, c: 25, altKey: 'paneer_paratha' },
-          { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
+          { name: 'Poha 50g + 10g peanuts + 5ml oil', p: 7, f: 11, c: 40, altKey: 'bkfast_poha' },
+          { name: '200ml toned milk', p: 6, f: 6, c: 10, altKey: 'toned_milk_200' },
           { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
         ]},
-      { time: '11:00 AM', title: 'Mid-morning',
+      { time: '11:00 AM', title: 'Mid-morning (optional)', optional: true,
         items: [
-          { name: 'Whey shake: 30g + 250ml toned milk', p: 33, f: 7, c: 15, altKey: 'whey_shake_30' },
-          { name: '30g peanuts', p: 8, f: 14, c: 5, altKey: 'peanuts_30' },
+          { name: 'Whey 25g + 200ml water (if hungry)', p: 21, f: 1, c: 3, altKey: 'mid_morning' },
         ]},
       { time: '1:30 PM', title: 'Lunch',
         items: [
-          { name: '100g cooked rice', p: 3, f: 1, c: 28, altKey: 'rice_half' },
-          { name: 'Chole (150g)', p: 15, f: 3, c: 22, altKey: 'beans_150' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'lunch_carb' },
+          { name: 'Moong dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
           { name: 'Bhindi sabzi (150g) + 5ml oil', p: 3, f: 10, c: 8, altKey: 'sabzi_150' },
-          { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
         ]},
-      { time: '2:00 PM', title: 'Post-lunch',
-        items: [{ name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' }]},
+      { time: '2:00 PM', title: 'Digestive',
+        items: [
+          { name: 'Fennel-ajwain tea (300ml)', p: 0, f: 0, c: 0, altKey: 'fennel_tea' },
+        ]},
       { time: '5:00 PM', title: 'Pre-workout',
         items: [
           { name: '150ml black coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
-          { name: '1 apple (~150g)', p: 1, f: 0, c: 22, altKey: 'apple' },
+          { name: '1 apple (~150g)', p: 1, f: 0, c: 22, altKey: 'pre_workout_fruit' },
         ]},
       { time: '7:00 PM', title: 'Post-workout',
         items: [
-          { name: 'Whey 60g (2 scoops) + 250ml toned milk', p: 57, f: 9, c: 18, altKey: 'whey_shake_60' },
+          { name: 'Whey 30g (1 scoop) + 250ml water', p: 25, f: 1, c: 3, altKey: 'pwo_water_30' },
         ]},
       { time: '8:30 PM', title: 'Dinner',
         items: [
-          { name: 'Tofu bhurji (150g) + 5ml oil', p: 18, f: 11, c: 5, altKey: 'tofu_bhurji' },
-          { name: '1 roti', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: 'Tofu bhurji (150g) + 5ml oil', p: 18, f: 11, c: 5, altKey: 'dinner_tofu_150' },
+          { name: 'Moong dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
+          { name: '100g low-fat curd', p: 4, f: 1, c: 5, altKey: 'curd_100' },
         ]},
     ],
 
+    /* Sat — Cardio day (longer walk 45-60 min or outdoor activity).
+       Dairy events: paneer sabzi at dinner + curd 100g = 2 (breakfast oats in water).
+       Legumes: masoor lunch + 0 dinner = 1 (paneer-based dinner). */
     sat: [
       { time: '6:30 AM', title: 'Wake',
         items: [
@@ -3009,37 +3092,44 @@
         ]},
       { time: '8:00 AM', title: 'Breakfast',
         items: [
-          { name: 'Oats 40g + 300ml milk + 30g whey', p: 39, f: 10, c: 44, altKey: 'oats_40' },
+          { name: 'Oats 40g in water + 25g whey + cinnamon + 1 date', p: 27, f: 4, c: 40, altKey: 'bkfast_oats_water' },
           { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
         ]},
-      { time: '11:00 AM', title: 'Mid-morning',
+      { time: '11:00 AM', title: 'Mid-morning (optional)', optional: true,
         items: [
-          { name: 'Whey shake: 30g + 250ml toned milk', p: 33, f: 7, c: 15, altKey: 'whey_shake_30' },
-          { name: '50g sprouted moong chaat', p: 7, f: 0, c: 9, altKey: 'sprouts_50' },
+          { name: '150g papaya cubes', p: 1, f: 0, c: 15, altKey: 'mid_morning' },
         ]},
       { time: '1:30 PM', title: 'Lunch',
         items: [
-          { name: '2 rotis', p: 6, f: 2, c: 30, altKey: 'roti_2' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'lunch_carb' },
           { name: 'Masoor dal (150g)', p: 13, f: 1, c: 18, altKey: 'dal_150' },
-          { name: 'Palak sabzi (150g) + 5ml oil', p: 4, f: 10, c: 6, altKey: 'sabzi_150' },
-          { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: 'Tinda sabzi (150g) + 5ml oil', p: 2, f: 10, c: 6, altKey: 'sabzi_150' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
         ]},
-      { time: '2:00 PM', title: 'Post-lunch',
-        items: [{ name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' }]},
+      { time: '2:00 PM', title: 'Digestive',
+        items: [
+          { name: 'Fennel-ajwain tea (300ml)', p: 0, f: 0, c: 0, altKey: 'fennel_tea' },
+        ]},
       { time: '5:00 PM', title: 'Evening',
         items: [
-          { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'roasted_chana_30' },
           { name: '150ml green tea', p: 0, f: 0, c: 0, altKey: 'green_tea_150' },
+          { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'evening_snack' },
         ]},
       { time: '8:30 PM', title: 'Dinner',
         items: [
-          { name: 'Soya pulao (90g rice + 50g soya)', p: 30, f: 8, c: 70, altKey: 'soya_pulao' },
-          { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: '100g paneer sabzi + 5ml oil', p: 18, f: 25, c: 5, altKey: 'dinner_paneer_100' },
+          { name: 'Mixed veg sabzi (150g) + 5ml oil', p: 3, f: 10, c: 10, altKey: 'sabzi_150' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
+          { name: '100g low-fat curd', p: 4, f: 1, c: 5, altKey: 'curd_100' },
         ]},
     ],
 
+    /* Sun — Rest day + Uprise-D3 dose (needs fat for absorption).
+       Dairy events: paneer at breakfast + paneer sabzi + curd 100g at lunch = 3
+       (intentionally higher — the weekly 60,000 IU D3 sachet requires fat
+       co-ingestion; this is 1 day of 7, not the norm).
+       Legumes: moong lunch + moong dinner = 2. */
     sun: [
       { time: '6:30 AM', title: 'Wake',
         items: [
@@ -3048,305 +3138,43 @@
         ]},
       { time: '9:00 AM', title: 'Breakfast',
         items: [
-          { name: 'Moong dal chilla (50g dal batter) + 80g paneer stuffing + 5ml oil', p: 28, f: 18, c: 30, altKey: 'moong_chilla' },
-          { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
+          { name: 'Moong chilla (50g batter) + 50g paneer + 5ml oil', p: 22, f: 14, c: 30, altKey: 'sunday_chilla' },
           { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
         ]},
-      { time: '11:00 AM', title: 'Mid-morning',
+      { time: '11:00 AM', title: 'Mid-morning (optional)', optional: true,
         items: [
-          { name: '200g papaya cubes', p: 2, f: 0, c: 22, altKey: 'papaya_200' },
-          { name: '50g sprouted moong', p: 7, f: 0, c: 9, altKey: 'sprouts_50' },
+          { name: '150g papaya cubes', p: 1, f: 0, c: 15, altKey: 'mid_morning' },
         ]},
       { time: '1:30 PM', title: 'Lunch',
         items: [
-          { name: '1 roti', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-          { name: 'Dal 150g', p: 14, f: 1, c: 18, altKey: 'dal_150' },
-          { name: '100g paneer sabzi + 5ml oil (fat for D absorption)', p: 18, f: 25, c: 5, altKey: 'sunday_paneer_sabzi' },
-          { name: '200g regular curd', p: 7, f: 8, c: 10, altKey: 'curd_reg_200' },
-          { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'lunch_carb' },
+          { name: 'Moong dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
+          { name: '100g paneer sabzi + 5ml oil (fat for D absorption)', p: 18, f: 25, c: 5, altKey: 'dinner_paneer_100' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
+          { name: '100g regular curd', p: 4, f: 4, c: 5, altKey: 'curd_100' },
           { name: 'Uprise-D3 60,000 IU sachet in 30ml milk', p: 0, f: 0, c: 2, supp: true },
         ]},
-      { time: '2:00 PM', title: 'Post-lunch',
-        items: [{ name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' }]},
+      { time: '2:00 PM', title: 'Digestive',
+        items: [
+          { name: 'Fennel-ajwain tea (300ml)', p: 0, f: 0, c: 0, altKey: 'fennel_tea' },
+        ]},
       { time: '5:00 PM', title: 'Evening',
         items: [
-          { name: '150ml coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
-          { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'roasted_chana_30' },
+          { name: '150ml black coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
+          { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'evening_snack' },
         ]},
       { time: '8:00 PM', title: 'Dinner (earlier)',
         items: [
-          { name: '150g mixed veg sabzi + 5ml oil', p: 3, f: 10, c: 10, altKey: 'sabzi_150' },
-          { name: '100g tofu bhurji + 5ml oil', p: 12, f: 9, c: 4, altKey: 'sunday_tofu_dinner' },
-          { name: '1 roti', p: 3, f: 1, c: 15, altKey: 'roti_1' },
+          { name: 'Tofu bhurji (100g) + 5ml oil', p: 12, f: 9, c: 4, altKey: 'sunday_dinner_tofu' },
+          { name: 'Moong dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
+          { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
+          { name: 'Salad 150g', p: 2, f: 0, c: 6, altKey: 'salad_150' },
         ]},
     ],
   };
 
-  /* ===== Simple Mode plan =====
-     Lighter daily structure — 3 mandatory meals (breakfast / lunch / dinner),
-     plus post-workout shake on Mon/Wed/Fri. Three optional slots (mid-morning
-     shake, 2 PM chaas, 5 PM snack) marked `optional: true` so the render
-     layer can downplay them and show a "Skip today" button. Smaller portions
-     on paneer / milk / curd / post-workout shake. Same swap system — altKeys
-     reference the same ITEM_ALTS library. */
-  const MEAL_PLAN_SIMPLE = {
-    mon: [
-      { time: '6:30 AM', title: 'Wake', items: [
-        { name: 'Chia water (1 tbsp soaked overnight in 250ml)', p: 2, f: 4, c: 12 },
-      ]},
-      { time: '8:00 AM', title: 'Breakfast', items: [
-        { name: 'Paneer bhurji (80g paneer + 5ml oil)', p: 15, f: 20, c: 3 },
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: '200ml toned milk', p: 6, f: 6, c: 10 },
-        { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
-      ]},
-      { time: '11:00 AM', title: 'Mid-morning', optional: true, items: [
-        { name: 'Whey 30g + 200ml water', p: 25, f: 1, c: 3 },
-      ]},
-      { time: '1:30 PM', title: 'Lunch', items: [
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: 'Moong dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
-        { name: 'Bhindi sabzi (150g) + 5ml oil', p: 3, f: 10, c: 8, altKey: 'sabzi_150' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-      { time: '2:00 PM', title: 'Post-lunch', optional: true, items: [
-        { name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' },
-      ]},
-      { time: '5:00 PM', title: 'Evening', optional: true, items: [
-        { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'roasted_chana_30' },
-        { name: '150ml black coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
-      ]},
-      { time: '7:00 PM', title: 'Post-workout', items: [
-        { name: 'Whey 30g + 250ml toned milk', p: 33, f: 7, c: 15 },
-      ]},
-      { time: '8:30 PM', title: 'Dinner', items: [
-        { name: 'Palak tofu-paneer (75g tofu + 75g paneer)', p: 22, f: 16, c: 8, altKey: 'palak_paneer_tofu' },
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-    ],
-
-    tue: [
-      { time: '6:30 AM', title: 'Wake', items: [
-        { name: 'Chia water (1 tbsp soaked overnight in 250ml)', p: 2, f: 4, c: 12 },
-      ]},
-      { time: '8:00 AM', title: 'Breakfast', items: [
-        { name: 'Poha 50g + 15g peanuts + 5ml oil', p: 8, f: 13, c: 40, altKey: 'poha_50' },
-        { name: '200ml toned milk + 20g whey stirred in', p: 23, f: 6, c: 13 },
-        { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
-      ]},
-      { time: '11:00 AM', title: 'Mid-morning', optional: true, items: [
-        { name: 'Whey 30g + 200ml water', p: 25, f: 1, c: 3 },
-      ]},
-      { time: '1:30 PM', title: 'Lunch', items: [
-        { name: '70g cooked rice', p: 2, f: 1, c: 20 },
-        { name: 'Rajma (150g)', p: 15, f: 5, c: 22, altKey: 'beans_150' },
-        { name: 'Lauki sabzi (150g) + 5ml oil', p: 2, f: 10, c: 5, altKey: 'sabzi_150' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-      { time: '2:00 PM', title: 'Post-lunch', optional: true, items: [
-        { name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' },
-      ]},
-      { time: '5:00 PM', title: 'Evening', optional: true, items: [
-        { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'roasted_chana_30' },
-        { name: '150ml green tea', p: 0, f: 0, c: 0, altKey: 'green_tea_150' },
-      ]},
-      { time: '8:30 PM', title: 'Dinner', items: [
-        { name: 'Soya chunk curry (50g dry)', p: 26, f: 6, c: 10, altKey: 'soya_curry' },
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-    ],
-
-    wed: [
-      { time: '6:30 AM', title: 'Wake', items: [
-        { name: 'Chia water (1 tbsp soaked overnight in 250ml)', p: 2, f: 4, c: 12 },
-      ]},
-      { time: '8:00 AM', title: 'Breakfast', items: [
-        { name: '1 paneer paratha (40g atta + 60g paneer + 5ml oil)', p: 14, f: 13, c: 25, altKey: 'paneer_paratha' },
-        { name: '150g low-fat curd', p: 5, f: 2, c: 8 },
-        { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
-      ]},
-      { time: '11:00 AM', title: 'Mid-morning', optional: true, items: [
-        { name: 'Whey 30g + 200ml water', p: 25, f: 1, c: 3 },
-      ]},
-      { time: '1:30 PM', title: 'Lunch', items: [
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: 'Chana dal (150g)', p: 15, f: 2, c: 20, altKey: 'dal_150' },
-        { name: 'Mixed veg sabzi (150g) + 5ml oil', p: 3, f: 10, c: 10, altKey: 'sabzi_150' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-      { time: '2:00 PM', title: 'Post-lunch', optional: true, items: [
-        { name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' },
-      ]},
-      { time: '5:00 PM', title: 'Evening', optional: true, items: [
-        { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'roasted_chana_30' },
-        { name: '150ml black coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
-      ]},
-      { time: '7:00 PM', title: 'Post-workout', items: [
-        { name: 'Whey 30g + 250ml toned milk', p: 33, f: 7, c: 15 },
-      ]},
-      { time: '8:30 PM', title: 'Dinner', items: [
-        { name: 'Tofu tikka (150g) + capsicum-onion', p: 18, f: 12, c: 8, altKey: 'tofu_tikka' },
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-    ],
-
-    thu: [
-      { time: '6:30 AM', title: 'Wake', items: [
-        { name: 'Chia water (1 tbsp soaked overnight in 250ml)', p: 2, f: 4, c: 12 },
-      ]},
-      { time: '8:00 AM', title: 'Breakfast', items: [
-        { name: 'Upma 50g suji + 5ml oil', p: 6, f: 6, c: 37, altKey: 'upma_50' },
-        { name: '200ml toned milk + 20g whey stirred in', p: 23, f: 6, c: 13 },
-        { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
-      ]},
-      { time: '11:00 AM', title: 'Mid-morning', optional: true, items: [
-        { name: 'Whey 30g + 200ml water', p: 25, f: 1, c: 3 },
-      ]},
-      { time: '1:30 PM', title: 'Lunch', items: [
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: 'Toor dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
-        { name: 'Baingan bharta (150g) + 5ml oil', p: 2, f: 11, c: 8, altKey: 'sabzi_150' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-      { time: '2:00 PM', title: 'Post-lunch', optional: true, items: [
-        { name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' },
-      ]},
-      { time: '5:00 PM', title: 'Evening', optional: true, items: [
-        { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'roasted_chana_30' },
-        { name: '150ml green tea', p: 0, f: 0, c: 0, altKey: 'green_tea_150' },
-      ]},
-      { time: '8:30 PM', title: 'Dinner', items: [
-        { name: 'Rajma (150g)', p: 15, f: 5, c: 22, altKey: 'rajma_dinner' },
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-    ],
-
-    fri: [
-      { time: '6:30 AM', title: 'Wake', items: [
-        { name: 'Chia water (1 tbsp soaked overnight in 250ml)', p: 2, f: 4, c: 12 },
-      ]},
-      { time: '8:00 AM', title: 'Breakfast', items: [
-        { name: '1 paneer paratha (40g atta + 60g paneer + 5ml oil)', p: 14, f: 13, c: 25, altKey: 'paneer_paratha' },
-        { name: '150g low-fat curd', p: 5, f: 2, c: 8 },
-        { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
-      ]},
-      { time: '11:00 AM', title: 'Mid-morning', optional: true, items: [
-        { name: 'Whey 30g + 200ml water', p: 25, f: 1, c: 3 },
-      ]},
-      { time: '1:30 PM', title: 'Lunch', items: [
-        { name: '70g cooked rice', p: 2, f: 1, c: 20 },
-        { name: 'Chole (150g)', p: 15, f: 3, c: 22, altKey: 'beans_150' },
-        { name: 'Bhindi sabzi (150g) + 5ml oil', p: 3, f: 10, c: 8, altKey: 'sabzi_150' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-      { time: '2:00 PM', title: 'Post-lunch', optional: true, items: [
-        { name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' },
-      ]},
-      { time: '5:00 PM', title: 'Evening', optional: true, items: [
-        { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'roasted_chana_30' },
-        { name: '150ml black coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
-      ]},
-      { time: '7:00 PM', title: 'Post-workout', items: [
-        { name: 'Whey 30g + 250ml toned milk', p: 33, f: 7, c: 15 },
-      ]},
-      { time: '8:30 PM', title: 'Dinner', items: [
-        { name: 'Tofu bhurji (150g) + 5ml oil', p: 18, f: 11, c: 5, altKey: 'tofu_bhurji' },
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-    ],
-
-    sat: [
-      { time: '6:30 AM', title: 'Wake', items: [
-        { name: 'Chia water (1 tbsp soaked overnight in 250ml)', p: 2, f: 4, c: 12 },
-      ]},
-      { time: '8:00 AM', title: 'Breakfast', items: [
-        { name: 'Oats 40g + 300ml milk + 20g whey', p: 30, f: 10, c: 44 },
-        { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
-      ]},
-      { time: '11:00 AM', title: 'Mid-morning', optional: true, items: [
-        { name: 'Whey 30g + 200ml water', p: 25, f: 1, c: 3 },
-      ]},
-      { time: '1:30 PM', title: 'Lunch', items: [
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: 'Masoor dal (150g)', p: 13, f: 1, c: 18, altKey: 'dal_150' },
-        { name: 'Palak sabzi (150g) + 5ml oil', p: 4, f: 10, c: 6, altKey: 'sabzi_150' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-      { time: '2:00 PM', title: 'Post-lunch', optional: true, items: [
-        { name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' },
-      ]},
-      { time: '5:00 PM', title: 'Evening', optional: true, items: [
-        { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'roasted_chana_30' },
-        { name: '150ml green tea', p: 0, f: 0, c: 0, altKey: 'green_tea_150' },
-      ]},
-      { time: '8:30 PM', title: 'Dinner', items: [
-        { name: 'Soya pulao (70g raw rice + 50g dry soya)', p: 27, f: 7, c: 55 },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: '100g low-fat curd (optional)', p: 4, f: 1, c: 5 },
-      ]},
-    ],
-
-    sun: [
-      { time: '6:30 AM', title: 'Wake', items: [
-        { name: 'Chia water (1 tbsp soaked overnight in 250ml)', p: 2, f: 4, c: 12 },
-      ]},
-      { time: '9:00 AM', title: 'Breakfast', items: [
-        { name: 'Moong dal chilla (50g batter) + 60g paneer stuffing + 5ml oil', p: 24, f: 16, c: 30 },
-        { name: '150g low-fat curd', p: 5, f: 2, c: 8 },
-        { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
-      ]},
-      { time: '11:00 AM', title: 'Mid-morning', optional: true, items: [
-        { name: '200g papaya cubes', p: 2, f: 0, c: 22, altKey: 'papaya_200' },
-      ]},
-      { time: '1:30 PM', title: 'Lunch', items: [
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: 'Moong dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
-        { name: '100g paneer sabzi + 5ml oil (fat for D absorption)', p: 18, f: 25, c: 5, altKey: 'sunday_paneer_sabzi' },
-        { name: '200g regular curd', p: 7, f: 8, c: 10, altKey: 'curd_reg_200' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-        { name: 'Uprise-D3 60,000 IU sachet in 30ml milk', p: 0, f: 0, c: 2, supp: true },
-      ]},
-      { time: '2:00 PM', title: 'Post-lunch', optional: true, items: [
-        { name: 'Chaas 250ml', p: 3, f: 1, c: 4, altKey: 'chaas_250' },
-      ]},
-      { time: '5:00 PM', title: 'Evening', optional: true, items: [
-        { name: '30g roasted chana', p: 10, f: 2, c: 15, altKey: 'roasted_chana_30' },
-        { name: '150ml coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
-      ]},
-      { time: '8:00 PM', title: 'Dinner', items: [
-        { name: '150g mixed veg sabzi + 5ml oil', p: 3, f: 10, c: 10, altKey: 'sabzi_150' },
-        { name: '100g tofu bhurji + 5ml oil', p: 12, f: 9, c: 4, altKey: 'sunday_tofu_dinner' },
-        { name: '1 roti (30g dough)', p: 3, f: 1, c: 15, altKey: 'roti_1' },
-        { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
-      ]},
-    ],
-  };
-
-  // Active plan — reassigned after state is loaded based on state.mealMode.
-  // Kept as `let MEAL_PLAN` so existing render code can keep reading it directly.
-  let MEAL_PLAN = MEAL_PLAN_FULL;
-
-  // Daily macro targets per mode. Displayed in the macro bar on the Meals tab.
-  const MACRO_TARGETS = {
-    simple: { p: 120, f: 50, c: 150, calMin: 1500, calMax: 1700 },
-    full:   { p: 135, f: 60, c: 160, calMin: 1700, calMax: 1900 },
-  };
+  // Daily macro targets (v4). Single set — no more mode split.
+  const MACRO_TARGETS = { p: 115, f: 45, c: 150, calMin: 1450, calMax: 1700 };
 
   /* ===== Ingredient stock map =====
      Keyed by the exact item name as it appears in MEAL_PLAN.
@@ -3624,6 +3452,89 @@
     'Oats 40g + 300ml milk + 20g whey': [['Rolled oats', 40, 'g'], ['Toned milk', 300, 'ml'], ['Whey protein', 20, 'g']],
     'Moong dal chilla (50g batter) + 60g paneer stuffing + 5ml oil': [['Moong dal', 50, 'g'], ['Paneer', 60, 'g'], ['Oil', 5, 'ml']],
     'Soya pulao (70g raw rice + 50g dry soya)': [['Basmati rice', 70, 'g'], ['Soya chunks', 50, 'g'], ['Oil', 5, 'ml'], ['Mixed veggies', 100, 'g']],
+
+    /* -------- v4 plan items (single-mode, Weeks 1-2 gut adaptation) -------- */
+
+    // v4 breakfast mains
+    'Poha 50g + 10g peanuts + 5ml oil': [['Poha', 50, 'g'], ['Peanuts', 10, 'g'], ['Oil', 5, 'ml'], ['Onion', 1, 'small']],
+    'Oats 40g in water + 25g whey + cinnamon + 1 date': [['Rolled oats', 40, 'g'], ['Whey protein', 25, 'g'], ['Dates', 1, 'piece']],
+    'Daliya 40g in water + 25g whey': [['Daliya', 40, 'g'], ['Whey protein', 25, 'g']],
+    'Quinoa porridge 40g in water + 25g whey': [['Quinoa', 40, 'g'], ['Whey protein', 25, 'g']],
+    'Chia pudding 20g in water + 25g whey': [['Chia seeds', 20, 'g'], ['Whey protein', 25, 'g']],
+    'Moong chilla (50g batter) + 50g paneer + 5ml oil': [['Moong dal', 50, 'g'], ['Paneer', 50, 'g'], ['Oil', 5, 'ml']],
+    'Oats chilla + 60g paneer + 5ml oil': [['Rolled oats', 40, 'g'], ['Paneer', 60, 'g'], ['Oil', 5, 'ml']],
+    'Ragi dosa + 60g paneer + 5ml oil': [['Ragi flour', 40, 'g'], ['Paneer', 60, 'g'], ['Oil', 5, 'ml']],
+    'Mixed veg chilla + 60g paneer': [['Moong dal', 40, 'g'], ['Paneer', 60, 'g'], ['Mixed veggies', 50, 'g'], ['Oil', 5, 'ml']],
+    'Mixed bhurji (50g paneer + 50g tofu + 5ml oil)': [['Paneer', 50, 'g'], ['Tofu', 50, 'g'], ['Oil', 5, 'ml']],
+    'Tofu bhurji (120g tofu + 5ml oil)': [['Tofu', 120, 'g'], ['Oil', 5, 'ml']],
+    'Scrambled paneer-veggie (80g paneer + 5ml oil)': [['Paneer', 80, 'g'], ['Mixed veggies', 50, 'g'], ['Oil', 5, 'ml']],
+    'Paneer tikka (80g + 5ml oil)': [['Paneer', 80, 'g'], ['Oil', 5, 'ml']],
+    'Daliya 40g veggie + 5ml oil': [['Daliya', 40, 'g'], ['Mixed veggies', 50, 'g'], ['Oil', 5, 'ml']],
+    '2 small idlis + sambhar (50ml)': [['Idli batter', 2, 'piece']],
+    '1 ragi dosa + 5ml oil': [['Ragi flour', 40, 'g'], ['Oil', 5, 'ml']],
+
+    // v4 carb alternates (lunch_carb group)
+    '½ cup quinoa (70g cooked)': [['Quinoa', 30, 'g']],
+
+    // v4 sabzis (low-FODMAP, Weeks 1-2 safe)
+    'Tori sabzi (150g) + 5ml oil': [['Tori', 200, 'g'], ['Oil', 5, 'ml']],
+    'Tinda sabzi (150g) + 5ml oil': [['Tinda', 200, 'g'], ['Oil', 5, 'ml']],
+    'Pumpkin sabzi (150g) + 5ml oil': [['Pumpkin', 200, 'g'], ['Oil', 5, 'ml']],
+    'French beans sabzi (150g) + 5ml oil': [['French beans', 200, 'g'], ['Oil', 5, 'ml']],
+    'Mixed low-FODMAP veg (150g) + 5ml oil': [['Mixed veggies', 200, 'g'], ['Oil', 5, 'ml']],
+
+    // v4 salads
+    'Salad 150g': [['Salad veggies (cucumber/tomato/carrot/lemon)', 1, 'serving']],
+    'Salad 150g (cucumber/tomato/carrot/lemon — no raw onion)': [['Salad veggies (cucumber/tomato/carrot/lemon)', 1, 'serving']],
+    'Salad 150g + 5g pumpkin seeds': [['Salad veggies (cucumber/tomato/carrot/lemon)', 1, 'serving'], ['Pumpkin seeds', 5, 'g']],
+    'Kachumber 150g (no onion)': [['Salad veggies (cucumber/tomato/carrot/lemon)', 1, 'serving']],
+    'Cucumber raita 150g (plain curd)': [['Cucumber', 100, 'g'], ['Regular curd', 50, 'g']],
+    'Steamed salad 150g (lauki/carrot/beans)': [['Lauki', 100, 'g'], ['Carrot', 50, 'g'], ['French beans', 50, 'g']],
+
+    // v4 digestive
+    'Fennel-ajwain tea (300ml)': [['Fennel seeds', 2, 'g'], ['Ajwain', 1, 'g']],
+    'Plain fennel tea (300ml)': [['Fennel seeds', 2, 'g']],
+    'Ginger tea (300ml, no milk)': [['Ginger', 5, 'g']],
+    'Jeera water (300ml warm)': [['Jeera', 2, 'g']],
+    'Warm water + lemon': [['Lemon', 1, 'small']],
+    'Chaas 200ml (Week 3+ only)': [['Regular curd', 50, 'g']],
+    'Chaas 200ml (Week 3+ reintroduction)': [['Regular curd', 50, 'g']],
+
+    // v4 mid-morning
+    'Whey 25g + 200ml water (if hungry)': [['Whey protein', 25, 'g']],
+    '100g low-fat curd': [['Low-fat curd', 100, 'g']],
+    '100g low-fat curd (skip if not hungry)': [['Low-fat curd', 100, 'g']],
+    '100g regular curd': [['Regular curd', 100, 'g']],
+    '100g plain Greek yogurt': [['Greek yogurt', 100, 'g']],
+
+    // v4 pre-workout fruits
+    '1 small orange': [['Oranges', 1, 'piece']],
+    '2 dates + 5g almonds': [['Dates', 2, 'piece'], ['Almonds', 5, 'g']],
+    '150g papaya cubes': [['Papaya', 150, 'g']],
+
+    // v4 post-workout (water-based, lower dairy)
+    'Whey 30g (1 scoop) + 250ml water': [['Whey protein', 30, 'g']],
+    'Whey 25g + 250ml water': [['Whey protein', 25, 'g']],
+    'Whey 30g + 150g Greek yogurt': [['Whey protein', 30, 'g'], ['Greek yogurt', 150, 'g']],
+    'Whey 30g + 200ml toned milk (if no dairy earlier)': [['Whey protein', 30, 'g'], ['Toned milk', 200, 'ml']],
+
+    // v4 dinner mains
+    'Tofu tikka (150g) + capsicum-onion + 5ml oil': [['Tofu', 150, 'g'], ['Capsicum', 50, 'g'], ['Onion', 1, 'small'], ['Oil', 5, 'ml']],
+    'Palak tofu (150g) + 5ml oil': [['Tofu', 150, 'g'], ['Spinach', 200, 'g'], ['Oil', 5, 'ml']],
+    'Tofu curry (150g) + 5ml oil': [['Tofu', 150, 'g'], ['Oil', 5, 'ml']],
+    'Mixed 75g tofu + 75g paneer': [['Tofu', 75, 'g'], ['Paneer', 75, 'g'], ['Oil', 5, 'ml']],
+    'Palak paneer (100g)': [['Paneer', 100, 'g'], ['Spinach', 200, 'g'], ['Oil', 5, 'ml']],
+    'Mixed 60g paneer + 40g tofu (dinner)': [['Paneer', 60, 'g'], ['Tofu', 40, 'g'], ['Oil', 5, 'ml']],
+    'Mushroom tofu (100g + 50g mushroom)': [['Tofu', 100, 'g'], ['Mushroom', 50, 'g'], ['Oil', 5, 'ml']],
+    'Soya bhurji (30g dry soya)': [['Soya chunks', 30, 'g'], ['Oil', 5, 'ml']],
+
+    // v4 evening
+    '15g peanuts (Fri only)': [['Peanuts', 15, 'g']],
+
+    // v4 milk alternates
+    '200ml toned milk + 10g whey stirred in': [['Toned milk', 200, 'ml'], ['Whey protein', 10, 'g']],
+    '150ml toned milk': [['Toned milk', 150, 'ml']],
+    '200ml almond milk (unsweetened)': [['Almond milk', 200, 'ml']],
   };
 
   /* ===== Exercise ===== */
@@ -3907,7 +3818,6 @@
   const STORAGE = {
     lastTab:   'atul_last_tab',
     curDay:    'atul_current_day',
-    mealMode:  'atul_meal_mode',
     swaps:     'atul_swaps',
     shopping:  'atul_shopping',
     weight:    'atul_weight_log',
@@ -3917,7 +3827,6 @@
     workouts:  'atul_workout_done',
     symptoms:  'atul_symptoms',
     skips:     'atul_skips',
-    simpleSeen:'atul_simple_mode_seen',
     plEnergy:  'atul_pl_energy',
   };
 
@@ -3935,7 +3844,6 @@
   const state = {
     currentView: 'meals',
     currentDay: null,
-    mealMode:  load(STORAGE.mealMode, 'simple'),
     swaps:     load(STORAGE.swaps, {}),
     shopping:  load(STORAGE.shopping, {}),
     weight:    load(STORAGE.weight, []),
@@ -3945,12 +3853,8 @@
     workouts:  load(STORAGE.workouts, {}),
     symptoms:  load(STORAGE.symptoms, {}),
     skips:     load(STORAGE.skips, {}),
-    simpleSeen:load(STORAGE.simpleSeen, false),
     plEnergy:  load(STORAGE.plEnergy, {}),
   };
-
-  // Bind MEAL_PLAN to the active plan based on loaded mealMode.
-  MEAL_PLAN = (state.mealMode === 'simple') ? MEAL_PLAN_SIMPLE : MEAL_PLAN_FULL;
 
   /* ============================================================
    *  UTILS
@@ -4455,19 +4359,6 @@
   // Header Tips button routes to the Tips view (formerly a nav tab).
   headerTipsBtn.addEventListener('click', () => setView('tips'));
 
-  // Flip between Simple and Full meal plans. Rebinds MEAL_PLAN so subsequent
-  // renders read the right data, then re-renders the current view.
-  function setMealMode(mode) {
-    if (mode !== 'simple' && mode !== 'full') return;
-    if (state.mealMode === mode) return;
-    state.mealMode = mode;
-    save(STORAGE.mealMode, mode);
-    MEAL_PLAN = (mode === 'simple') ? MEAL_PLAN_SIMPLE : MEAL_PLAN_FULL;
-    if (!MEAL_PLAN[state.currentDay]) state.currentDay = todayDayKey();
-    const cur = state.currentView;
-    if (TAB_META[cur] && TAB_META[cur].render) TAB_META[cur].render();
-  }
-
   function updateHeaderSubtitle() {
     if (state.currentView === 'meals' && state.currentDay) {
       const d = DAYS.find(x => x.key === state.currentDay);
@@ -4638,11 +4529,9 @@
    *  MEALS TAB
    * ============================================================ */
 
-  // Swap keys are scoped by mode so Simple-mode swaps never bleed into Full-mode
-  // (the same dayKey+mealIdx+itemIdx positions refer to different items in the
-  // two plans). Format: "simple-mon-3-2" or "full-mon-3-2".
+  // Swap key format: "mon-3-2" — dayKey + mealIdx + itemIdx.
   function swapKey(dayKey, mealIdx, itemIdx) {
-    return state.mealMode + '-' + dayKey + '-' + mealIdx + '-' + itemIdx;
+    return dayKey + '-' + mealIdx + '-' + itemIdx;
   }
 
   function getItem(dayKey, mealIdx, itemIdx) {
@@ -4684,40 +4573,6 @@
     if (!state.currentDay) state.currentDay = todayDayKey();
     const dayKey = state.currentDay;
     const day = DAYS.find(d => d.key === dayKey);
-
-    // Mode toggle (Simple / Full)
-    const modeToggle = el('div', 'mode-toggle');
-    ['simple', 'full'].forEach(m => {
-      const b = el('button', 'mode-btn' + (state.mealMode === m ? ' active' : ''));
-      b.dataset.mode = m;
-      b.innerHTML = m === 'simple'
-        ? '<span class="mode-label">Simple</span><span class="mode-sub">lighter · 3 meals</span>'
-        : '<span class="mode-label">Full</span><span class="mode-sub">135g protein · 6-7 meals</span>';
-      b.addEventListener('click', () => setMealMode(m));
-      modeToggle.appendChild(b);
-    });
-    root.appendChild(modeToggle);
-
-    // First-time Simple Mode explainer — shown once, dismissed permanently.
-    if (state.mealMode === 'simple' && !state.simpleSeen) {
-      const welcome = el('div', 'card welcome-card');
-      welcome.innerHTML =
-        '<div class="welcome-eyebrow">NEW · Simple Mode</div>'
-        + '<h2>Built for work days</h2>'
-        + '<ul class="welcome-list">'
-        +   '<li><b>3 meals + optional snacks</b> — not 6 forced eating events</li>'
-        +   '<li><b>Lighter lunch</b> (1 roti or 70g rice) protects your afternoon focus</li>'
-        +   '<li><b>Protein 120g</b> — plenty for fat loss + muscle preservation at your activity level</li>'
-        +   '<li><b>Skip when not hungry</b> — optional meals have a Skip button</li>'
-        + '</ul>'
-        + '<button class="btn-primary welcome-dismiss">Got it, let\'s go</button>';
-      welcome.querySelector('.welcome-dismiss').addEventListener('click', () => {
-        state.simpleSeen = true;
-        save(STORAGE.simpleSeen, true);
-        renderMeals();
-      });
-      root.appendChild(welcome);
-    }
 
     // Day strip
     const strip = el('div', 'day-strip');
@@ -4766,7 +4621,7 @@
 
   function buildMacroCard(dayKey) {
     const m = dayMacros(dayKey);
-    const t = MACRO_TARGETS[state.mealMode] || MACRO_TARGETS.simple;
+    const t = MACRO_TARGETS;
     const card = el('div', 'card macro-card');
 
     const top = el('div', 'macro-top');
@@ -4912,13 +4767,12 @@
     // pre-meal activities
     activities.prefix.forEach(act => card.appendChild(buildActivityRow(act)));
 
-    // Eating-order reminder — Simple Mode lunch only
-    if (state.mealMode === 'simple'
-        && meal.title && meal.title.toLowerCase() === 'lunch') {
+    // Eating-order reminder — lunch only
+    if (meal.title && meal.title.toLowerCase() === 'lunch') {
       const banner = el('div', 'eating-order-banner');
       banner.innerHTML =
         '<span class="eo-icon">🧠</span>'
-        + '<span><b>Eating order:</b> salad first → dal / sabzi / curd → roti or rice last. '
+        + '<span><b>Eating order:</b> salad first → dal / sabzi → roti or rice last. '
         + 'Flattens the glucose curve and cuts afternoon brain fog.</span>';
       card.appendChild(banner);
     }
@@ -5624,12 +5478,11 @@
     flatKeys.forEach(k => { if (state.shopping[k]) done++; });
 
     const pct = total > 0 ? Math.round(100 * done / total) : 0;
-    const modeLabel = state.mealMode === 'simple' ? 'Simple Mode' : 'Full Mode';
     const status = el('div', 'card shop-status');
     status.innerHTML =
       '<div class="row-flex-between">'
       +   '<div>'
-      +     '<h2 style="margin-bottom:4px">Weekly stock · ' + modeLabel + '</h2>'
+      +     '<h2 style="margin-bottom:4px">Weekly stock</h2>'
       +     '<div class="muted small">'
       +       '<b style="color:var(--text)">' + done + '</b> of ' + total + ' checked · '
       +       'computed from your <b style="color:var(--text)">7-day plan</b>'
@@ -5686,10 +5539,9 @@
     });
   }
 
-  // Check-off key for weekly shopping — stable across weeks, scoped by mode
-  // so Simple-mode checks don't leak to Full-mode.
+  // Check-off key for weekly shopping — stable across weeks.
   function keyShopWeek(item) {
-    return state.mealMode + '|' + item.name + '|' + item.unit;
+    return item.name + '|' + item.unit;
   }
 
   /* ============================================================
@@ -6069,7 +5921,7 @@
       Object.values(STORAGE).forEach(k => { try { localStorage.removeItem(k); } catch(_){} });
       state.swaps = {}; state.shopping = {}; state.weight = []; state.rhr = [];
       state.waist = []; state.supps = {}; state.workouts = {}; state.symptoms = {};
-      state.skips = {}; state.simpleSeen = false; state.plEnergy = {};
+      state.skips = {}; state.plEnergy = {};
       renderTracker();
     });
     dangerCard.appendChild(resetAll);
@@ -6093,7 +5945,6 @@
   function exportData() {
     const data = {
       exportedAt: new Date().toISOString(),
-      mealMode: state.mealMode,
       swaps: state.swaps,
       shopping: state.shopping,
       weight: state.weight,
