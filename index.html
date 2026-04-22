@@ -210,6 +210,50 @@
     font-weight: 700;
   }
 
+  /* ===== Meal mode toggle (Simple / Full) ===== */
+  .mode-toggle {
+    display: flex;
+    background: var(--bg-deep);
+    border-radius: 13px;
+    padding: 4px;
+    margin: 0 0 14px;
+    gap: 4px;
+    box-shadow: inset 0 1px 2px rgba(12, 30, 55, 0.04);
+  }
+  .mode-btn {
+    flex: 1;
+    min-height: 52px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    text-align: center;
+  }
+  .mode-btn:active { transform: scale(0.97); }
+  .mode-btn.active {
+    background: var(--card);
+    color: var(--primary-3);
+    box-shadow: 0 2px 6px rgba(12, 30, 55, 0.08), 0 1px 2px rgba(12, 30, 55, 0.04);
+  }
+  .mode-btn .mode-label {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .mode-btn .mode-sub {
+    font-size: 10.5px;
+    font-weight: 600;
+    opacity: 0.75;
+    letter-spacing: 0.01em;
+  }
+  .mode-btn.active .mode-sub { color: var(--muted); opacity: 1; }
+
   /* ===== Day selector pills ===== */
   .day-strip {
     display: flex;
@@ -3080,6 +3124,12 @@
   // Kept as `let MEAL_PLAN` so existing render code can keep reading it directly.
   let MEAL_PLAN = MEAL_PLAN_FULL;
 
+  // Daily macro targets per mode. Displayed in the macro bar on the Meals tab.
+  const MACRO_TARGETS = {
+    simple: { p: 120, f: 50, c: 150, calMin: 1500, calMax: 1700 },
+    full:   { p: 135, f: 60, c: 160, calMin: 1700, calMax: 1900 },
+  };
+
   /* ===== Ingredient stock map =====
      Keyed by the exact item name as it appears in MEAL_PLAN.
      Value: array of [stockName, qty, unit] tuples → what you need in the
@@ -4110,6 +4160,19 @@
   // Header Tips button routes to the Tips view (formerly a nav tab).
   headerTipsBtn.addEventListener('click', () => setView('tips'));
 
+  // Flip between Simple and Full meal plans. Rebinds MEAL_PLAN so subsequent
+  // renders read the right data, then re-renders the current view.
+  function setMealMode(mode) {
+    if (mode !== 'simple' && mode !== 'full') return;
+    if (state.mealMode === mode) return;
+    state.mealMode = mode;
+    save(STORAGE.mealMode, mode);
+    MEAL_PLAN = (mode === 'simple') ? MEAL_PLAN_SIMPLE : MEAL_PLAN_FULL;
+    if (!MEAL_PLAN[state.currentDay]) state.currentDay = todayDayKey();
+    const cur = state.currentView;
+    if (TAB_META[cur] && TAB_META[cur].render) TAB_META[cur].render();
+  }
+
   function updateHeaderSubtitle() {
     if (state.currentView === 'meals' && state.currentDay) {
       const d = DAYS.find(x => x.key === state.currentDay);
@@ -4320,6 +4383,19 @@
     const dayKey = state.currentDay;
     const day = DAYS.find(d => d.key === dayKey);
 
+    // Mode toggle (Simple / Full)
+    const modeToggle = el('div', 'mode-toggle');
+    ['simple', 'full'].forEach(m => {
+      const b = el('button', 'mode-btn' + (state.mealMode === m ? ' active' : ''));
+      b.dataset.mode = m;
+      b.innerHTML = m === 'simple'
+        ? '<span class="mode-label">Simple</span><span class="mode-sub">lighter · 3 meals</span>'
+        : '<span class="mode-label">Full</span><span class="mode-sub">135g protein · 6-7 meals</span>';
+      b.addEventListener('click', () => setMealMode(m));
+      modeToggle.appendChild(b);
+    });
+    root.appendChild(modeToggle);
+
     // Day strip
     const strip = el('div', 'day-strip');
     const today = todayDayKey();
@@ -4367,6 +4443,7 @@
 
   function buildMacroCard(dayKey) {
     const m = dayMacros(dayKey);
+    const t = MACRO_TARGETS[state.mealMode] || MACRO_TARGETS.simple;
     const card = el('div', 'card macro-card');
 
     const top = el('div', 'macro-top');
@@ -4376,14 +4453,14 @@
       +   '<div class="macro-cal">' + m.cal + '<span class="unit">kcal</span></div>'
       + '</div>'
       + '<div class="macro-target">'
-      +   '<span class="big">1,700–1,900</span>'
+      +   '<span class="big">' + t.calMin.toLocaleString() + '–' + t.calMax.toLocaleString() + '</span>'
       +   'target range'
       + '</div>';
     card.appendChild(top);
 
-    card.appendChild(buildMacroRow('Protein', m.p, 135, 'var(--protein)', 'fill-protein'));
-    card.appendChild(buildMacroRow('Fat',     m.f, 60,  'var(--fat)',     'fill-fat'));
-    card.appendChild(buildMacroRow('Carbs',   m.c, 160, 'var(--carbs)',   'fill-carbs'));
+    card.appendChild(buildMacroRow('Protein', m.p, t.p, 'var(--protein)', 'fill-protein'));
+    card.appendChild(buildMacroRow('Fat',     m.f, t.f, 'var(--fat)',     'fill-fat'));
+    card.appendChild(buildMacroRow('Carbs',   m.c, t.c, 'var(--carbs)',   'fill-carbs'));
     return card;
   }
 
