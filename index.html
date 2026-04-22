@@ -527,6 +527,47 @@
     font-size: 9px;
   }
 
+  /* Activity rows (water-before / walk-after meals) */
+  .item-row.activity {
+    padding: 9px 0;
+    border-bottom: 1px dashed var(--border);
+    min-height: 0;
+  }
+  .item-row.activity .item-name {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .activity-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-right: 7px;
+    vertical-align: 1px;
+  }
+  .activity-pill.water {
+    background: linear-gradient(135deg, #e2efff, #cfe4ff);
+    color: #2563a8;
+  }
+  .activity-pill.water::before {
+    content: "💧";
+    font-size: 9px;
+  }
+  .activity-pill.walk {
+    background: linear-gradient(135deg, #d9f2e2, #c2ecd0);
+    color: #1e6b3d;
+  }
+  .activity-pill.walk::before {
+    content: "🚶";
+    font-size: 10px;
+  }
+
   /* ===== Bottom nav ===== */
   .bottom-nav {
     position: fixed;
@@ -1697,7 +1738,7 @@
       { name: 'Chia pudding 20g + milk + whey', p: 36, f: 12, c: 25 },
     ],
     moong_chilla: [
-      { name: 'Moong dal chilla + 80g paneer stuffing', p: 28, f: 18, c: 30 },
+      { name: 'Moong dal chilla (50g batter) + 80g paneer stuffing', p: 28, f: 18, c: 30 },
       { name: 'Oats chilla + 80g paneer', p: 25, f: 14, c: 32 },
       { name: 'Ragi dosa + 80g paneer', p: 24, f: 14, c: 34 },
       { name: 'Rice-dal dosa + 80g paneer', p: 22, f: 13, c: 38 },
@@ -1721,49 +1762,49 @@
     ],
 
     sabzi_150: [
-      { name: 'Bhindi sabzi + 5ml oil', p: 3, f: 10, c: 8 },
-      { name: 'Lauki sabzi + 5ml oil', p: 2, f: 10, c: 5 },
-      { name: 'Mixed veg sabzi + 5ml oil', p: 3, f: 10, c: 10 },
-      { name: 'Baingan bharta + 5ml oil', p: 2, f: 11, c: 8 },
-      { name: 'Palak sabzi + 5ml oil', p: 4, f: 10, c: 6 },
-      { name: 'Cauliflower + 5ml oil', p: 3, f: 10, c: 7 },
-      { name: 'Cabbage + 5ml oil', p: 2, f: 10, c: 7 },
-      { name: 'Methi / saag + 5ml oil', p: 4, f: 10, c: 5 },
-      { name: 'Gajar-matar + 5ml oil', p: 3, f: 10, c: 12 },
+      { name: 'Bhindi sabzi (150g) + 5ml oil', p: 3, f: 10, c: 8 },
+      { name: 'Lauki sabzi (150g) + 5ml oil', p: 2, f: 10, c: 5 },
+      { name: 'Mixed veg sabzi (150g) + 5ml oil', p: 3, f: 10, c: 10 },
+      { name: 'Baingan bharta (150g) + 5ml oil', p: 2, f: 11, c: 8 },
+      { name: 'Palak sabzi (150g) + 5ml oil', p: 4, f: 10, c: 6 },
+      { name: 'Cauliflower sabzi (150g) + 5ml oil', p: 3, f: 10, c: 7 },
+      { name: 'Cabbage sabzi (150g) + 5ml oil', p: 2, f: 10, c: 7 },
+      { name: 'Methi / saag (150g) + 5ml oil', p: 4, f: 10, c: 5 },
+      { name: 'Gajar-matar (150g) + 5ml oil', p: 3, f: 10, c: 12 },
     ],
 
     paneer_bhurji_120: [
       { name: 'Paneer bhurji (120g paneer)', p: 22, f: 27, c: 3 },
       { name: 'Tofu bhurji (150g tofu)', p: 18, f: 9, c: 5 },
-      { name: 'Mixed paneer + tofu bhurji', p: 20, f: 16, c: 4 },
+      { name: 'Mixed paneer + tofu bhurji (120g)', p: 20, f: 16, c: 4 },
       { name: 'Paneer tikka (120g)', p: 22, f: 22, c: 4 },
-      { name: 'Scrambled tofu-paneer', p: 20, f: 14, c: 3 },
+      { name: 'Scrambled tofu-paneer (150g)', p: 20, f: 14, c: 3 },
     ],
     paneer_paratha: [
       { name: 'Paneer paratha (60g paneer)', p: 14, f: 13, c: 25 },
       { name: 'Tofu paratha (80g tofu)', p: 10, f: 5, c: 25 },
-      { name: 'Mixed tofu-paneer paratha', p: 12, f: 9, c: 25 },
+      { name: 'Mixed tofu-paneer paratha (70g stuffing)', p: 12, f: 9, c: 25 },
       { name: 'Aloo paratha (small)', p: 5, f: 8, c: 30 },
-      { name: 'Mooli paratha', p: 4, f: 8, c: 25 },
+      { name: 'Mooli paratha (40g atta)', p: 4, f: 8, c: 25 },
     ],
     palak_paneer_tofu: [
       { name: 'Palak tofu-paneer (75+75g)', p: 22, f: 16, c: 8 },
       { name: 'Palak paneer (150g)', p: 27, f: 30, c: 8 },
       { name: 'Palak tofu (150g)', p: 18, f: 9, c: 8 },
-      { name: 'Palak mushroom', p: 8, f: 8, c: 10 },
-      { name: 'Palak chole', p: 15, f: 6, c: 24 },
+      { name: 'Palak mushroom (150g)', p: 8, f: 8, c: 10 },
+      { name: 'Palak chole (150g)', p: 15, f: 6, c: 24 },
     ],
     tofu_tikka: [
       { name: 'Tofu tikka (150g)', p: 18, f: 12, c: 8 },
       { name: 'Paneer tikka (150g)', p: 27, f: 24, c: 6 },
-      { name: 'Mushroom tikka', p: 6, f: 6, c: 8 },
+      { name: 'Mushroom tikka (150g)', p: 6, f: 6, c: 8 },
       { name: 'Mixed tikka (paneer + tofu)', p: 22, f: 18, c: 7 },
-      { name: 'Soya chunk tikka', p: 20, f: 5, c: 10 },
+      { name: 'Soya chunk tikka (50g dry)', p: 20, f: 5, c: 10 },
     ],
     tofu_bhurji: [
       { name: 'Tofu bhurji (150g tofu)', p: 18, f: 11, c: 5 },
       { name: 'Paneer bhurji (100g)', p: 18, f: 20, c: 3 },
-      { name: 'Mixed tofu-paneer bhurji', p: 18, f: 15, c: 4 },
+      { name: 'Mixed tofu-paneer bhurji (150g)', p: 18, f: 15, c: 4 },
       { name: 'Soya bhurji (50g dry)', p: 22, f: 6, c: 10 },
       { name: 'Tofu tikka (100g)', p: 12, f: 8, c: 5 },
     ],
@@ -1784,10 +1825,10 @@
     ],
     soya_pulao: [
       { name: 'Soya pulao (90g rice + 50g soya)', p: 30, f: 8, c: 70 },
-      { name: 'Rajma pulao', p: 20, f: 6, c: 72 },
-      { name: 'Chole pulao', p: 20, f: 5, c: 72 },
+      { name: 'Rajma pulao (90g rice + 50g rajma)', p: 20, f: 6, c: 72 },
+      { name: 'Chole pulao (90g rice + 50g chole)', p: 20, f: 5, c: 72 },
       { name: 'Paneer pulao (80g paneer)', p: 22, f: 18, c: 65 },
-      { name: 'Mixed bean pulao', p: 22, f: 6, c: 70 },
+      { name: 'Mixed bean pulao (90g rice + 50g beans)', p: 22, f: 6, c: 70 },
     ],
     rajma_dinner: [
       { name: 'Rajma (150g)', p: 15, f: 5, c: 22 },
@@ -1800,7 +1841,7 @@
       { name: 'Tofu bhurji (100g)', p: 12, f: 9, c: 4 },
       { name: 'Paneer bhurji (100g)', p: 18, f: 20, c: 3 },
       { name: 'Tofu tikka (100g)', p: 12, f: 8, c: 5 },
-      { name: 'Mushroom bhurji', p: 5, f: 6, c: 6 },
+      { name: 'Mushroom bhurji (150g)', p: 5, f: 6, c: 6 },
       { name: 'Rajma (100g)', p: 10, f: 3, c: 15 },
     ],
 
@@ -1967,7 +2008,7 @@
         items: [
           { name: '2 rotis', p: 6, f: 2, c: 30, altKey: 'roti_2' },
           { name: 'Moong dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
-          { name: 'Bhindi sabzi + 5ml oil', p: 3, f: 10, c: 8, altKey: 'sabzi_150' },
+          { name: 'Bhindi sabzi (150g) + 5ml oil', p: 3, f: 10, c: 8, altKey: 'sabzi_150' },
           { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
           { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
         ]},
@@ -2013,7 +2054,7 @@
         items: [
           { name: '100g cooked rice', p: 3, f: 1, c: 28, altKey: 'rice_half' },
           { name: 'Rajma (150g)', p: 15, f: 5, c: 22, altKey: 'beans_150' },
-          { name: 'Lauki sabzi + 5ml oil', p: 2, f: 10, c: 5, altKey: 'sabzi_150' },
+          { name: 'Lauki sabzi (150g) + 5ml oil', p: 2, f: 10, c: 5, altKey: 'sabzi_150' },
           { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
           { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
         ]},
@@ -2040,7 +2081,7 @@
         ]},
       { time: '8:00 AM', title: 'Breakfast',
         items: [
-          { name: '1 paneer paratha (40g atta + 60g paneer)', p: 14, f: 13, c: 25, altKey: 'paneer_paratha' },
+          { name: '1 paneer paratha (40g atta + 60g paneer + 5ml oil)', p: 14, f: 13, c: 25, altKey: 'paneer_paratha' },
           { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
           { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
         ]},
@@ -2053,7 +2094,7 @@
         items: [
           { name: '2 rotis', p: 6, f: 2, c: 30, altKey: 'roti_2' },
           { name: 'Chana dal (150g)', p: 15, f: 2, c: 20, altKey: 'dal_150' },
-          { name: 'Mixed veg sabzi + 5ml oil', p: 3, f: 10, c: 10, altKey: 'sabzi_150' },
+          { name: 'Mixed veg sabzi (150g) + 5ml oil', p: 3, f: 10, c: 10, altKey: 'sabzi_150' },
           { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
           { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
         ]},
@@ -2097,7 +2138,7 @@
         items: [
           { name: '2 rotis', p: 6, f: 2, c: 30, altKey: 'roti_2' },
           { name: 'Toor dal (150g)', p: 14, f: 1, c: 18, altKey: 'dal_150' },
-          { name: 'Baingan bharta + 5ml oil', p: 2, f: 11, c: 8, altKey: 'sabzi_150' },
+          { name: 'Baingan bharta (150g) + 5ml oil', p: 2, f: 11, c: 8, altKey: 'sabzi_150' },
           { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
           { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
         ]},
@@ -2124,7 +2165,7 @@
         ]},
       { time: '8:00 AM', title: 'Breakfast',
         items: [
-          { name: '1 paneer paratha (40g atta + 60g paneer)', p: 14, f: 13, c: 25, altKey: 'paneer_paratha' },
+          { name: '1 paneer paratha (40g atta + 60g paneer + 5ml oil)', p: 14, f: 13, c: 25, altKey: 'paneer_paratha' },
           { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
           { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
         ]},
@@ -2137,7 +2178,7 @@
         items: [
           { name: '100g cooked rice', p: 3, f: 1, c: 28, altKey: 'rice_half' },
           { name: 'Chole (150g)', p: 15, f: 3, c: 22, altKey: 'beans_150' },
-          { name: 'Bhindi sabzi + 5ml oil', p: 3, f: 10, c: 8, altKey: 'sabzi_150' },
+          { name: 'Bhindi sabzi (150g) + 5ml oil', p: 3, f: 10, c: 8, altKey: 'sabzi_150' },
           { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
           { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
         ]},
@@ -2180,7 +2221,7 @@
         items: [
           { name: '2 rotis', p: 6, f: 2, c: 30, altKey: 'roti_2' },
           { name: 'Masoor dal (150g)', p: 13, f: 1, c: 18, altKey: 'dal_150' },
-          { name: 'Palak sabzi + 5ml oil', p: 4, f: 10, c: 6, altKey: 'sabzi_150' },
+          { name: 'Palak sabzi (150g) + 5ml oil', p: 4, f: 10, c: 6, altKey: 'sabzi_150' },
           { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
           { name: 'Salad 200g', p: 2, f: 0, c: 8, altKey: 'salad_200' },
         ]},
@@ -2207,7 +2248,7 @@
         ]},
       { time: '9:00 AM', title: 'Breakfast',
         items: [
-          { name: 'Moong dal chilla + 80g paneer stuffing + 5ml oil', p: 28, f: 18, c: 30, altKey: 'moong_chilla' },
+          { name: 'Moong dal chilla (50g dal batter) + 80g paneer stuffing + 5ml oil', p: 28, f: 18, c: 30, altKey: 'moong_chilla' },
           { name: '200g low-fat curd', p: 7, f: 2, c: 10, altKey: 'curd_lowfat_200' },
           { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
         ]},
@@ -2786,6 +2827,54 @@
     return row;
   }
 
+  /* Activity items are synthetic (not stored in MEAL_PLAN) so they
+     never shift swap indices or affect macro totals. Rendered as
+     lightweight rows with a water/walk pill. */
+  function getMealActivities(meal) {
+    const title = (meal.title || '').toLowerCase();
+    const prefix = [];
+    const suffix = [];
+
+    if (title.includes('wake')) {
+      suffix.push({ kind: 'walk', text: '20-min morning treadmill walk at 5 km/h (~7:00 AM)' });
+    }
+    if (title.includes('breakfast')) {
+      prefix.push({ kind: 'water', text: '250 ml water at 7:45 AM, before eating' });
+    }
+    if (title.includes('mid-morning')) {
+      prefix.push({ kind: 'water', text: '250 ml water at 10:30 AM' });
+    }
+    // "Lunch" but not "Post-lunch"
+    if (title.includes('lunch') && !title.includes('post')) {
+      prefix.push({ kind: 'water', text: '250 ml water at 1:15 PM, before eating' });
+      suffix.push({ kind: 'walk',  text: '10-min slow walk after lunch (glucose control)' });
+    }
+    if (title.includes('evening') || title.includes('pre-workout')) {
+      prefix.push({ kind: 'water', text: '250 ml water at 3:30 PM' });
+      suffix.push({ kind: 'water', text: '250 ml water at 5:45 PM' });
+    }
+    if (title.includes('dinner')) {
+      prefix.push({ kind: 'water', text: '250 ml water at 8:15 PM, before eating' });
+      suffix.push({ kind: 'walk',  text: '15-min walk after dinner' });
+      suffix.push({ kind: 'water', text: '500 ml water by 9:30 PM (split in 2)' });
+      suffix.push({ kind: 'water', text: '250 ml water at 10:30 PM, before bed' });
+    }
+    return { prefix, suffix };
+  }
+
+  function buildActivityRow(act) {
+    const row = el('div', 'item-row activity activity-' + act.kind);
+    const main = el('div', 'item-main');
+    const nameLine = el('div', 'item-name');
+    const pill = el('span', 'activity-pill ' + act.kind);
+    pill.textContent = act.kind === 'water' ? 'Hydrate' : 'Move';
+    nameLine.appendChild(pill);
+    nameLine.appendChild(document.createTextNode(act.text));
+    main.appendChild(nameLine);
+    row.appendChild(main);
+    return row;
+  }
+
   function mealTypeClass(meal) {
     const t = (meal.title || '').toLowerCase();
     if (t.includes('wake')) return 'is-wake';
@@ -2820,6 +2909,10 @@
       + '</div>'
       + '<div class="meal-time">' + meal.time + '</div>';
     card.appendChild(head);
+
+    const activities = getMealActivities(meal);
+    // pre-meal activities
+    activities.prefix.forEach(act => card.appendChild(buildActivityRow(act)));
 
     meal.items.forEach((it, ii) => {
       const { item, swapped } = getItem(dayKey, mi, ii);
@@ -2865,6 +2958,9 @@
       row.appendChild(actions);
       card.appendChild(row);
     });
+
+    // post-meal activities
+    activities.suffix.forEach(act => card.appendChild(buildActivityRow(act)));
 
     // meal macro footer
     const mm = mealMacros(dayKey, mi);
