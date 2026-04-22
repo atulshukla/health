@@ -1183,6 +1183,266 @@
     margin-left: 4px;
   }
 
+  /* Sleep row — purple accent */
+  .tl-item.type-sleep .tl-dot {
+    background: #6b5fc9;
+    box-shadow: 0 0 0 1px #6b5fc9;
+  }
+
+  /* ===== Today timeline: shift feature ===== */
+  .today-tl-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 4px 6px 10px;
+  }
+  .today-tl-head h2 { margin: 0; }
+  .tl-reset-btn {
+    padding: 6px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: #fff;
+    color: var(--muted);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .tl-reset-btn:active { background: var(--bg); }
+
+  .tl-shift-info {
+    margin: 0 8px 10px;
+    padding: 8px 12px;
+    background: var(--primary-soft);
+    border-left: 3px solid var(--primary-3);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text-2);
+    line-height: 1.4;
+  }
+  .tl-shift-info .tl-warn-count {
+    color: #b35d00;
+    font-weight: 700;
+  }
+  .tl-warnings {
+    margin: -4px 8px 12px;
+    padding: 8px 12px;
+    background: #fff8ec;
+    border-left: 3px solid var(--yellow);
+    border-radius: 8px;
+    font-size: 12px;
+    color: #8a6400;
+  }
+  .tl-warn-row { line-height: 1.45; padding: 2px 0; }
+  .tl-warn-row + .tl-warn-row { border-top: 1px dashed rgba(138, 100, 0, 0.2); margin-top: 3px; padding-top: 5px; }
+
+  /* Time column — shows current + original if shifted */
+  .tl-time-col {
+    padding-top: 12px;
+    padding-right: 10px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+  .tl-time-new {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--muted);
+  }
+  .tl-time-was {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--muted-2);
+    text-decoration: line-through;
+    text-decoration-color: var(--muted-2);
+    opacity: 0.75;
+  }
+
+  /* Shifted highlight */
+  .tl-item.is-shifted .tl-content {
+    border-color: var(--primary-3);
+    box-shadow: inset 3px 0 0 var(--primary-3);
+  }
+  .tl-item.is-shifted .tl-time-new { color: var(--primary-3); }
+  .tl-item.is-shifted.now .tl-time-new { color: var(--accent); }
+
+  /* Anchor pill + anchored row */
+  .tl-anchor-pill {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 10px;
+    vertical-align: 1px;
+    opacity: 0.65;
+  }
+  .tl-item.is-anchor .tl-content {
+    background: var(--bg);
+    border-style: dashed;
+  }
+
+  /* Shift button (per row) */
+  .tl-shift-btn {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--muted);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease, color 0.15s ease;
+    padding: 0;
+  }
+  .tl-shift-btn:active { background: var(--primary-soft); transform: scale(0.92); }
+  .tl-item.is-shifted .tl-shift-btn {
+    background: var(--primary-soft);
+    color: var(--primary-3);
+    border-color: var(--primary-3);
+  }
+  .tl-item.past .tl-shift-btn { opacity: 0.35; }
+
+  /* ===== Shift bottom-sheet ===== */
+  .shift-sheet {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 14px 14px 4px;
+  }
+  .shift-input-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .shift-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .shift-input {
+    font-size: 22px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border-strong);
+    background: #fff;
+    color: var(--text);
+    min-height: 48px;
+    letter-spacing: 0.02em;
+  }
+  .shift-input:focus {
+    outline: none;
+    border-color: var(--primary-3);
+    box-shadow: 0 0 0 3px var(--primary-soft);
+  }
+  .shift-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .shift-chip {
+    flex: 1 0 auto;
+    min-width: 60px;
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: #fff;
+    color: var(--text-2);
+    font-size: 13px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .shift-chip:active {
+    background: var(--primary-soft);
+    color: var(--primary-3);
+    border-color: var(--primary-3);
+  }
+
+  .shift-preview {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    line-height: 1.45;
+    min-height: 46px;
+  }
+  .shift-hint { color: var(--muted); font-size: 12.5px; }
+  .shift-delta {
+    font-weight: 700;
+    color: var(--primary-3);
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .shift-warn {
+    color: #8a6400;
+    background: #fff8ec;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .shift-ok {
+    color: #1a7d45;
+    background: #e6f5ec;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .shift-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px 0 0;
+  }
+  .btn-primary.shift-apply {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 0;
+    background: linear-gradient(135deg, var(--primary-3), var(--primary-2));
+    color: #fff;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(31, 90, 154, 0.22);
+  }
+  .btn-primary.shift-apply:active { transform: scale(0.99); }
+  .btn-secondary.shift-reset {
+    width: 100%;
+    min-height: 44px;
+    padding: 11px;
+    border-radius: 12px;
+    border: 1px solid var(--border-strong);
+    background: #fff;
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+  }
+  .btn-secondary.shift-reset:active { background: var(--bg); }
+
   /* ===== Bottom sheet ===== */
   .sheet-backdrop {
     position: fixed;
@@ -3981,6 +4241,7 @@
     bloat:     'atul_bloat_log',
     planStart: 'atul_plan_start',
     enzyme:    'atul_enzyme_log',
+    shifts:    'atul_today_shifts',
   };
 
   function load(key, fallback) {
@@ -4010,6 +4271,7 @@
     bloat:     load(STORAGE.bloat, {}),
     planStart: load(STORAGE.planStart, null),
     enzyme:    load(STORAGE.enzyme, {}),
+    shifts:    load(STORAGE.shifts, {}),
   };
 
   /* ============================================================
@@ -4297,7 +4559,110 @@
     return 'Good night';
   }
   function iconForTimelineType(t) {
-    return { water: '💧', meal: '🍽️', walk: '🚶', workout: '💪', supp: '💊' }[t] || '•';
+    return { water: '💧', meal: '🍽️', walk: '🚶', workout: '💪', supp: '💊', sleep: '🛏️' }[t] || '•';
+  }
+
+  /* ---------- Today-schedule shift helpers ----------
+     State model:
+       state.shifts = { 'YYYY-MM-DD': { eventId: 'HH:MM' } }
+     Only today's entry is ever consulted. Older days are pruned on init
+     so the timeline always renders clean at midnight.
+
+     Event IDs (stable per day):
+       wake                → the wake/chia-water row
+       meal-<mi>           → each meal from MEAL_PLAN (mi = meal index)
+       supp-<mi>-<ii>      → supplement row derived from meal.items[ii]
+       walk-morning        → morning treadmill or Sat long cardio
+       walk-postlunch      → 10-min post-lunch walk
+       walk-postdinner     → 15-min post-dinner walk
+       workout-main        → Mon/Wed/Fri strength
+       workout-evening     → Tue/Thu PM-split cardio
+       water-<hhmm>        → each fixed water slot
+       sleep               → bedtime sleep marker
+
+     Anchors (never shift — medically or structurally fixed):
+       wake, supp-Nurokind, water-22:30, sleep
+  */
+  function todayShiftMap() {
+    return state.shifts[todayISO()] || {};
+  }
+  function writeTodayShifts(map) {
+    const today = todayISO();
+    if (!map || Object.keys(map).length === 0) delete state.shifts[today];
+    else state.shifts[today] = map;
+    save(STORAGE.shifts, state.shifts);
+  }
+  function pruneOldShifts() {
+    const today = todayISO();
+    let changed = false;
+    Object.keys(state.shifts).forEach(k => {
+      if (k !== today) { delete state.shifts[k]; changed = true; }
+    });
+    if (changed) save(STORAGE.shifts, state.shifts);
+  }
+
+  // Applies a shift map to a base timeline (items sorted by plannedTime).
+  // Each item MUST have id, plannedTime, and optional anchor:true.
+  // For each primary shift, computes delta from the item's current (possibly
+  // already-cascaded) time and ripples to all later non-anchor items.
+  // Returns a new array sorted by final time.
+  // If optMap is omitted, uses today's saved shifts.
+  function applyShiftsToTimeline(items, optMap) {
+    const shifts = optMap || todayShiftMap();
+    const out = items.map(i => ({ ...i, time: i.plannedTime, shifted: false, cascaded: false }));
+    // Process shifts in planned order so earlier shifts cascade first,
+    // then later explicit shifts override their own row + ripple further.
+    out.forEach((it, idx) => {
+      if (!shifts[it.id] || it.anchor) return;
+      const newTime = shifts[it.id];
+      if (newTime === it.time) return;
+      const delta = minuteOfDay(newTime) - minuteOfDay(it.time);
+      it.time = newTime;
+      it.shifted = true;
+      if (delta === 0) return;
+      for (let j = idx + 1; j < out.length; j++) {
+        const later = out[j];
+        if (later.anchor) continue;
+        // If later item has its own explicit shift, let it be processed on its
+        // own iteration; skip cascading into it now.
+        if (shifts[later.id]) continue;
+        later.time = addMinutesHHMM(later.time, delta);
+        later.cascaded = true;
+      }
+    });
+    return out.sort((a, b) => a.time.localeCompare(b.time));
+  }
+
+  // Health guardrails. Returns warnings array (strings) — does NOT block.
+  // Constraints Atul agreed to:
+  //   • min 2.5 h (150 min) between breakfast and lunch
+  //   • min 3 h   (180 min) between lunch and dinner
+  //   • dinner should end by 21:30 (9:30 PM) — warn, don't clamp
+  //   • last meal → bed gap ≥ 120 min (sleep quality + liver)
+  function computeShiftWarnings(items) {
+    const warnings = [];
+    const findByTitle = (pred) => items.find(i => i.type === 'meal' && pred((i.title || '').toLowerCase()));
+    const bf     = findByTitle(t => t.indexOf('break') >= 0);
+    const lunch  = findByTitle(t => t.indexOf('lunch') >= 0);
+    const dinner = findByTitle(t => t.indexOf('dinner') >= 0);
+    const sleep  = items.find(i => i.id === 'sleep');
+
+    if (bf && lunch) {
+      const gap = minuteOfDay(lunch.time) - minuteOfDay(bf.time);
+      if (gap < 150) warnings.push('Only ' + Math.round(gap) + ' min between breakfast and lunch. Target 2.5 h — body hasn\'t cleared breakfast yet.');
+    }
+    if (lunch && dinner) {
+      const gap = minuteOfDay(dinner.time) - minuteOfDay(lunch.time);
+      if (gap < 180) warnings.push('Only ' + Math.round(gap) + ' min between lunch and dinner. Target 3 h.');
+    }
+    if (dinner && minuteOfDay(dinner.time) > minuteOfDay('21:30')) {
+      warnings.push('Dinner at ' + formatTime12(dinner.time) + ' — past 9:30 PM cap. Eat lighter or split into a snack now + smaller dinner.');
+    }
+    if (dinner && sleep) {
+      const gap = minuteOfDay(sleep.time) - minuteOfDay(dinner.time);
+      if (gap < 120) warnings.push('Only ' + Math.round(gap) + ' min from dinner to bed. Target 2 h for sleep + liver.');
+    }
+    return warnings;
   }
 
   // Idealized hydration state for today — assumes user follows the schedule.
@@ -4381,7 +4746,13 @@
   // still added as hardcoded slots since they're behavioral rules rather than
   // meal-plan data. Optional meals carry their `optional` flag through so the
   // render layer can downplay them.
+  // Public: returns the timeline for today with any shifts applied.
   function buildTodayTimeline(dayKey) {
+    return applyShiftsToTimeline(buildPlannedTimeline(dayKey));
+  }
+
+  // Internal: returns the base timeline with plannedTime + time (both = planned).
+  function buildPlannedTimeline(dayKey) {
     const plannedWorkout = plannedBlockForDay(dayKey);
     const isSat = dayKey === 'sat';
     const isStrength = dayKey === 'mon' || dayKey === 'wed' || dayKey === 'fri';
@@ -4395,26 +4766,29 @@
       const titleLower = (meal.title || '').toLowerCase();
 
       if (titleLower.indexOf('wake') >= 0) {
-        // Wake becomes a "chia water" row with the total ml of liquid summed
-        // from all items in the wake meal.
+        // Wake is an anchor — chia water is tied to waking up and must stay
+        // 90 min before Nurokind to not interfere with sublingual absorption.
         let totalMl = 0;
         meal.items.forEach(it => {
           const matches = [...it.name.matchAll(/(\d+)\s*ml/gi)];
           matches.forEach(m => { totalMl += parseInt(m[1], 10); });
         });
-        if (totalMl === 0) totalMl = 250; // chia water default
+        if (totalMl === 0) totalMl = 250;
         items.push({
-          time: time24,
+          id: 'wake',
+          plannedTime: time24,
           type: 'water',
           title: totalMl + ' ml chia water',
           subtitle: '1 tbsp chia soaked overnight · 90 min before Nurokind',
           navMi: mi,
+          anchor: true,
         });
         return;
       }
 
       items.push({
-        time: time24,
+        id: 'meal-' + mi,
+        plannedTime: time24,
         type: 'meal',
         title: meal.title,
         subtitle: buildMealSubtitleFromItems(meal),
@@ -4422,18 +4796,25 @@
         optional: meal.optional === true,
       });
 
-      // Any supplement items become their own row at +5 min
-      meal.items.filter(it => it.supp).forEach(s => {
+      // Any supplement items become their own row at +5 min.
+      // Nurokind-OD is anchored (sublingual absorption depends on empty stomach
+      // + consistent timing). Uprise-D3 rides with lunch so it cascades with the
+      // meal via its own explicit shift if needed.
+      meal.items.forEach((s, ii) => {
+        if (!s.supp) return;
+        const isNurokind = s.name.indexOf('Nurokind') === 0;
         items.push({
-          time: addMinutesHHMM(time24, 5),
+          id: 'supp-' + mi + '-' + ii,
+          plannedTime: addMinutesHHMM(time24, 5),
           type: 'supp',
           title: suppShortName(s.name),
-          subtitle: s.name.indexOf('Nurokind') === 0
+          subtitle: isNurokind
             ? 'Sublingual 1–2 min · no water for 10 min'
             : (s.name.indexOf('Uprise') === 0
               ? 'Take with paneer sabzi — fat needed for D absorption'
               : null),
           navTo: 'tracker',
+          anchor: isNurokind,
         });
       });
     });
@@ -4442,50 +4823,64 @@
 
     // Morning treadmill walk (or Saturday long cardio)
     if (isSat) {
-      items.push({ time: '07:00', type: 'workout', title: 'Long cardio intervals',
+      items.push({ id: 'workout-main', plannedTime: '07:00', type: 'workout',
+                   title: 'Long cardio intervals',
                    subtitle: '50 min · warm-up → 10× intervals → cool-down',
                    navTo: 'exercise' });
     } else {
-      items.push({ time: '07:00', type: 'walk', title: '20-min morning treadmill walk',
+      items.push({ id: 'walk-morning', plannedTime: '07:00', type: 'walk',
+                   title: '20-min morning treadmill walk',
                    subtitle: '5 km/h · wakes up NEAT for the day',
                    navTo: 'exercise' });
     }
 
-    // Water schedule — same in both modes per the plan
-    items.push({ time: '07:45', type: 'water', title: '250 ml water',  subtitle: 'Before breakfast' });
-    items.push({ time: '10:30', type: 'water', title: '250 ml water',  subtitle: null });
-    items.push({ time: '13:15', type: 'water', title: '250 ml water',  subtitle: 'Before lunch' });
-    items.push({ time: '15:30', type: 'water', title: '250 ml water',  subtitle: null });
-    items.push({ time: '17:45', type: 'water', title: '250 ml water',  subtitle: null });
-    items.push({ time: '20:15', type: 'water', title: '250 ml water',  subtitle: 'Before dinner' });
-    items.push({ time: '21:30', type: 'water', title: '500 ml water (split in 2)', subtitle: null });
-    items.push({ time: '22:30', type: 'water', title: '250 ml water',  subtitle: 'Before bed' });
+    // Water slots — most shiftable, but the bedtime one is anchored.
+    items.push({ id: 'water-0745', plannedTime: '07:45', type: 'water', title: '250 ml water',  subtitle: 'Before breakfast' });
+    items.push({ id: 'water-1030', plannedTime: '10:30', type: 'water', title: '250 ml water',  subtitle: null });
+    items.push({ id: 'water-1315', plannedTime: '13:15', type: 'water', title: '250 ml water',  subtitle: 'Before lunch' });
+    items.push({ id: 'water-1530', plannedTime: '15:30', type: 'water', title: '250 ml water',  subtitle: null });
+    items.push({ id: 'water-1745', plannedTime: '17:45', type: 'water', title: '250 ml water',  subtitle: null });
+    items.push({ id: 'water-2015', plannedTime: '20:15', type: 'water', title: '250 ml water',  subtitle: 'Before dinner' });
+    items.push({ id: 'water-2130', plannedTime: '21:30', type: 'water', title: '500 ml water (split in 2)', subtitle: null });
+    items.push({ id: 'water-2230', plannedTime: '22:30', type: 'water', title: '250 ml water',  subtitle: 'Before bed', anchor: true });
 
-    // Post-lunch walk (both modes)
-    items.push({ time: '13:45', type: 'walk', title: '10-min slow walk',
+    // Post-lunch walk — tied to lunch for glucose control.
+    items.push({ id: 'walk-postlunch', plannedTime: '13:45', type: 'walk',
+                 title: '10-min slow walk',
                  subtitle: 'Post-lunch glucose control',
                  navTo: 'exercise' });
 
     // Strength workout (Mon/Wed/Fri)
     if (isStrength && plannedWorkout) {
-      items.push({ time: '18:00', type: 'workout', title: plannedWorkout.short,
+      items.push({ id: 'workout-main', plannedTime: '18:00', type: 'workout',
+                   title: plannedWorkout.short,
                    subtitle: '40 min · ' + plannedWorkout.exercises.length + ' exercises',
                    navTo: 'exercise' });
     }
 
     // Post-dinner walk
-    items.push({ time: '21:00', type: 'walk', title: '15-min walk after dinner',
+    items.push({ id: 'walk-postdinner', plannedTime: '21:00', type: 'walk',
+                 title: '15-min walk after dinner',
                  subtitle: null,
                  navTo: 'exercise' });
 
     // Tue/Thu evening cardio split (PM half of the 20+20 split)
     if (isCardioSplit) {
-      items.push({ time: '21:05', type: 'workout', title: 'Evening walk (PM split)',
+      items.push({ id: 'workout-evening', plannedTime: '21:05', type: 'workout',
+                   title: 'Evening walk (PM split)',
                    subtitle: '20 min at 5 km/h',
                    navTo: 'exercise' });
     }
 
-    return items.sort((a, b) => a.time.localeCompare(b.time));
+    // Bedtime — anchored at 23:00. Sleep duration baseline 6.5–7 h.
+    items.push({ id: 'sleep', plannedTime: '23:00', type: 'sleep',
+                 title: 'Sleep',
+                 subtitle: 'Lights out · target 7 h',
+                 anchor: true });
+
+    // Sort by planned time (stable baseline before shifts cascade).
+    items.sort((a, b) => a.plannedTime.localeCompare(b.plannedTime));
+    return items.map(i => ({ ...i, time: i.plannedTime }));
   }
 
   /* ============================================================
@@ -4669,7 +5064,27 @@
 
     // Timeline
     const tlCard = el('div', 'card today-tl-card');
-    tlCard.innerHTML = '<h2>Today\'s timeline</h2>';
+    const shiftCount = Object.keys(todayShiftMap()).length;
+    const shiftWarnings = shiftCount > 0 ? computeShiftWarnings(timeline) : [];
+    tlCard.innerHTML = '<div class="today-tl-head">'
+      +   '<h2 style="margin:0">Today\'s timeline</h2>'
+      +   (shiftCount > 0
+          ? '<button class="tl-reset-btn" id="tl-reset-btn" type="button">Reset today</button>'
+          : '')
+      + '</div>';
+    if (shiftCount > 0) {
+      const info = el('div', 'tl-shift-info');
+      info.innerHTML = '⏱ <b>' + shiftCount + '</b> shifted today'
+        + (shiftWarnings.length
+           ? ' · <span class="tl-warn-count">' + shiftWarnings.length + ' warning' + (shiftWarnings.length > 1 ? 's' : '') + '</span>'
+           : '');
+      tlCard.appendChild(info);
+      if (shiftWarnings.length) {
+        const warnBox = el('div', 'tl-warnings');
+        warnBox.innerHTML = shiftWarnings.map(w => '<div class="tl-warn-row">⚠ ' + w + '</div>').join('');
+        tlCard.appendChild(warnBox);
+      }
+    }
     const tl = el('div', 'timeline');
     timeline.forEach(item => {
       const mm = minuteOfDay(item.time);
@@ -4681,11 +5096,18 @@
       const classes = ['tl-item', 'type-' + item.type, stateClass];
       if (!hasNav) classes.push('no-nav');
       if (item.optional) classes.push('is-optional');
-      const row = el('button', classes.join(' '));
+      if (item.shifted || item.cascaded) classes.push('is-shifted');
+      if (item.anchor) classes.push('is-anchor');
+      const row = el('div', classes.join(' '));
       const titleHtml = item.title
-        + (item.optional ? ' <span class="tl-opt-pill">Optional</span>' : '');
+        + (item.optional ? ' <span class="tl-opt-pill">Optional</span>' : '')
+        + (item.anchor ? ' <span class="tl-anchor-pill" title="Medically anchored · cannot shift">⚓</span>' : '');
+      const timeDisplayHtml = '<div class="tl-time-new">' + formatTime12(item.time) + '</div>'
+        + ((item.shifted || item.cascaded)
+            ? '<div class="tl-time-was">was ' + formatTime12(item.plannedTime) + '</div>'
+            : '');
       row.innerHTML =
-        '<div class="tl-time">' + formatTime12(item.time) + '</div>'
+        '<div class="tl-time-col">' + timeDisplayHtml + '</div>'
         + '<div class="tl-line"><div class="tl-dot"></div></div>'
         + '<div class="tl-content">'
         +   '<div class="tl-icon">' + iconForTimelineType(item.type) + '</div>'
@@ -4694,14 +5116,39 @@
         +     (item.subtitle ? '<div class="tl-sub">' + item.subtitle + '</div>' : '')
         +   '</div>'
         +   (hasNav ? '<div class="tl-arrow">›</div>' : '')
+        +   (!item.anchor
+              ? '<button class="tl-shift-btn" type="button" aria-label="Shift time"'
+                + (item.shifted ? ' data-shifted="1"' : '')
+                + '>⏱</button>'
+              : '')
         + '</div>';
       if (hasNav) {
-        row.addEventListener('click', () => navFromTimeline(item, dayKey));
+        row.addEventListener('click', (e) => {
+          // Don't nav if the shift button was tapped
+          if (e.target.closest('.tl-shift-btn')) return;
+          navFromTimeline(item, dayKey);
+        });
+      }
+      const shiftBtn = row.querySelector('.tl-shift-btn');
+      if (shiftBtn) {
+        shiftBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openShiftSheet(item);
+        });
       }
       tl.appendChild(row);
     });
     tlCard.appendChild(tl);
     root.appendChild(tlCard);
+
+    const resetBtn = document.getElementById('tl-reset-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        if (!confirm('Reset all of today\'s shifts back to the planned schedule?')) return;
+        writeTodayShifts({});
+        renderToday();
+      });
+    }
   }
 
   /* ============================================================
@@ -5073,6 +5520,132 @@
         closeSheet();
       });
       sheetBody.appendChild(row);
+    });
+
+    openSheet();
+  }
+
+  /* ---------- Shift bottom sheet ---------- */
+  function openShiftSheet(item) {
+    if (item.anchor) return; // defensive: shift button isn't rendered on anchors
+
+    sheetTitle.textContent = 'Shift: ' + item.title;
+    sheetSub.textContent = 'Planned ' + formatTime12(item.plannedTime)
+      + ((item.shifted || item.cascaded)
+          ? ' · currently ' + formatTime12(item.time)
+          : '');
+
+    sheetBody.innerHTML = '';
+
+    const wrap = el('div', 'shift-sheet');
+
+    // Time input
+    const inputRow = el('div', 'shift-input-row');
+    const label = el('label', 'shift-label');
+    label.textContent = 'When did you / will you do this?';
+    label.htmlFor = 'shift-time-input';
+    const input = el('input', 'shift-input');
+    input.id = 'shift-time-input';
+    input.type = 'time';
+    input.step = '300'; // 5-minute increments
+    input.value = item.time;
+    inputRow.appendChild(label);
+    inputRow.appendChild(input);
+    wrap.appendChild(inputRow);
+
+    // Helper chips for quick +/- shifts
+    const chipRow = el('div', 'shift-chips');
+    [-30, -15, '+15', '+30', '+60'].forEach(d => {
+      const n = typeof d === 'number' ? d : parseInt(d, 10);
+      const chip = el('button', 'shift-chip', (n > 0 ? '+' : '') + n + ' min');
+      chip.type = 'button';
+      chip.addEventListener('click', () => {
+        const next = addMinutesHHMM(input.value, n);
+        input.value = next;
+        simulate(input.value);
+      });
+      chipRow.appendChild(chip);
+    });
+    wrap.appendChild(chipRow);
+
+    // Live preview of downstream cascade + warnings
+    const preview = el('div', 'shift-preview');
+    wrap.appendChild(preview);
+
+    // Actions
+    const actions = el('div', 'shift-actions');
+    const applyBtn = el('button', 'btn-primary shift-apply', 'Apply shift');
+    applyBtn.type = 'button';
+    actions.appendChild(applyBtn);
+
+    const isExplicit = !!todayShiftMap()[item.id];
+    if (isExplicit) {
+      const resetBtn = el('button', 'btn-secondary shift-reset', 'Reset to planned');
+      resetBtn.type = 'button';
+      resetBtn.addEventListener('click', () => {
+        const map = { ...todayShiftMap() };
+        delete map[item.id];
+        writeTodayShifts(map);
+        closeSheet();
+        renderToday();
+      });
+      actions.appendChild(resetBtn);
+    }
+    wrap.appendChild(actions);
+
+    sheetBody.appendChild(wrap);
+
+    function simulate(newTime) {
+      if (!/^\d{2}:\d{2}$/.test(newTime || '')) {
+        preview.innerHTML = '<div class="shift-hint">Pick a time to preview the ripple.</div>';
+        return;
+      }
+      const hypo = { ...todayShiftMap() };
+      if (newTime === item.plannedTime) delete hypo[item.id];
+      else hypo[item.id] = newTime;
+      const base = buildPlannedTimeline(todayDayKey());
+      const shifted = applyShiftsToTimeline(base, hypo);
+      const warnings = computeShiftWarnings(shifted);
+      const delta = minuteOfDay(newTime) - minuteOfDay(item.plannedTime);
+      const affected = shifted.filter(i =>
+        i.id !== item.id
+        && !i.anchor
+        && minuteOfDay(i.plannedTime) > minuteOfDay(item.plannedTime)
+        && !hypo[i.id]
+        && i.time !== i.plannedTime
+      ).length;
+
+      let html = '';
+      if (delta === 0) {
+        html += '<div class="shift-hint">No change — same as planned.</div>';
+      } else {
+        html += '<div class="shift-delta">Δ '
+          + (delta > 0 ? '+' : '') + delta + ' min'
+          + (affected > 0
+              ? ' · <b>' + affected + '</b> downstream event' + (affected > 1 ? 's' : '') + ' will cascade'
+              : ' · no downstream cascade')
+          + '</div>';
+      }
+      if (warnings.length) {
+        html += warnings.map(w => '<div class="shift-warn">⚠ ' + w + '</div>').join('');
+      } else if (delta !== 0) {
+        html += '<div class="shift-ok">✓ Guardrails still met.</div>';
+      }
+      preview.innerHTML = html;
+    }
+
+    input.addEventListener('input', () => simulate(input.value));
+    simulate(input.value);
+
+    applyBtn.addEventListener('click', () => {
+      const t = input.value;
+      if (!/^\d{2}:\d{2}$/.test(t)) { input.focus(); return; }
+      const map = { ...todayShiftMap() };
+      if (t === item.plannedTime) delete map[item.id];
+      else map[item.id] = t;
+      writeTodayShifts(map);
+      closeSheet();
+      renderToday();
     });
 
     openSheet();
@@ -6256,6 +6829,7 @@
       state.waist = []; state.supps = {}; state.workouts = {}; state.symptoms = {};
       state.skips = {}; state.plEnergy = {};
       state.bloat = {}; state.planStart = null; state.enzyme = {};
+      state.shifts = {};
       renderTracker();
     });
     dangerCard.appendChild(resetAll);
@@ -6292,6 +6866,7 @@
       plEnergy: state.plEnergy,
       bloat: state.bloat,
       enzyme: state.enzyme,
+      shifts: state.shifts,
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -6312,6 +6887,9 @@
 
   state.currentDay = load(STORAGE.curDay, todayDayKey());
   if (!MEAL_PLAN[state.currentDay]) state.currentDay = todayDayKey();
+
+  // Clear any shifts from previous days (shifts are day-scoped, not cumulative)
+  pruneOldShifts();
 
   let initial = 'today';
   try {
