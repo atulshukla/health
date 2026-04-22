@@ -3638,11 +3638,31 @@
       'Oil is measured, never eyeballed. 5ml (1 level teaspoon) per dish maximum.',
       'Post-workout shake on strength days (Mon/Wed/Fri) — 30g whey + 250ml water within 60 min. Water, not milk, so we stay under 2 dairy events/day while the gut adapts.',
     ]},
-    { type: 'rules', icon: '🔀', title: 'Simple vs Full Mode', kind: 'ul', items: [
-      '<b>Simple Mode (default):</b> 3 meals + optional snacks · 120g protein · ~1,600 kcal · ~1.8 kg food/day. Best for work days, travel, low-energy days — prioritizes afternoon focus.',
-      '<b>Full Mode:</b> 6–7 eating events · 135g+ protein · ~1,800 kcal · ~3 kg food/day. Best for weekends, high-activity days, or when you have time and appetite.',
-      'Both use the <b>same ingredients</b> — only portions differ. All swaps work in either mode.',
-      'Toggle sits at the top of the Meals tab. Choice persists in local storage.',
+    { type: 'rules', icon: '📅', title: '4-week phasing roadmap', kind: 'ul', items: [
+      '<b>Weeks 1–2 (gut adaptation):</b> moong/toor/masoor dal only. Low-FODMAP veg (lauki/tori/tinda/bhindi/pumpkin/French beans). <b>No</b> chana, cauliflower, cabbage, broccoli, raw sprouts. Fennel-ajwain tea at 2 PM. ≤2 dairy events/day. Digestive enzyme with lunch + dinner.',
+      '<b>Weeks 3–4 (reintroduction):</b> add back 1 new item every 3 days. Order: chaas (200ml post-lunch) → sprouted moong (50g) → cauliflower/cabbage (cooked) → chana dal. If bloating returns, roll back. Drop digestive enzyme if gut feels stable.',
+      '<b>Weeks 5–12 (stable):</b> full rotation with all safe-for-you items. Mode is "what works" — any item that reliably triggers bloating >5/10 gets benched permanently.',
+      'Phase check: use the Tracker bloating log (1–10 daily). Stay ≤4 two weeks running before advancing.',
+    ]},
+
+    { type: 'warning', icon: '🌱', title: 'Weeks 1–2 gut adaptation rules', kind: 'ul', items: [
+      '<b>Dal:</b> moong / toor / masoor only. Soak 2 hours min, cook soft with hing + ajwain + ginger.',
+      '<b>Sabzi:</b> lauki, tori, tinda, bhindi, pumpkin, French beans, baingan. Lightly cooked, never raw.',
+      '<b>No:</b> chana / kala chana / chole, cauliflower, cabbage, broccoli, raw onion, raw sprouts, besan, sabudana.',
+      '<b>Dairy:</b> max 2 events/day. Curd > milk > paneer. Skip a dairy item if today already has 2.',
+      '<b>Eating order at lunch:</b> salad → dal/sabzi → roti/rice last. Reduces bloat + glucose spike.',
+      '<b>2 PM:</b> fennel-ajwain tea, not chaas. Chaas returns in Week 3 if gut cooperates.',
+      '<b>Dinner by 8:30 PM</b>, finish 3 hours before sleep. 10-min walk after.',
+    ]},
+
+    { type: 'warning', icon: '⚠️', title: 'Triggers to watch', kind: 'ul', items: [
+      '<b>Besan</b> (chilla, pakoda, cheela batter) → acidity within 2 hours. Avoid breakfast.',
+      '<b>Too much dairy in one day</b> (>2 events) → bloating + gas. Paneer + curd + milk in same day is the usual culprit.',
+      '<b>Cauliflower / cabbage / broccoli</b> → gas for 4–6 hours. Keep out until Week 3+.',
+      '<b>Raw sprouts</b> → gas. If reintroducing, start steamed 5 min.',
+      '<b>Chana / kala chana / chole</b> → heaviest bloat load. Last to reintroduce.',
+      '<b>Heavy lunch (2 rotis + rice + curd + sabzi)</b> → afternoon slump. v4 lunch = 1 roti OR 70g rice, not both.',
+      '<b>Forced eating on a no-hunger day</b> → breaks focus, drives bloat. Skip the optional meal.',
     ]},
 
     { type: 'medical', icon: '💊', title: 'Supplements — exact protocol', kind: 'ul', items: [
@@ -3650,6 +3670,13 @@
       'Uprise-D3 60,000 IU — Sunday 1:30 PM with lunch. Must be with fat (paneer sabzi).',
       'Chia seeds 1 tbsp soaked overnight — 6:30 AM on waking in 250ml water.',
       'Whey protein 30g + 250ml water — post-workout within 60 min on strength days (Mon/Wed/Fri only). Water keeps dairy load low while gut adapts; switch to milk Week 3+ if digestion tolerates.',
+    ]},
+    { type: 'medical', icon: '🧪', title: 'Digestive enzyme (2 weeks only)', kind: 'ul', items: [
+      '<b>Unienzyme</b> or <b>Aristozyme</b> — 1 tablet with lunch + 1 with dinner, first 2 weeks only.',
+      'Helps break down dal + fiber while your gut adjusts to the new legume/veg volume.',
+      'Track usage on the Tracker tab. Drop after Week 2 if bloating ≤4/10 and stools are regular.',
+      'If you need it past Week 2 → plan is still too heavy. Redesign, don\'t extend the enzyme.',
+      'Not a long-term crutch. If bloating persists with enzyme, the food is wrong — not the dose.',
     ]},
     { type: 'warning', icon: '🔥', title: 'Acidity rules', kind: 'ul', items: [
       'No coffee on empty stomach.',
@@ -3727,6 +3754,28 @@
       'Normal: 60–75 BPM',
       'Elevated: 76–85 BPM — monitor',
       'Concerning: consistently >85 BPM — flag to endocrinologist',
+    ]},
+
+    { type: 'rules', icon: '🎯', title: '12-week milestones', kind: 'ul', items: [
+      '<b>Week 2:</b> bloating ≤4/10 on ≥5 days. Stools regular. No post-lunch slump.',
+      '<b>Week 4:</b> weight −2 to −3 kg. RHR ≤78. Afternoon energy ≥7/10 most days. Burning feet improving.',
+      '<b>Week 6:</b> repeat B12 + TSH/T3/T4. Target B12 >300, TSH 0.5–4.0. Weight −4 to −5 kg.',
+      '<b>Week 8:</b> strength day weights up 20% from Week 1. Cardio at 5.5 km/h comfortably. Weight −6 kg.',
+      '<b>Week 12 (final):</b> B12 >400 · Vit D >40 · HDL 45+ · LDL <100 · ALT <40 · TSH normal · weight −8 to −10 kg · waist −8 cm · no afternoon slump · burning feet gone.',
+      'If behind on Week 4 targets → audit food log + sleep first, not the plan.',
+    ]},
+
+    { type: 'tips', icon: '👩‍🍳', title: 'Cook instructions (Hindi)', kind: 'ul', items: [
+      '<b>Tel (oil):</b> har sabzi mein sirf 5ml (1 chhoti chamach). Mat barhao.',
+      '<b>Dal:</b> sirf moong, toor, masoor pehle 2 hafte. Hing + ajwain + adrak daalo. Chana / rajma Week 3 ke baad.',
+      '<b>Sabzi:</b> lauki, tori, tinda, bhindi, French beans, kaddu — Week 1-2 ke liye safe. Cauliflower / cabbage / broccoli BAND.',
+      '<b>Onion:</b> sirf pakka hua, kachcha nahi. Salad mein onion mat daalo.',
+      '<b>Paneer:</b> 80g breakfast ke liye (Mon/Thu), ya 100g dinner (Sat/Sun). Rozana 100g se zyada nahi.',
+      '<b>Tofu:</b> firm tofu, 150g dinner Mon/Wed/Fri. Thodi der pehle marinate karo.',
+      '<b>Roti:</b> 30g atta ki. 1 roti lunch, 1 roti dinner. Ghee mat lagao.',
+      '<b>Namak:</b> kam. Sendha/rock salt theek hai.',
+      '<b>Fennel tea:</b> 1 chai-chamach saunf + 1/2 chamach ajwain in 300ml paani, 5 min boil.',
+      '<b>Sprouts Week 1-2:</b> NAHI. Week 3 se shuru karo steamed.',
     ]},
   ];
 
