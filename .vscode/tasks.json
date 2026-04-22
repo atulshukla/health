@@ -1,0 +1,51 @@
+{
+  // Background tasks used by launch.json.
+  // The Python server is zero-dependency on macOS. The "endsPattern" tells
+  // VS Code the task is "ready" so the launch.json preLaunchTask can proceed.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "serve: http (python)",
+      "type": "shell",
+      "command": "python3 -m http.server 8000 --bind 0.0.0.0",
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated",
+        "clear": true,
+        "showReuseMessage": false
+      },
+      "problemMatcher": {
+        "owner": "http-server",
+        "pattern": [
+          { "regexp": "^\\s*(\\S.*)$", "message": 1 }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^Serving HTTP",
+          "endsPattern": "^Serving HTTP"
+        }
+      }
+    },
+    {
+      "label": "print: LAN URL for iPhone",
+      "type": "shell",
+      "command": "echo \"Open on iPhone Safari (same wifi): http://$(ipconfig getifaddr en0):8000  →  Share → Add to Home Screen\"",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true,
+        "echo": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "kill: http server",
+      "type": "shell",
+      "command": "lsof -ti:8000 | xargs kill -9 2>/dev/null || echo 'no server on :8000'",
+      "presentation": { "reveal": "silent", "panel": "shared" },
+      "problemMatcher": []
+    }
+  ]
+}

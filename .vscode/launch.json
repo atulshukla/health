@@ -1,0 +1,56 @@
+{
+  // Press F5 to launch the default config.
+  // First launch will prompt for Chrome permissions on macOS.
+  //
+  //   "Launch app (Chrome)"          — normal Chrome window
+  //   "Launch app (iPhone viewport)" — narrow Chrome window + DevTools open;
+  //                                    toggle device toolbar (Cmd+Shift+M) to
+  //                                    emulate iPhone 14 Pro
+  //   "Attach to running Chrome"     — debug a Chrome already running with
+  //                                    --remote-debugging-port=9222
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch app (Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:8000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "serve: http (python)",
+      "postDebugTask": "kill: http server",
+      "sourceMaps": true,
+      "smartStep": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Launch app (iPhone viewport)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:8000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "serve: http (python)",
+      "postDebugTask": "kill: http server",
+      "runtimeArgs": [
+        "--auto-open-devtools-for-tabs",
+        "--window-size=430,932",
+        "--user-data-dir=${workspaceFolder}/.vscode/.chrome-profile"
+      ],
+      "sourceMaps": true
+    },
+    {
+      "name": "Attach to running Chrome",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "webRoot": "${workspaceFolder}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Launch + print iPhone URL",
+      "configurations": ["Launch app (Chrome)"],
+      "preLaunchTask": "print: LAN URL for iPhone",
+      "stopAll": true
+    }
+  ]
+}
