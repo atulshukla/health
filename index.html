@@ -2909,6 +2909,178 @@
     // Supplements
     'Nurokind-OD 1500 mcg sublingual': [['Nurokind-OD', 1, 'tablet']],
     'Uprise-D3 60,000 IU sachet in 30ml milk': [['Uprise-D3', 1, 'sachet'], ['Toned milk', 30, 'ml']],
+
+    /* -------- Swap alternatives (from ITEM_ALTS). Same key-by-name pattern so
+       buildStockFor2Days resolves them after a swap. -------- */
+
+    // Roti / rice swaps
+    '½ cup cooked rice (100g)': [['Basmati rice', 45, 'g']],
+    '1 multigrain roti': [['Multigrain atta', 30, 'g']],
+    '1 bajra/jowar roti': [['Bajra/jowar flour', 30, 'g']],
+    'Skip': [],
+    '1 cup cooked rice': [['Basmati rice', 90, 'g']],
+    '1 roti + ½ cup rice': [['Atta', 30, 'g'], ['Basmati rice', 45, 'g']],
+    '2 multigrain rotis': [['Multigrain atta', 60, 'g']],
+    '2 bajra/jowar rotis': [['Bajra/jowar flour', 60, 'g']],
+    '100g cooked basmati rice': [['Basmati rice', 45, 'g']],
+    '½ cup quinoa (100g)': [['Quinoa', 40, 'g']],
+
+    // Breakfast carb swaps
+    'Poha 50g (dry) with 15g peanuts': [['Poha', 50, 'g'], ['Peanuts', 15, 'g'], ['Oil', 5, 'ml'], ['Onion', 1, 'small']],
+    'Upma 50g suji': [['Suji', 50, 'g'], ['Oil', 5, 'ml']],
+    'Daliya 40g with veggies': [['Daliya', 40, 'g'], ['Oil', 5, 'ml']],
+    'Rolled oats 40g': [['Rolled oats', 40, 'g']],
+    '2 small plain idlis': [['Idli batter', 2, 'piece']],
+    'Poha 50g with peanuts': [['Poha', 50, 'g'], ['Peanuts', 15, 'g'], ['Oil', 5, 'ml']],
+    'Daliya 40g': [['Daliya', 40, 'g']],
+    '1 ragi dosa': [['Ragi flour', 40, 'g']],
+    'Daliya 40g + whey shake': [['Daliya', 40, 'g'], ['Whey protein', 30, 'g'], ['Toned milk', 250, 'ml']],
+    'Quinoa porridge 40g + whey': [['Quinoa', 40, 'g'], ['Whey protein', 30, 'g'], ['Toned milk', 250, 'ml']],
+    'Chia pudding 20g + milk + whey': [['Chia seeds', 20, 'g'], ['Toned milk', 250, 'ml'], ['Whey protein', 30, 'g']],
+
+    // Chilla swaps
+    'Moong dal chilla (50g batter) + 80g paneer stuffing': [['Moong dal', 50, 'g'], ['Paneer', 80, 'g'], ['Oil', 5, 'ml']],
+    'Oats chilla + 80g paneer': [['Rolled oats', 40, 'g'], ['Paneer', 80, 'g'], ['Oil', 5, 'ml']],
+    'Ragi dosa + 80g paneer': [['Ragi flour', 40, 'g'], ['Paneer', 80, 'g'], ['Oil', 5, 'ml']],
+    'Rice-dal dosa + 80g paneer': [['Basmati rice', 30, 'g'], ['Urad dal (dry)', 20, 'g'], ['Paneer', 80, 'g'], ['Oil', 5, 'ml']],
+
+    // Dal swaps
+    'Mixed dal (150g)': [['Mixed dal (dry)', 30, 'g']],
+    'Urad dal (150g)': [['Urad dal (dry)', 30, 'g']],
+
+    // Bean swaps
+    'Kala chana (150g)': [['Kala chana (dry)', 40, 'g']],
+    'Lobia (150g)': [['Lobia (dry)', 40, 'g']],
+    'White chana (150g)': [['White chana (dry)', 40, 'g']],
+    'Mixed beans (150g)': [['Mixed beans (dry)', 40, 'g']],
+    'Rajma (100g)': [['Rajma (dry)', 25, 'g']],
+
+    // Sabzi swaps
+    'Cauliflower sabzi (150g) + 5ml oil': [['Cauliflower', 200, 'g'], ['Oil', 5, 'ml']],
+    'Cabbage sabzi (150g) + 5ml oil': [['Cabbage', 200, 'g'], ['Oil', 5, 'ml']],
+    'Methi / saag (150g) + 5ml oil': [['Methi / saag', 300, 'g'], ['Oil', 5, 'ml']],
+    'Gajar-matar (150g) + 5ml oil': [['Carrot + peas', 200, 'g'], ['Oil', 5, 'ml']],
+
+    // Paneer/tofu main dish swaps
+    'Paneer bhurji (120g paneer)': [['Paneer', 120, 'g'], ['Oil', 5, 'ml'], ['Onion + tomato', 1, 'set']],
+    'Tofu bhurji (150g tofu)': [['Tofu', 150, 'g'], ['Oil', 5, 'ml'], ['Onion + tomato', 1, 'set']],
+    'Mixed paneer + tofu bhurji (120g)': [['Paneer', 60, 'g'], ['Tofu', 60, 'g'], ['Oil', 5, 'ml']],
+    'Paneer tikka (120g)': [['Paneer', 120, 'g'], ['Oil', 5, 'ml']],
+    'Scrambled tofu-paneer (150g)': [['Paneer', 75, 'g'], ['Tofu', 75, 'g'], ['Oil', 5, 'ml']],
+    'Paneer paratha (60g paneer)': [['Atta', 40, 'g'], ['Paneer', 60, 'g'], ['Oil', 5, 'ml']],
+    'Tofu paratha (80g tofu)': [['Atta', 40, 'g'], ['Tofu', 80, 'g'], ['Oil', 5, 'ml']],
+    'Mixed tofu-paneer paratha (70g stuffing)': [['Atta', 40, 'g'], ['Paneer', 35, 'g'], ['Tofu', 35, 'g'], ['Oil', 5, 'ml']],
+    'Aloo paratha (small)': [['Atta', 40, 'g'], ['Potato', 100, 'g'], ['Oil', 5, 'ml']],
+    'Mooli paratha (40g atta)': [['Atta', 40, 'g'], ['Mooli', 100, 'g'], ['Oil', 5, 'ml']],
+
+    // Palak + protein swaps
+    'Palak tofu-paneer (75+75g)': [['Tofu', 75, 'g'], ['Paneer', 75, 'g'], ['Spinach', 200, 'g'], ['Oil', 5, 'ml']],
+    'Palak paneer (150g)': [['Paneer', 150, 'g'], ['Spinach', 200, 'g'], ['Oil', 5, 'ml']],
+    'Palak tofu (150g)': [['Tofu', 150, 'g'], ['Spinach', 200, 'g'], ['Oil', 5, 'ml']],
+    'Palak mushroom (150g)': [['Mushroom', 150, 'g'], ['Spinach', 200, 'g'], ['Oil', 5, 'ml']],
+    'Palak chole (150g)': [['Chole (dry)', 40, 'g'], ['Spinach', 200, 'g'], ['Oil', 5, 'ml']],
+
+    // Tikka swaps
+    'Tofu tikka (150g)': [['Tofu', 150, 'g'], ['Capsicum', 50, 'g'], ['Onion', 1, 'small'], ['Oil', 5, 'ml']],
+    'Paneer tikka (150g)': [['Paneer', 150, 'g'], ['Capsicum', 50, 'g'], ['Onion', 1, 'small'], ['Oil', 5, 'ml']],
+    'Mushroom tikka (150g)': [['Mushroom', 150, 'g'], ['Capsicum', 50, 'g'], ['Oil', 5, 'ml']],
+    'Mixed tikka (paneer + tofu)': [['Paneer', 75, 'g'], ['Tofu', 75, 'g'], ['Capsicum', 50, 'g'], ['Oil', 5, 'ml']],
+    'Soya chunk tikka (50g dry)': [['Soya chunks', 50, 'g'], ['Oil', 5, 'ml']],
+
+    // Dinner bhurji swaps
+    'Paneer bhurji (100g)': [['Paneer', 100, 'g'], ['Oil', 5, 'ml'], ['Onion + tomato', 1, 'set']],
+    'Mixed tofu-paneer bhurji (150g)': [['Paneer', 75, 'g'], ['Tofu', 75, 'g'], ['Oil', 5, 'ml']],
+    'Soya bhurji (50g dry)': [['Soya chunks', 50, 'g'], ['Oil', 5, 'ml']],
+    'Tofu tikka (100g)': [['Tofu', 100, 'g'], ['Oil', 5, 'ml']],
+    'Tofu bhurji (100g)': [['Tofu', 100, 'g'], ['Oil', 5, 'ml']],
+    'Mushroom bhurji (150g)': [['Mushroom', 150, 'g'], ['Oil', 5, 'ml']],
+
+    // Sunday paneer-sabzi swaps
+    '100g paneer sabzi + 5ml oil': [['Paneer', 100, 'g'], ['Oil', 5, 'ml']],
+    'Paneer butter masala (light)': [['Paneer', 100, 'g'], ['Oil', 5, 'ml'], ['Onion + tomato', 1, 'set']],
+    'Kadhai paneer (100g)': [['Paneer', 100, 'g'], ['Capsicum', 50, 'g'], ['Onion', 1, 'small'], ['Oil', 5, 'ml']],
+    'Mixed 60g paneer + 40g tofu': [['Paneer', 60, 'g'], ['Tofu', 40, 'g'], ['Oil', 5, 'ml']],
+    'Paneer tikka masala (100g)': [['Paneer', 100, 'g'], ['Oil', 5, 'ml'], ['Onion + tomato', 1, 'set']],
+
+    // Curry swaps
+    'Tofu curry (150g)': [['Tofu', 150, 'g'], ['Oil', 5, 'ml'], ['Onion + tomato', 1, 'set']],
+    'Kala chana curry (150g)': [['Kala chana (dry)', 40, 'g'], ['Oil', 5, 'ml']],
+
+    // Pulao swaps
+    'Rajma pulao (90g rice + 50g rajma)': [['Basmati rice', 90, 'g'], ['Rajma (dry)', 50, 'g'], ['Oil', 5, 'ml']],
+    'Chole pulao (90g rice + 50g chole)': [['Basmati rice', 90, 'g'], ['Chole (dry)', 50, 'g'], ['Oil', 5, 'ml']],
+    'Paneer pulao (80g paneer)': [['Basmati rice', 90, 'g'], ['Paneer', 80, 'g'], ['Oil', 5, 'ml']],
+    'Mixed bean pulao (90g rice + 50g beans)': [['Basmati rice', 90, 'g'], ['Mixed beans (dry)', 50, 'g'], ['Oil', 5, 'ml']],
+
+    // Curd / yogurt swaps
+    '100g Greek yogurt': [['Greek yogurt', 100, 'g']],
+    '200g hung curd': [['Regular curd', 400, 'g']],
+    '200g low-fat curd bowl': [['Low-fat curd', 200, 'g']],
+    'Plain salted chaas 300ml': [['Regular curd', 80, 'g']],
+    'Water + lemon': [['Lemon', 1, 'small']],
+    '20g whey + 250ml milk': [['Whey protein', 20, 'g'], ['Toned milk', 250, 'ml']],
+    'Greek yogurt 100g + 10g whey': [['Greek yogurt', 100, 'g'], ['Whey protein', 10, 'g']],
+
+    // Whey shake swaps
+    'Whey 30g + 250ml toned milk': [['Whey protein', 30, 'g'], ['Toned milk', 250, 'ml']],
+    'Whey 30g + water': [['Whey protein', 30, 'g']],
+    'Half shake: whey 20g + milk': [['Whey protein', 20, 'g'], ['Toned milk', 250, 'ml']],
+    '150g Greek yogurt + 10g whey': [['Greek yogurt', 150, 'g'], ['Whey protein', 10, 'g']],
+    '100g boiled chana + milk': [['White chana (dry)', 35, 'g'], ['Toned milk', 250, 'ml']],
+    'Whey 60g + 250ml toned milk': [['Whey protein', 60, 'g'], ['Toned milk', 250, 'ml']],
+    'Whey 60g + water': [['Whey protein', 60, 'g']],
+    'Half shake: whey 30g + milk': [['Whey protein', 30, 'g'], ['Toned milk', 250, 'ml']],
+    'Whey 40g + milk': [['Whey protein', 40, 'g'], ['Toned milk', 250, 'ml']],
+    'Whey 30g + 150g Greek + milk': [['Whey protein', 30, 'g'], ['Greek yogurt', 150, 'g'], ['Toned milk', 250, 'ml']],
+
+    // Milk swaps
+    '250ml toned milk + 30g paneer': [['Toned milk', 250, 'ml'], ['Paneer', 30, 'g']],
+    '250ml protein-fortified milk': [['Protein-fortified milk', 250, 'ml']],
+    'Greek yogurt drink 250ml': [['Greek yogurt drink', 250, 'ml']],
+    '250ml almond milk (unsweet.)': [['Almond milk', 250, 'ml']],
+
+    // Nut / snack swaps
+    '15g peanuts': [['Peanuts', 15, 'g']],
+    '10g almonds': [['Almonds', 10, 'g']],
+    '15g roasted chana': [['Roasted chana', 15, 'g']],
+    '10g walnuts': [['Walnuts', 10, 'g']],
+    '50g boiled kala chana': [['Kala chana (dry)', 20, 'g']],
+    '50g boiled rajma': [['Rajma (dry)', 20, 'g']],
+    '20g almonds': [['Almonds', 20, 'g']],
+    'Mixed nuts 25g': [['Mixed nuts', 25, 'g']],
+    'Skip + 100g cucumber': [['Cucumber', 100, 'g']],
+    '15g cashews': [['Cashews', 15, 'g']],
+    '15g pumpkin seeds': [['Pumpkin seeds', 15, 'g']],
+
+    // Fruit swaps
+    '1 orange': [['Oranges', 1, 'piece']],
+    '1 pear': [['Pears', 1, 'piece']],
+    '150g watermelon': [['Watermelon', 150, 'g']],
+    '2 dates + 10g nuts': [['Dates', 2, 'piece'], ['Mixed nuts', 10, 'g']],
+    '150g apple': [['Apples', 1, 'piece']],
+    '120g banana': [['Bananas', 1, 'piece']],
+    '150g guava': [['Guava', 150, 'g']],
+    '1 orange + 1 pear': [['Oranges', 1, 'piece'], ['Pears', 1, 'piece']],
+
+    // Drink swaps
+    '150ml black tea (no sugar)': [['Black tea', 1, 'bag']],
+    '250ml lemon water': [['Lemon', 1, 'small']],
+    'Masala chai (no sugar)': [['Tea', 1, 'bag'], ['Toned milk', 50, 'ml']],
+
+    // Salad swaps
+    'Salad (no carrot) 200g': [['Salad veggies (cucumber/tomato/onion/lemon)', 1, 'serving']],
+    'Salad 200g + 50g sprouts': [['Salad veggies (cucumber/tomato/onion/carrot/lemon)', 1, 'serving'], ['Whole moong (sprout)', 25, 'g']],
+    'Raita 200g (cucumber)': [['Regular curd', 200, 'g'], ['Cucumber', 100, 'g']],
+    'Kachumber 200g': [['Salad veggies (cucumber/tomato/onion/carrot/lemon)', 1, 'serving']],
+    'Salad 250g': [['Salad veggies (cucumber/tomato/onion/carrot/lemon)', 1, 'serving']],
+    'Salad 200g + 30g roasted chana': [['Salad veggies (cucumber/tomato/onion/carrot/lemon)', 1, 'serving'], ['Roasted chana', 30, 'g']],
+    'Raita 200g + cucumber': [['Regular curd', 200, 'g'], ['Cucumber', 100, 'g']],
+
+    // Oil variations (from oil_5ml alt group — applied at meal level already in the
+    // sabzi entries, but keep for completeness)
+    'Zero oil (dry-roast/steam)': [],
+    '3 ml oil + water sauté': [['Oil', 3, 'ml']],
+    'Standard 5 ml': [['Oil', 5, 'ml']],
   };
 
   /* ===== Exercise ===== */
@@ -3303,9 +3475,13 @@
     const aggM = new Map();  // tomorrow
 
     function addDay(dayKey, into) {
-      MEAL_PLAN[dayKey].forEach(meal => {
-        meal.items.forEach(item => {
-          const list = ITEM_STOCK[item.name];
+      MEAL_PLAN[dayKey].forEach((meal, mi) => {
+        meal.items.forEach((origItem, ii) => {
+          // Respect swaps: resolve to the currently-selected item (swap or original).
+          // Fallback to the original item if the swapped name has no stock mapping yet.
+          const current = getItem(dayKey, mi, ii).item;
+          let list = ITEM_STOCK[current.name];
+          if (!list) list = ITEM_STOCK[origItem.name];
           if (!list || !list.length) return;
           list.forEach(tup => {
             const [name, qty, unit] = tup;
@@ -3335,16 +3511,43 @@
       });
     });
 
-    // Category buckets — ordered for display
+    // Category buckets — ordered for display. Matches use startsWith so generic
+    // prefixes ("Kala chana") capture both dry and boiled variants.
     const catDefs = [
-      { label: 'Dairy',                matches: ['Toned milk', 'Low-fat curd', 'Regular curd', 'Paneer', 'Greek yogurt'] },
-      { label: 'Protein specialty',    matches: ['Whey protein', 'Tofu', 'Soya chunks'] },
-      { label: 'Dals & beans',         matches: ['Moong dal', 'Chana dal', 'Toor dal', 'Masoor dal', 'Any dal', 'Whole moong', 'Rajma', 'Chole'] },
-      { label: 'Grains',               matches: ['Atta', 'Basmati rice', 'Rolled oats', 'Poha', 'Suji'] },
-      { label: 'Veggies',              matches: ['Bhindi', 'Lauki', 'Mixed veggies', 'Baingan', 'Spinach', 'Capsicum', 'Onion + tomato', 'Onion', 'Salad veggies'] },
-      { label: 'Fruits',               matches: ['Apples', 'Bananas', 'Papaya'] },
-      { label: 'Nuts / seeds / snacks',matches: ['Peanuts', 'Almonds', 'Chia seeds', 'Roasted chana'] },
-      { label: 'Fats & drinks',        matches: ['Oil', 'Coffee', 'Green tea'] },
+      { label: 'Dairy',                matches: [
+        'Toned milk', 'Protein-fortified milk', 'Almond milk', 'Low-fat curd',
+        'Regular curd', 'Paneer', 'Greek yogurt', 'Greek yogurt drink'
+      ]},
+      { label: 'Protein specialty',    matches: [
+        'Whey protein', 'Tofu', 'Soya chunks', 'Mushroom'
+      ]},
+      { label: 'Dals & beans',         matches: [
+        'Moong dal', 'Chana dal', 'Toor dal', 'Masoor dal', 'Urad dal',
+        'Mixed dal', 'Any dal', 'Whole moong',
+        'Rajma', 'Chole', 'Kala chana', 'Lobia', 'White chana', 'Mixed beans'
+      ]},
+      { label: 'Grains',               matches: [
+        'Atta', 'Multigrain atta', 'Bajra/jowar flour', 'Basmati rice',
+        'Rolled oats', 'Poha', 'Suji', 'Daliya', 'Quinoa', 'Ragi flour',
+        'Idli batter'
+      ]},
+      { label: 'Veggies',              matches: [
+        'Bhindi', 'Lauki', 'Mixed veggies', 'Baingan', 'Spinach',
+        'Cauliflower', 'Cabbage', 'Methi / saag', 'Carrot + peas',
+        'Capsicum', 'Onion + tomato', 'Onion', 'Potato', 'Mooli',
+        'Cucumber', 'Salad veggies'
+      ]},
+      { label: 'Fruits',               matches: [
+        'Apples', 'Bananas', 'Papaya', 'Oranges', 'Pears', 'Watermelon',
+        'Guava', 'Dates'
+      ]},
+      { label: 'Nuts / seeds / snacks',matches: [
+        'Peanuts', 'Almonds', 'Walnuts', 'Cashews', 'Pumpkin seeds',
+        'Mixed nuts', 'Chia seeds', 'Roasted chana'
+      ]},
+      { label: 'Fats & drinks',        matches: [
+        'Oil', 'Coffee', 'Green tea', 'Black tea', 'Tea', 'Lemon'
+      ]},
       { label: 'Supplements',          matches: ['Nurokind-OD', 'Uprise-D3'] },
     ];
 
