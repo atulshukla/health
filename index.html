@@ -3794,11 +3794,11 @@
     { cat: 'Pulses & beans (fortnightly)', items: [
       { name: 'Moong dal', qty: '500 g' },
       { name: 'Toor dal', qty: '500 g' },
-      { name: 'Chana dal', qty: '500 g' },
       { name: 'Masoor dal', qty: '500 g' },
-      { name: 'Rajma', qty: '500 g' },
-      { name: 'Chole', qty: '500 g' },
-      { name: 'Whole moong (for sprouts)', qty: '500 g' },
+      { name: 'Chana dal (from Week 3)', qty: '500 g' },
+      { name: 'Rajma (from Week 3)', qty: '500 g' },
+      { name: 'Chole (from Week 3)', qty: '500 g' },
+      { name: 'Whole moong (sprouts — from Week 3)', qty: '500 g' },
     ]},
     { cat: 'Sprouts', items: [
       { name: 'Sprouts (or sprout at home)', qty: '500 g/wk' },
@@ -3815,15 +3815,20 @@
       { name: 'Poha', qty: '500 g' },
       { name: 'Suji', qty: '500 g' },
     ]},
-    { cat: 'Nuts', items: [
+    { cat: 'Nuts & seeds', items: [
       { name: 'Peanuts (2 peanut days/week)', qty: '200 g' },
       { name: 'Almonds', qty: '200 g' },
+      { name: 'Pumpkin seeds', qty: '200 g' },
     ]},
-    { cat: 'Veggies', items: [
-      { name: 'Spinach', qty: '500 g' },
+    { cat: 'Veggies (low-FODMAP core for Weeks 1-2)', items: [
+      { name: 'Lauki', qty: '1 large' },
+      { name: 'Tori (ridge gourd)', qty: '500 g' },
+      { name: 'Tinda', qty: '500 g' },
+      { name: 'Pumpkin (kaddu)', qty: '500 g' },
+      { name: 'French beans', qty: '500 g' },
       { name: 'Bhindi', qty: '500 g' },
-      { name: 'Lauki', qty: '1' },
       { name: 'Baingan', qty: '500 g' },
+      { name: 'Spinach', qty: '500 g' },
       { name: 'Capsicum', qty: '500 g' },
       { name: 'Onion', qty: '1 kg' },
       { name: 'Tomato', qty: '1 kg' },
@@ -3836,16 +3841,24 @@
       { name: 'Bananas', qty: '3' },
       { name: 'Papaya', qty: '1 medium' },
     ]},
+    { cat: 'Spices & digestive aids', items: [
+      { name: 'Hing (asafoetida)', qty: '50 g' },
+      { name: 'Ajwain (carom seeds)', qty: '100 g' },
+      { name: 'Saunf (fennel seeds — for 2 PM tea)', qty: '200 g' },
+      { name: 'Jeera (cumin seeds)', qty: '100 g' },
+      { name: 'Fresh ginger (for dal tadka + tea)', qty: '200 g' },
+      { name: 'Turmeric / garlic', qty: 'small' },
+    ]},
     { cat: 'Other', items: [
       { name: 'Green tea', qty: '1 pack' },
       { name: 'Coffee', qty: 'as needed' },
       { name: 'Chia seeds', qty: '500 g' },
-      { name: 'Turmeric / ginger / garlic', qty: 'small' },
       { name: 'Mustard or groundnut oil', qty: '500 ml' },
     ]},
     { cat: 'Supplements (monthly)', items: [
       { name: 'Nurokind-OD 1500 mcg', qty: '3 strips = 30 days' },
       { name: 'Uprise-D sachets', qty: 'as prescribed' },
+      { name: 'Unienzyme or Aristozyme (Weeks 1-2 only, 2/day)', qty: '3 strips = 30 tabs' },
     ]},
   ];
 
@@ -4055,7 +4068,8 @@
         'Idli batter'
       ]},
       { label: 'Veggies',              matches: [
-        'Bhindi', 'Lauki', 'Mixed veggies', 'Baingan', 'Spinach',
+        'Bhindi', 'Lauki', 'Tori', 'Tinda', 'Pumpkin', 'French beans',
+        'Mixed veggies', 'Baingan', 'Spinach',
         'Cauliflower', 'Cabbage', 'Methi / saag', 'Carrot + peas',
         'Capsicum', 'Onion + tomato', 'Onion', 'Potato', 'Mooli',
         'Cucumber', 'Salad veggies'
@@ -4068,10 +4082,13 @@
         'Peanuts', 'Almonds', 'Walnuts', 'Cashews', 'Pumpkin seeds',
         'Mixed nuts', 'Chia seeds', 'Roasted chana'
       ]},
+      { label: 'Spices & digestive aids', matches: [
+        'Hing', 'Ajwain', 'Fennel seeds', 'Jeera', 'Ginger'
+      ]},
       { label: 'Fats & drinks',        matches: [
         'Oil', 'Coffee', 'Green tea', 'Black tea', 'Tea', 'Lemon'
       ]},
-      { label: 'Supplements',          matches: ['Nurokind-OD', 'Uprise-D3'] },
+      { label: 'Supplements',          matches: ['Nurokind-OD', 'Uprise-D3', 'Unienzyme', 'Aristozyme'] },
     ];
 
     const grouped = catDefs.map(c => ({
@@ -4109,11 +4126,12 @@
       { label: 'Protein specialty',    matches: ['Whey protein', 'Tofu', 'Soya chunks', 'Mushroom'] },
       { label: 'Dals & beans',         matches: ['Moong dal', 'Chana dal', 'Toor dal', 'Masoor dal', 'Urad dal', 'Mixed dal', 'Any dal', 'Whole moong', 'Rajma', 'Chole', 'Kala chana', 'Lobia', 'White chana', 'Mixed beans'] },
       { label: 'Grains',               matches: ['Atta', 'Multigrain atta', 'Bajra/jowar flour', 'Basmati rice', 'Rolled oats', 'Poha', 'Suji', 'Daliya', 'Quinoa', 'Ragi flour', 'Idli batter'] },
-      { label: 'Veggies',              matches: ['Bhindi', 'Lauki', 'Mixed veggies', 'Baingan', 'Spinach', 'Cauliflower', 'Cabbage', 'Methi / saag', 'Carrot + peas', 'Capsicum', 'Onion + tomato', 'Onion', 'Potato', 'Mooli', 'Cucumber', 'Salad veggies'] },
+      { label: 'Veggies',              matches: ['Bhindi', 'Lauki', 'Tori', 'Tinda', 'Pumpkin', 'French beans', 'Mixed veggies', 'Baingan', 'Spinach', 'Cauliflower', 'Cabbage', 'Methi / saag', 'Carrot + peas', 'Capsicum', 'Onion + tomato', 'Onion', 'Potato', 'Mooli', 'Cucumber', 'Salad veggies'] },
       { label: 'Fruits',               matches: ['Apples', 'Bananas', 'Papaya', 'Oranges', 'Pears', 'Watermelon', 'Guava', 'Dates'] },
       { label: 'Nuts / seeds / snacks',matches: ['Peanuts', 'Almonds', 'Walnuts', 'Cashews', 'Pumpkin seeds', 'Mixed nuts', 'Chia seeds', 'Roasted chana'] },
+      { label: 'Spices & digestive aids', matches: ['Hing', 'Ajwain', 'Fennel seeds', 'Jeera', 'Ginger'] },
       { label: 'Fats & drinks',        matches: ['Oil', 'Coffee', 'Green tea', 'Black tea', 'Tea', 'Lemon'] },
-      { label: 'Supplements',          matches: ['Nurokind-OD', 'Uprise-D3'] },
+      { label: 'Supplements',          matches: ['Nurokind-OD', 'Uprise-D3', 'Unienzyme', 'Aristozyme'] },
     ];
     const all = [...agg.values()];
     return catDefs.map(c => ({
