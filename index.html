@@ -605,6 +605,63 @@
     font-size: 9px;
   }
 
+  /* Optional + skipped meal states */
+  .optional-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    background: #fff2ea;
+    color: #c94a35;
+    margin-left: 6px;
+    vertical-align: 1px;
+  }
+  .meal.is-optional {
+    background: var(--card-alt);
+  }
+  .meal.is-optional .meal-title {
+    color: var(--text-2);
+    font-weight: 700;
+  }
+  /* Skipped — dim everything except the skip button so undo stays tappable */
+  .meal.is-skipped .meal-head,
+  .meal.is-skipped .item-row,
+  .meal.is-skipped .meal-macros {
+    opacity: 0.42;
+  }
+  .meal.is-skipped .meal-title { text-decoration: line-through; }
+  .meal.is-skipped::before { opacity: 0.3; }
+  .meal-skip-row {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 2px;
+    margin-top: 6px;
+    border-top: 1px dashed var(--border);
+  }
+  .skip-btn {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    min-height: 36px;
+    transition: background 0.15s ease, transform 0.1s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .skip-btn:active {
+    transform: scale(0.96);
+    background: var(--bg);
+  }
+  .skip-btn.undo {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
   /* Activity rows (water-before / walk-after meals) */
   .item-row.activity {
     padding: 9px 0;
@@ -3682,6 +3739,7 @@
     supps:     'atul_supplements',
     workouts:  'atul_workout_done',
     symptoms:  'atul_symptoms',
+    skips:     'atul_skips',
   };
 
   function load(key, fallback) {
@@ -3707,6 +3765,7 @@
     supps:     load(STORAGE.supps, {}),
     workouts:  load(STORAGE.workouts, {}),
     symptoms:  load(STORAGE.symptoms, {}),
+    skips:     load(STORAGE.skips, {}),
   };
 
   // Bind MEAL_PLAN to the active plan based on loaded mealMode.
@@ -4474,6 +4533,24 @@
     return row;
   }
 
+  /* Skip-today helpers: record skipped optional meals per date.
+     Skipping is purely a visual / journaling feature — the macro bar
+     keeps showing planned totals (the day's target). Keyed by ISO date
+     so skips auto-reset at midnight. */
+  function isMealSkipped(dateIso, mi) {
+    return !!(state.skips[dateIso] && state.skips[dateIso][mi]);
+  }
+  function toggleMealSkip(dateIso, mi) {
+    if (!state.skips[dateIso]) state.skips[dateIso] = {};
+    if (state.skips[dateIso][mi]) {
+      delete state.skips[dateIso][mi];
+      if (Object.keys(state.skips[dateIso]).length === 0) delete state.skips[dateIso];
+    } else {
+      state.skips[dateIso][mi] = true;
+    }
+    save(STORAGE.skips, state.skips);
+  }
+
   /* Activity items are synthetic (not stored in MEAL_PLAN) so they
      never shift swap indices or affect macro totals. Rendered as
      lightweight rows with a water/walk pill. */
@@ -4546,13 +4623,22 @@
   }
 
   function buildMealCard(dayKey, mi, meal) {
-    const card = el('div', 'meal ' + mealTypeClass(meal));
+    const isTodayView = dayKey === todayDayKey();
+    const dateIso = todayISO();
+    const skipped = meal.optional && isTodayView && isMealSkipped(dateIso, mi);
+
+    const classes = ['meal', mealTypeClass(meal)];
+    if (meal.optional) classes.push('is-optional');
+    if (skipped)        classes.push('is-skipped');
+    const card = el('div', classes.join(' '));
     card.id = 'meal-' + dayKey + '-' + mi;
 
     const head = el('div', 'meal-head');
     head.innerHTML =
       '<div class="meal-title-wrap">'
-      +   '<div class="meal-eyebrow">' + mealEyebrow(meal) + '</div>'
+      +   '<div class="meal-eyebrow">' + mealEyebrow(meal)
+      +     (meal.optional ? ' <span class="optional-pill">Optional</span>' : '')
+      +   '</div>'
       +   '<div class="meal-title">' + meal.title + '</div>'
       + '</div>'
       + '<div class="meal-time">' + meal.time + '</div>';
@@ -4609,6 +4695,19 @@
 
     // post-meal activities
     activities.suffix.forEach(act => card.appendChild(buildActivityRow(act)));
+
+    // Skip-today button for optional meals (only when viewing today's plan)
+    if (meal.optional && isTodayView) {
+      const skipRow = el('div', 'meal-skip-row');
+      const btn = el('button', 'skip-btn' + (skipped ? ' undo' : ''));
+      btn.textContent = skipped ? '↺ Unskip' : 'Skip today';
+      btn.addEventListener('click', () => {
+        toggleMealSkip(dateIso, mi);
+        renderMeals();
+      });
+      skipRow.appendChild(btn);
+      card.appendChild(skipRow);
+    }
 
     // meal macro footer
     const mm = mealMacros(dayKey, mi);
@@ -5591,6 +5690,7 @@
       Object.values(STORAGE).forEach(k => { try { localStorage.removeItem(k); } catch(_){} });
       state.swaps = {}; state.shopping = {}; state.weight = []; state.rhr = [];
       state.waist = []; state.supps = {}; state.workouts = {}; state.symptoms = {};
+      state.skips = {};
       renderTracker();
     });
     dangerCard.appendChild(resetAll);
@@ -5623,6 +5723,7 @@
       supps: state.supps,
       workouts: state.workouts,
       symptoms: state.symptoms,
+      skips: state.skips,
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
