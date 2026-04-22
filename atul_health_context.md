@@ -126,38 +126,55 @@ Earlier plans had these problems. Fixed iteratively:
 
 ---
 
-## 7. Current meal plan (v4 — comprehensive revision)
+## 7. Current meal plan (v4.1 — simple Indian-family revision, Apr 2026)
+
+> v4.1 change log: dropped oats/quinoa/chia-pudding/almond-milk swap options (not
+> part of a simple middle-class Indian kitchen). Wed/Sat breakfasts replaced with
+> Indian staples. Tue/Thu 11AM upgraded from curd/almonds → 150g Greek yogurt
+> (fixes low-protein cardio days). Wed dinner dal dropped (3→2 legume servings
+> to prevent bloat). Sat dinner swapped paneer → soya to keep dairy ≤ 2.
 
 ### Daily structure Mon-Sat
 
 #### 6:30 AM — Chia water (keep, works)
 1 tbsp chia + 250 ml water, soaked overnight, drink on waking.
 
-#### 8:00 AM — Breakfast (rotating 3 options)
+#### 8:00 AM — Breakfast (rotating)
 
 **Option A (Mon/Thu) — Paneer bhurji:**
 - 80g paneer + 5 ml oil + onion + tomato + turmeric
 - 1 roti (30g dough)
 - Nurokind-OD sublingual
 - No milk (reducing dairy)
-- ~22g protein, ~400 kcal
+- ~18g protein, ~400 kcal
 
 **Option B (Tue/Fri) — Poha or Upma:**
 - 50g raw poha OR 50g raw suji
 - 5 ml oil + onion + curry leaves + 10g peanuts (poha only)
 - 200 ml toned milk on side
 - Nurokind-OD sublingual
+- ~13g protein, ~380 kcal
+
+**Option C (Wed) — Moong chilla + paneer:**
+- 50g moong dal batter made into chilla on tawa
+- 50g paneer stuffing or crumbled on top
+- 5 ml oil
+- Nurokind-OD sublingual
+- ~22g protein, ~340 kcal
+- Note: moong counts as legume serving #1 today
+
+**Option D (Sat) — Paneer paratha:**
+- 1 paratha: 40g atta dough + 60g paneer stuffing
+- 5 ml oil on tawa
+- Nurokind-OD sublingual
 - ~15g protein, ~380 kcal
 
-**Option C (Wed/Sat) — Oats + whey:**
-- 40g rolled oats cooked in 200 ml water (not milk)
-- Cool 2 min, stir in 25g whey + cinnamon + 1 chopped date
-- Nurokind-OD sublingual
-- ~27g protein, ~350 kcal
+#### 11:00 AM — Mid-morning
 
-#### 11:00 AM — OPTIONAL
-Skip unless genuinely hungry.
-If hungry: 25g whey + 200 ml water OR 150g Greek yogurt.
+- **Strength days (Mon/Wed/Fri):** 25g whey + 200 ml water (optional if not hungry) — ~21g protein
+- **Cardio days (Tue/Thu):** 150g plain Greek yogurt (daily, not optional) — ~15g protein
+- **Sat/Sun:** 150g papaya (optional)
+- Greek yogurt is low-lactose (<1g per 150g) — safer than curd/milk for back-to-back dairy days
 
 #### 1:30 PM — LIGHT LUNCH (critical)
 
@@ -187,28 +204,38 @@ Non-training days: skip or just coffee.
 
 #### 8:30 PM — DINNER (biggest meal)
 
-**Option D (Mon/Wed/Fri) — Tofu + dal:**
+**Option D1 (Mon/Fri) — Tofu + dal:**
 - 150g firm tofu (tikka/bhurji/palak) + 5 ml oil
-- 1 katori dal (150g)
+- 1 katori dal (150g moong)
 - 1 roti
 - 150g salad
 - 100g low-fat curd (only dairy of dinner)
-- ~35g protein, ~500 kcal
+- ~41g protein, ~500 kcal
+
+**Option D2 (Wed) — Tofu + veg (no dal):**
+- 150g firm tofu (bhurji/tikka) + 5 ml oil
+- 1 roti
+- 150g mixed low-FODMAP sabzi + 5 ml oil
+- 150g salad
+- 100g low-fat curd
+- ~30g protein, ~480 kcal
+- *Dal dropped intentionally:* Wed already has moong at breakfast (chilla) + masoor at lunch. Third legume serving = bloat risk.
 
 **Option E (Tue/Thu) — Rajma/Chole + rice:**
 - 150g rajma OR chole (this is the legume, no dal)
 - 70g cooked rice
 - 150g salad
 - 100g low-fat curd
-- ~30g protein, ~480 kcal
+- ~23g protein, ~480 kcal
 
-**Option F (Sat) — Paneer + veg:**
-- 100g paneer sabzi + 5 ml oil
+**Option F (Sat) — Soya chunk curry:**
+- Soya chunks (50g dry) + 5 ml oil + onion-tomato gravy
 - 1 roti
-- 150g low-FODMAP sabzi
+- 150g mixed low-FODMAP sabzi + 5 ml oil
 - 150g salad
 - 100g low-fat curd
-- ~30g protein, ~500 kcal
+- ~38g protein, ~500 kcal
+- *Swap from paneer sabzi:* keeps Sat dairy at 2 events (paneer paratha BF + curd dinner). Soya also gives higher protein than paneer for this meal.
 
 #### 9:30 PM — 15-min post-dinner walk (non-negotiable)
 
@@ -354,14 +381,14 @@ Warm-up 5 min 4.5 km/h → intervals 2 min @ 6 km/h + 2 min @ 4.5 km/h × 10 = 4
 
 ---
 
-## 11. Weekly shopping list
+## 11. Weekly shopping list (v4.1)
 
-### Dairy (reduced)
+### Dairy
 - Toned milk: 3 L
 - Low-fat curd: 1 kg
 - Regular curd: 500g
-- Paneer: 500g
-- Greek yogurt: 1 × 150g (optional)
+- Paneer: 700g (bumped — BF paneer bhurji x2 + paneer paratha x1 + dinner paneer Mon/Fri)
+- Greek yogurt (Nestle a+ / Epigamia): 5 × 150g (Tue + Thu daily, optional other days)
 
 ### Tofu
 - Firm tofu: 500g (Urban Platter, Epigamia, White Cub, Nutralite)
@@ -372,12 +399,13 @@ Warm-up 5 min 4.5 km/h → intervals 2 min @ 6 km/h + 2 min @ 4.5 km/h × 10 = 4
 - **Skip for 2 weeks:** chana dal, mixed dal, urad dal
 
 ### Protein
-- Soya chunks: 250g
+- Soya chunks: 500g (bumped — Sat dinner curry uses 50g dry)
 - Whey protein: 1 kg (coffee flavor)
 - Roasted chana with skin: 250g
 
 ### Grains
-- Atta 5 kg, basmati rice 1 kg, rolled oats 500g, poha 500g, suji 500g
+- Atta 5 kg, basmati rice 1 kg, poha 500g, suji 500g, ragi flour 500g, daliya 500g
+- **Dropped from v4.1:** rolled oats, quinoa, chia pudding base (not Indian-family staples)
 
 ### Nuts
 - Peanuts: 100g (only 10-15g 2x/week in poha)
