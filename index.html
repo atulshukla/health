@@ -728,6 +728,63 @@
   .eating-order-banner .eo-icon { font-size: 14px; flex: 0 0 auto; line-height: 1.2; }
   .eating-order-banner b { color: #5a4400; font-weight: 800; }
 
+  /* Post-lunch energy tracker card */
+  .plenergy-current {
+    text-align: right;
+    line-height: 1;
+  }
+  .plenergy-current .plenergy-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--muted-2);
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .plenergy-current.has .plenergy-num {
+    color: var(--primary-3);
+  }
+  .plenergy-current .plenergy-unit {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+  .plenergy-scale {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+    margin: 12px 0 10px;
+  }
+  .plenergy-btn {
+    min-height: 42px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    transition: transform 0.1s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .plenergy-btn:active { transform: scale(0.92); }
+  .plenergy-btn.active.band-low  { background: var(--red);    border-color: var(--red);    color: #fff; }
+  .plenergy-btn.active.band-mid  { background: var(--yellow); border-color: var(--yellow); color: #5a4700; }
+  .plenergy-btn.active.band-high { background: var(--green);  border-color: var(--green);  color: #fff; }
+  .plenergy-spark {
+    width: 100%;
+    height: 64px;
+    display: block;
+    margin-top: 4px;
+  }
+  .plenergy-caption {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-weight: 600;
+    text-align: center;
+    margin-top: 4px;
+  }
+  .plenergy-caption b { color: var(--text); font-weight: 800; }
+
   /* Activity rows (water-before / walk-after meals) */
   .item-row.activity {
     padding: 9px 0;
@@ -3632,6 +3689,13 @@
       'Oil is measured, never eyeballed. 5ml (1 level teaspoon) per dish maximum.',
       'Post-workout shake is non-negotiable on training days — 60g whey + 250ml toned milk within 60 min.',
     ]},
+    { type: 'rules', icon: '🔀', title: 'Simple vs Full Mode', kind: 'ul', items: [
+      '<b>Simple Mode (default):</b> 3 meals + optional snacks · 120g protein · ~1,600 kcal · ~1.8 kg food/day. Best for work days, travel, low-energy days — prioritizes afternoon focus.',
+      '<b>Full Mode:</b> 6–7 eating events · 135g+ protein · ~1,800 kcal · ~3 kg food/day. Best for weekends, high-activity days, or when you have time and appetite.',
+      'Both use the <b>same ingredients</b> — only portions differ. All swaps work in either mode.',
+      'Toggle sits at the top of the Meals tab. Choice persists in local storage.',
+    ]},
+
     { type: 'medical', icon: '💊', title: 'Supplements — exact protocol', kind: 'ul', items: [
       'Nurokind-OD 1500 mcg — daily at 8:00 AM, sublingual under tongue 1–2 min. No water for 10 min after.',
       'Uprise-D3 60,000 IU — Sunday 1:30 PM with lunch. Must be with fat (paneer sabzi).',
@@ -3684,6 +3748,15 @@
       'Target: 3,000–5,000 steps from work-hours treadmill alone.',
       'Combined with morning + evening walks = 10,000+ easily.',
     ]},
+    { type: 'tips', icon: '🧠', title: 'Post-lunch energy management', kind: 'ul', items: [
+      '<b>Eat salad first</b>, then dal/sabzi/curd, then roti or rice. Flattens the glucose curve by 30–50%.',
+      '<b>10-min walk after lunch</b> — even 5 minutes helps. Biggest single lever for afternoon alertness.',
+      '<b>Delay coffee to 2:30 PM</b> instead of mid-morning. Adenosine pressure clears first; caffeine lands sharper.',
+      '<b>2–3 min of bright light</b> after lunch — balcony or window. Resets circadian alertness.',
+      '<b>Stop at 80% full</b>, not 100%. Overeating triggers the slump regardless of food choice.',
+      'Track daily <b>post-lunch energy (1–10)</b> on the Tracker tab to see what helps you most.',
+    ]},
+
     { type: 'tips', icon: '⚡', title: 'Micro-movement rules', kind: 'ul', items: [
       'Every 90 min: stand up, 10 bodyweight squats, shoulder rolls.',
       'After every meal: 10 min slow walk (kills post-meal glucose spike).',
@@ -3807,6 +3880,7 @@
     symptoms:  'atul_symptoms',
     skips:     'atul_skips',
     simpleSeen:'atul_simple_mode_seen',
+    plEnergy:  'atul_pl_energy',
   };
 
   function load(key, fallback) {
@@ -3834,6 +3908,7 @@
     symptoms:  load(STORAGE.symptoms, {}),
     skips:     load(STORAGE.skips, {}),
     simpleSeen:load(STORAGE.simpleSeen, false),
+    plEnergy:  load(STORAGE.plEnergy, {}),
   };
 
   // Bind MEAL_PLAN to the active plan based on loaded mealMode.
@@ -5156,6 +5231,64 @@
    *  TRACKER helpers
    * ============================================================ */
 
+  /* Post-lunch energy tracking (1-10). Helps validate whether
+     Simple Mode is actually improving afternoon focus. */
+  function plBand(v) {
+    if (v >= 8) return 'high';
+    if (v >= 5) return 'mid';
+    return 'low';
+  }
+  function plEnergyLast14Days() {
+    const pts = [];
+    const now = new Date();
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(now.getDate() - i);
+      const iso = d.getFullYear() + '-' + padT(d.getMonth()+1) + '-' + padT(d.getDate());
+      pts.push({ iso, val: state.plEnergy[iso] || null });
+    }
+    return pts;
+  }
+  function plEnergyRecentAvg(days) {
+    const pts = plEnergyLast14Days().slice(-days).filter(p => p.val != null);
+    if (pts.length === 0) return null;
+    return pts.reduce((a, p) => a + p.val, 0) / pts.length;
+  }
+  function buildPlEnergySpark(points) {
+    const W = 320, H = 64, PAD_X = 6, PAD_Y = 8;
+    const n = points.length;
+    const stepX = (W - 2 * PAD_X) / (n - 1);
+    const yFor = v => H - PAD_Y - ((v - 1) / 9) * (H - 2 * PAD_Y);
+
+    let path = '';
+    let dots = '';
+    let inSeg = false;
+    points.forEach((p, idx) => {
+      if (p.val == null) { inSeg = false; return; }
+      const x = PAD_X + idx * stepX;
+      const y = yFor(p.val);
+      path += (inSeg ? ' L' : ' M') + x.toFixed(1) + ' ' + y.toFixed(1);
+      inSeg = true;
+      const isLast = idx === n - 1 && p.val != null;
+      const r = isLast ? 4 : 2.5;
+      const fill = isLast ? 'var(--accent)' : 'var(--primary-3)';
+      dots += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + r + '" fill="' + fill + '"/>';
+    });
+
+    // Reference band lines at 5 and 7 (targets)
+    const y5 = yFor(5);
+    const y7 = yFor(7);
+    const bg =
+      '<rect x="' + PAD_X + '" y="' + y7.toFixed(1) + '" width="' + (W - 2 * PAD_X) + '" height="' + (H - PAD_Y - y7).toFixed(1) + '" fill="rgba(58,181,105,0.08)"/>'
+      + '<line x1="' + PAD_X + '" y1="' + y5.toFixed(1) + '" x2="' + (W - PAD_X) + '" y2="' + y5.toFixed(1) + '" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>';
+
+    return '<svg class="plenergy-spark" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">'
+      + bg
+      + '<path d="' + path.trim() + '" stroke="var(--primary-3)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+      + dots
+      + '</svg>';
+  }
+
   function buildGoalRow(icon, label, got, want, color) {
     const pips = [];
     for (let i = 0; i < want; i++) {
@@ -5674,6 +5807,53 @@
     }
     root.appendChild(rLog);
 
+    // === Post-lunch energy log (new in Simple Mode era) ===
+    const plCard = el('div', 'card');
+    const plToday = todayISO();
+    const plTodayVal = state.plEnergy[plToday] || null;
+    const plVals14 = plEnergyLast14Days();
+    const plAvg = plEnergyRecentAvg(7);
+
+    plCard.innerHTML =
+      '<div class="row-flex-between" style="margin-bottom:4px">'
+      +   '<div>'
+      +     '<h2 style="margin-bottom:2px">Post-lunch energy</h2>'
+      +     '<p class="muted small" style="margin:0">How alert do you feel ~2 PM? Simple Mode targets 7+.</p>'
+      +   '</div>'
+      +   '<div class="plenergy-current' + (plTodayVal ? ' has' : '') + '">'
+      +     '<span class="plenergy-num">' + (plTodayVal != null ? plTodayVal : '—') + '</span>'
+      +     '<span class="plenergy-unit">/10 today</span>'
+      +   '</div>'
+      + '</div>';
+
+    const scale = el('div', 'plenergy-scale');
+    for (let i = 1; i <= 10; i++) {
+      const b = el('button', 'plenergy-btn' + (plTodayVal === i ? ' active' : '') + ' band-' + plBand(i));
+      b.textContent = String(i);
+      b.addEventListener('click', () => {
+        if (state.plEnergy[plToday] === i) delete state.plEnergy[plToday];
+        else state.plEnergy[plToday] = i;
+        save(STORAGE.plEnergy, state.plEnergy);
+        renderTracker();
+      });
+      scale.appendChild(b);
+    }
+    plCard.appendChild(scale);
+
+    if (plVals14.some(p => p.val != null)) {
+      const sparkWrap = el('div');
+      sparkWrap.innerHTML = buildPlEnergySpark(plVals14);
+      plCard.appendChild(sparkWrap);
+      const caption = el('div', 'plenergy-caption');
+      caption.innerHTML = '14-day trend · '
+        + (plAvg != null ? '7-day avg: <b>' + plAvg.toFixed(1) + '</b>' : 'not enough data yet');
+      plCard.appendChild(caption);
+    } else {
+      plCard.appendChild(el('div', 'no-data', 'Log today\'s value to start tracking.'));
+    }
+
+    root.appendChild(plCard);
+
     // === Waist log (monthly measurement from the plan) ===
     const waistCard = el('div', 'card');
     const latestWaist = state.waist[state.waist.length - 1];
@@ -5790,7 +5970,7 @@
       Object.values(STORAGE).forEach(k => { try { localStorage.removeItem(k); } catch(_){} });
       state.swaps = {}; state.shopping = {}; state.weight = []; state.rhr = [];
       state.waist = []; state.supps = {}; state.workouts = {}; state.symptoms = {};
-      state.skips = {}; state.simpleSeen = false;
+      state.skips = {}; state.simpleSeen = false; state.plEnergy = {};
       renderTracker();
     });
     dangerCard.appendChild(resetAll);
@@ -5824,6 +6004,7 @@
       workouts: state.workouts,
       symptoms: state.symptoms,
       skips: state.skips,
+      plEnergy: state.plEnergy,
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
