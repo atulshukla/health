@@ -740,6 +740,149 @@
     line-height: 1.4;
   }
 
+  /* Hydration progress card (assumes user follows the water schedule) */
+  .hydration-card {
+    background:
+      radial-gradient(500px 200px at 100% -20%, rgba(91, 141, 239, 0.15), transparent 60%),
+      linear-gradient(180deg, #eef4fc 0%, #ffffff 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 16px 18px 14px;
+    border: 1px solid rgba(91, 141, 239, 0.16);
+  }
+  .hydration-card::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--carbs), var(--carbs-2));
+  }
+  .hydro-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .hydro-title {
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: var(--carbs);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hydro-icon { font-size: 14px; }
+  .hydro-pct {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--carbs);
+    font-variant-numeric: tabular-nums;
+    background: rgba(91, 141, 239, 0.14);
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .hydro-pct.done {
+    color: var(--green);
+    background: rgba(58, 181, 105, 0.14);
+  }
+  .hydro-totals {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .hydro-current {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .hydro-unit {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+  .hydro-sep { color: var(--border-strong); font-weight: 500; margin: 0 2px; }
+  .hydro-target {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+  .hydro-bar {
+    height: 10px;
+    background: rgba(91, 141, 239, 0.14);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .hydro-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--carbs), var(--carbs-2));
+    border-radius: 999px;
+    transition: width 0.6s cubic-bezier(0.2,0.8,0.3,1);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.4);
+  }
+  .hydro-ticks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .hydro-tick {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.55);
+    transform: translateX(-1px);
+  }
+  .hydro-sub {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .hydro-sub .hydro-left b { color: var(--text); font-weight: 800; }
+  .hydro-sub .hydro-slots-text { font-variant-numeric: tabular-nums; }
+  .hydro-next {
+    font-size: 12.5px;
+    color: var(--muted-2);
+    font-weight: 600;
+    padding-top: 8px;
+    border-top: 1px solid rgba(91, 141, 239, 0.16);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hydro-next b {
+    color: var(--carbs);
+    font-weight: 800;
+  }
+  .hydro-next .next-time-chip {
+    background: rgba(91, 141, 239, 0.12);
+    color: var(--carbs);
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .hydro-done-banner {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(58, 181, 105, 0.12);
+    color: #1e6b3d;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+  }
+
   /* Timeline */
   .today-tl-card { padding: 14px 10px 8px; }
   .today-tl-card h2 { margin: 4px 6px 10px; }
@@ -2958,6 +3101,53 @@
     return { water: '💧', meal: '🍽️', walk: '🚶', workout: '💪', supp: '💊' }[t] || '•';
   }
 
+  // Idealized hydration state for today — assumes user follows the schedule.
+  // Parses "N ml" out of each water item's title and sums by current time.
+  function computeHydration(dayKey) {
+    const now = currentMinute();
+    const timeline = buildTodayTimeline(dayKey);
+    const waterItems = timeline.filter(t => t.type === 'water');
+    let consumed = 0, total = 0, completedSlots = 0;
+    let nextSlot = null;
+    const slotInfo = [];
+
+    waterItems.forEach(item => {
+      // Global match so titles like "Chia water (250 ml) + 500 ml water" sum cleanly
+      const matches = [...item.title.matchAll(/(\d+)\s*ml/gi)];
+      let amount = 0;
+      matches.forEach(m => { amount += parseInt(m[1], 10); });
+      if (!amount) return;
+
+      total += amount;
+      const mm = minuteOfDay(item.time);
+      const slotPctOfDay = total;  // placeholder for tick offset; recomputed after loop
+      slotInfo.push({ atMin: mm, amount, title: item.title, time: item.time });
+
+      if (mm <= now) {
+        consumed += amount;
+        completedSlots++;
+      } else if (!nextSlot) {
+        nextSlot = { time: item.time, amount, title: item.title };
+      }
+    });
+
+    // Tick positions as % of total volume (where each slot falls on the bar)
+    let cum = 0;
+    const ticks = slotInfo.map(s => {
+      cum += s.amount;
+      return total > 0 ? (cum / total) * 100 : 0;
+    });
+
+    return {
+      consumed, total,
+      completedSlots,
+      totalSlots: waterItems.length,
+      nextSlot,
+      pct: total > 0 ? Math.round(100 * consumed / total) : 0,
+      ticks,
+    };
+  }
+
   // Timeline for a given day-of-week. Each item: { time, type, title, subtitle, navMi, navTo }
   //   navMi  → meal-card index to scroll to in Meals tab
   //   navTo  → tab name to switch to (e.g. 'exercise', 'tracker')
@@ -3215,6 +3405,49 @@
         + '<p class="muted small" style="margin:0">All of today\'s milestones have passed. '
         + 'Tomorrow\'s plan will appear after midnight.</p>';
       root.appendChild(done);
+    }
+
+    // Hydration indicator (ideal state based on schedule)
+    const hydro = computeHydration(dayKey);
+    if (hydro.total > 0) {
+      const hydroCard = el('div', 'card hydration-card');
+      const leftMl = hydro.total - hydro.consumed;
+      const slotsLeft = hydro.totalSlots - hydro.completedSlots;
+      const targetL = (hydro.total / 1000).toFixed(2);
+      const isDone = hydro.pct >= 100 || slotsLeft === 0;
+
+      // Tick markers on the bar so each scheduled slot has a visual anchor
+      const ticksHtml = hydro.ticks
+        .slice(0, -1) // skip the last tick (it lives at 100% = right edge)
+        .map(pct => '<span class="hydro-tick" style="left:' + pct.toFixed(2) + '%"></span>')
+        .join('');
+
+      const nextHtml = hydro.nextSlot
+        ? '<span class="next-time-chip">' + formatTime12(hydro.nextSlot.time) + '</span>'
+          + '<span>Next · <b>' + hydro.nextSlot.amount + ' ml</b></span>'
+        : '<span>✓ All slots done for today</span>';
+
+      hydroCard.innerHTML =
+        '<div class="hydro-head">'
+        +   '<div class="hydro-title"><span class="hydro-icon">💧</span>Hydration</div>'
+        +   '<div class="hydro-pct' + (isDone ? ' done' : '') + '">' + hydro.pct + '%</div>'
+        + '</div>'
+        + '<div class="hydro-totals">'
+        +   '<span class="hydro-current">' + hydro.consumed.toLocaleString() + '</span>'
+        +   '<span class="hydro-unit">ml</span>'
+        +   '<span class="hydro-sep">/</span>'
+        +   '<span class="hydro-target">' + targetL + ' L target</span>'
+        + '</div>'
+        + '<div class="hydro-bar">'
+        +   '<div class="hydro-fill" style="width:' + hydro.pct + '%"></div>'
+        +   '<div class="hydro-ticks">' + ticksHtml + '</div>'
+        + '</div>'
+        + '<div class="hydro-sub">'
+        +   '<span class="hydro-left"><b>' + leftMl.toLocaleString() + ' ml</b> left</span>'
+        +   '<span class="hydro-slots-text">' + hydro.completedSlots + ' / ' + hydro.totalSlots + ' slots</span>'
+        + '</div>'
+        + '<div class="hydro-next">' + nextHtml + '</div>';
+      root.appendChild(hydroCard);
     }
 
     // Timeline
