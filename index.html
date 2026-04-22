@@ -1238,6 +1238,44 @@
   .tl-item.no-nav { cursor: default; }
   .tl-item.no-nav .tl-arrow { display: none; }
 
+  /* Optional timeline items (Simple Mode mid-morning / 2 PM chaas / 5 PM snack) */
+  .tl-item.is-optional .tl-content {
+    background: var(--bg);
+    border-style: dashed;
+  }
+  .tl-item.is-optional .tl-title { color: var(--muted); }
+  .tl-item.is-optional.past .tl-title,
+  .tl-item.is-optional.past .tl-sub { opacity: 0.35; }
+  .tl-opt-pill {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: var(--accent-soft);
+    color: var(--accent);
+    margin-left: 5px;
+    vertical-align: 1px;
+  }
+  .today-next.is-optional::before { display: none; }
+  .today-next.is-optional {
+    background: linear-gradient(135deg, #334155 0%, #475569 100%);
+  }
+  .next-opt-pill {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    margin-left: 4px;
+  }
+
   /* ===== Bottom sheet ===== */
   .sheet-backdrop {
     position: fixed;
@@ -4092,6 +4130,46 @@
     return { grouped, todayKey, tomKey };
   }
 
+  // 7-day weekly stock — same aggregation as the 2-day version but across all
+  // days in the active plan. Mode-aware since it reads MEAL_PLAN.
+  function buildStockForWeek() {
+    const agg = new Map();
+    DAYS.forEach(d => {
+      MEAL_PLAN[d.key].forEach((meal, mi) => {
+        meal.items.forEach((origItem, ii) => {
+          const current = getItem(d.key, mi, ii).item;
+          let list = ITEM_STOCK[current.name];
+          if (!list) list = ITEM_STOCK[origItem.name];
+          if (!list || !list.length) return;
+          list.forEach(tup => {
+            const [name, qty, unit] = tup;
+            const k = name + '::' + unit;
+            if (agg.has(k)) agg.get(k).qty += qty;
+            else agg.set(k, { name, qty, unit });
+          });
+        });
+      });
+    });
+
+    const catDefs = [
+      { label: 'Dairy',                matches: ['Toned milk', 'Protein-fortified milk', 'Almond milk', 'Low-fat curd', 'Regular curd', 'Paneer', 'Greek yogurt', 'Greek yogurt drink'] },
+      { label: 'Protein specialty',    matches: ['Whey protein', 'Tofu', 'Soya chunks', 'Mushroom'] },
+      { label: 'Dals & beans',         matches: ['Moong dal', 'Chana dal', 'Toor dal', 'Masoor dal', 'Urad dal', 'Mixed dal', 'Any dal', 'Whole moong', 'Rajma', 'Chole', 'Kala chana', 'Lobia', 'White chana', 'Mixed beans'] },
+      { label: 'Grains',               matches: ['Atta', 'Multigrain atta', 'Bajra/jowar flour', 'Basmati rice', 'Rolled oats', 'Poha', 'Suji', 'Daliya', 'Quinoa', 'Ragi flour', 'Idli batter'] },
+      { label: 'Veggies',              matches: ['Bhindi', 'Lauki', 'Mixed veggies', 'Baingan', 'Spinach', 'Cauliflower', 'Cabbage', 'Methi / saag', 'Carrot + peas', 'Capsicum', 'Onion + tomato', 'Onion', 'Potato', 'Mooli', 'Cucumber', 'Salad veggies'] },
+      { label: 'Fruits',               matches: ['Apples', 'Bananas', 'Papaya', 'Oranges', 'Pears', 'Watermelon', 'Guava', 'Dates'] },
+      { label: 'Nuts / seeds / snacks',matches: ['Peanuts', 'Almonds', 'Walnuts', 'Cashews', 'Pumpkin seeds', 'Mixed nuts', 'Chia seeds', 'Roasted chana'] },
+      { label: 'Fats & drinks',        matches: ['Oil', 'Coffee', 'Green tea', 'Black tea', 'Tea', 'Lemon'] },
+      { label: 'Supplements',          matches: ['Nurokind-OD', 'Uprise-D3'] },
+    ];
+    const all = [...agg.values()];
+    return catDefs.map(c => ({
+      label: c.label,
+      items: all.filter(i => c.matches.some(m => i.name.startsWith(m)))
+                .sort((a, b) => a.name.localeCompare(b.name))
+    })).filter(g => g.items.length > 0);
+  }
+
   function formatStockQty(qty, unit) {
     if (unit === 'g' && qty >= 1000) {
       const kg = qty / 1000;
@@ -4186,25 +4264,100 @@
     };
   }
 
-  // Timeline for a given day-of-week. Each item: { time, type, title, subtitle, navMi, navTo }
-  //   navMi  → meal-card index to scroll to in Meals tab
-  //   navTo  → tab name to switch to (e.g. 'exercise', 'tracker')
+  // Convert "8:00 AM" / "1:30 PM" etc. to 24-hour "HH:MM".
+  function parseMealTime(timeStr) {
+    if (!timeStr) return '00:00';
+    const m = timeStr.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (!m) return '00:00';
+    let h = parseInt(m[1], 10);
+    const mins = parseInt(m[2], 10);
+    const p = m[3].toUpperCase();
+    if (p === 'PM' && h !== 12) h += 12;
+    if (p === 'AM' && h === 12) h = 0;
+    return padT(h) + ':' + padT(mins);
+  }
+
+  // Short subtitle showing the first 1-2 food items of a meal, stripped of
+  // parenthetical portion notes so it reads cleanly at timeline scale.
+  function buildMealSubtitleFromItems(meal) {
+    const food = meal.items.filter(it => !it.supp);
+    if (!food.length) return null;
+    const parts = food.slice(0, 2).map(it => it.name.split(' (')[0].trim());
+    return parts.join(' · ');
+  }
+
+  function suppShortName(full) {
+    if (!full) return 'Supplement';
+    if (full.indexOf('Nurokind') === 0) return 'Nurokind-OD 1500 mcg';
+    if (full.indexOf('Uprise')   === 0) return 'Uprise-D3 60,000 IU';
+    return full.split(' (')[0];
+  }
+
+  // Build today's timeline by DERIVING meal rows from MEAL_PLAN (the currently
+  // active plan — Simple or Full). Water reminders, walks, and workouts are
+  // still added as hardcoded slots since they're behavioral rules rather than
+  // meal-plan data. Optional meals carry their `optional` flag through so the
+  // render layer can downplay them.
   function buildTodayTimeline(dayKey) {
     const plannedWorkout = plannedBlockForDay(dayKey);
-    const isSun = dayKey === 'sun';
     const isSat = dayKey === 'sat';
     const isStrength = dayKey === 'mon' || dayKey === 'wed' || dayKey === 'fri';
     const isCardioSplit = dayKey === 'tue' || dayKey === 'thu';
-    const meals = MEAL_PLAN[dayKey];
-    const mealsCount = meals.length;
+    const meals = MEAL_PLAN[dayKey] || [];
     const items = [];
 
-    // 06:30 — wake
-    items.push({ time: '06:30', type: 'water', title: 'Chia water + 500 ml water',
-                 subtitle: '1 tbsp chia soaked overnight · 90 min before Nurokind',
-                 navMi: 0 });
+    // --- Meals from the active plan ---
+    meals.forEach((meal, mi) => {
+      const time24 = parseMealTime(meal.time);
+      const titleLower = (meal.title || '').toLowerCase();
 
-    // 07:00 — morning movement (Sat replaces with long cardio)
+      if (titleLower.indexOf('wake') >= 0) {
+        // Wake becomes a "chia water" row with the total ml of liquid summed
+        // from all items in the wake meal.
+        let totalMl = 0;
+        meal.items.forEach(it => {
+          const matches = [...it.name.matchAll(/(\d+)\s*ml/gi)];
+          matches.forEach(m => { totalMl += parseInt(m[1], 10); });
+        });
+        if (totalMl === 0) totalMl = 250; // chia water default
+        items.push({
+          time: time24,
+          type: 'water',
+          title: totalMl + ' ml chia water',
+          subtitle: '1 tbsp chia soaked overnight · 90 min before Nurokind',
+          navMi: mi,
+        });
+        return;
+      }
+
+      items.push({
+        time: time24,
+        type: 'meal',
+        title: meal.title,
+        subtitle: buildMealSubtitleFromItems(meal),
+        navMi: mi,
+        optional: meal.optional === true,
+      });
+
+      // Any supplement items become their own row at +5 min
+      meal.items.filter(it => it.supp).forEach(s => {
+        items.push({
+          time: addMinutesHHMM(time24, 5),
+          type: 'supp',
+          title: suppShortName(s.name),
+          subtitle: s.name.indexOf('Nurokind') === 0
+            ? 'Sublingual 1–2 min · no water for 10 min'
+            : (s.name.indexOf('Uprise') === 0
+              ? 'Take with paneer sabzi — fat needed for D absorption'
+              : null),
+          navTo: 'tracker',
+        });
+      });
+    });
+
+    // --- Hardcoded hydration / movement / workout slots ---
+
+    // Morning treadmill walk (or Saturday long cardio)
     if (isSat) {
       items.push({ time: '07:00', type: 'workout', title: 'Long cardio intervals',
                    subtitle: '50 min · warm-up → 10× intervals → cool-down',
@@ -4215,99 +4368,39 @@
                    navTo: 'exercise' });
     }
 
-    // 07:45 — pre-breakfast water
-    items.push({ time: '07:45', type: 'water', title: '250 ml water',
-                 subtitle: 'Before breakfast' });
+    // Water schedule — same in both modes per the plan
+    items.push({ time: '07:45', type: 'water', title: '250 ml water',  subtitle: 'Before breakfast' });
+    items.push({ time: '10:30', type: 'water', title: '250 ml water',  subtitle: null });
+    items.push({ time: '13:15', type: 'water', title: '250 ml water',  subtitle: 'Before lunch' });
+    items.push({ time: '15:30', type: 'water', title: '250 ml water',  subtitle: null });
+    items.push({ time: '17:45', type: 'water', title: '250 ml water',  subtitle: null });
+    items.push({ time: '20:15', type: 'water', title: '250 ml water',  subtitle: 'Before dinner' });
+    items.push({ time: '21:30', type: 'water', title: '500 ml water (split in 2)', subtitle: null });
+    items.push({ time: '22:30', type: 'water', title: '250 ml water',  subtitle: 'Before bed' });
 
-    // 08:00 / 09:00 — breakfast + Nurokind
-    const bkTime = isSun ? '09:00' : '08:00';
-    items.push({ time: bkTime, type: 'meal', title: 'Breakfast',
-                 subtitle: isSun ? 'Moong dal chilla + paneer + curd' : null,
-                 navMi: 1 });
-    items.push({ time: addMinutesHHMM(bkTime, 5), type: 'supp',
-                 title: 'Nurokind-OD 1500 mcg',
-                 subtitle: 'Sublingual 1–2 min · no water for 10 min',
-                 navTo: 'tracker' });
-
-    // 10:30 — mid-morning water
-    items.push({ time: '10:30', type: 'water', title: '250 ml water', subtitle: null });
-
-    // 11:00 — mid-morning snack
-    items.push({ time: '11:00', type: 'meal', title: 'Mid-morning',
-                 subtitle: 'Whey shake + sprouts/chana',
-                 navMi: 2 });
-
-    // 13:15 — pre-lunch water
-    items.push({ time: '13:15', type: 'water', title: '250 ml water',
-                 subtitle: 'Before lunch' });
-
-    // 13:30 — lunch (+ Uprise-D on Sunday)
-    items.push({ time: '13:30', type: 'meal',
-                 title: 'Lunch' + (isSun ? ' + Uprise-D3 sachet' : ''),
-                 subtitle: isSun ? 'Weekly vitamin D — take with paneer sabzi' : null,
-                 navMi: 3 });
-
-    // 13:45 — post-lunch walk
+    // Post-lunch walk (both modes)
     items.push({ time: '13:45', type: 'walk', title: '10-min slow walk',
                  subtitle: 'Post-lunch glucose control',
                  navTo: 'exercise' });
 
-    // 14:00 — chaas
-    items.push({ time: '14:00', type: 'meal', title: 'Chaas',
-                 subtitle: '60g dahi + water + salt + jeera',
-                 navMi: 4 });
-
-    // 15:30 — water
-    items.push({ time: '15:30', type: 'water', title: '250 ml water', subtitle: null });
-
-    // 17:00 — pre-workout fuel / evening snack
-    items.push({ time: '17:00', type: 'meal',
-                 title: isStrength ? 'Pre-workout fuel' : 'Evening snack',
-                 subtitle: isStrength ? 'Coffee + apple/banana, 45–60 min before lifting' : null,
-                 navMi: 5 });
-
-    // 17:45 — water
-    items.push({ time: '17:45', type: 'water', title: '250 ml water', subtitle: null });
-
-    // 18:00 — strength workout
+    // Strength workout (Mon/Wed/Fri)
     if (isStrength && plannedWorkout) {
       items.push({ time: '18:00', type: 'workout', title: plannedWorkout.short,
                    subtitle: '40 min · ' + plannedWorkout.exercises.length + ' exercises',
                    navTo: 'exercise' });
-      items.push({ time: '19:00', type: 'meal', title: 'Post-workout shake',
-                   subtitle: '60g whey + 250 ml toned milk — within 60 min',
-                   navMi: 6 });
     }
 
-    // 20:15 — pre-dinner water
-    items.push({ time: '20:15', type: 'water', title: '250 ml water',
-                 subtitle: 'Before dinner' });
-
-    // Dinner (Sunday earlier)
-    const dinnerTime = isSun ? '20:00' : '20:30';
-    items.push({ time: dinnerTime, type: 'meal',
-                 title: 'Dinner' + (isSun ? ' (earlier)' : ''),
-                 subtitle: null,
-                 navMi: mealsCount - 1 });
-
     // Post-dinner walk
-    items.push({ time: addMinutesHHMM(dinnerTime, 30), type: 'walk',
-                 title: '15-min walk after dinner',
+    items.push({ time: '21:00', type: 'walk', title: '15-min walk after dinner',
                  subtitle: null,
                  navTo: 'exercise' });
 
-    // 21:00 — cardio split evening walk
+    // Tue/Thu evening cardio split (PM half of the 20+20 split)
     if (isCardioSplit) {
-      items.push({ time: '21:00', type: 'workout', title: 'Evening walk (PM split)',
+      items.push({ time: '21:05', type: 'workout', title: 'Evening walk (PM split)',
                    subtitle: '20 min at 5 km/h',
                    navTo: 'exercise' });
     }
-
-    // Late-evening hydration
-    items.push({ time: '21:30', type: 'water', title: '500 ml water (split in 2)',
-                 subtitle: null });
-    items.push({ time: '22:30', type: 'water', title: '250 ml water',
-                 subtitle: 'Before bed' });
 
     return items.sort((a, b) => a.time.localeCompare(b.time));
   }
@@ -4436,9 +4529,12 @@
       const whenStr = mins < 60
         ? 'in ' + mins + ' min'
         : 'in ' + Math.floor(mins / 60) + 'h ' + (mins % 60) + 'm';
-      const nextCard = el('button', 'today-next');
+      const nextCard = el('button', 'today-next' + (next.optional ? ' is-optional' : ''));
       nextCard.innerHTML =
-        '<div class="next-label">' + iconForTimelineType(next.type) + ' Coming up</div>'
+        '<div class="next-label">'
+        +   iconForTimelineType(next.type) + ' Coming up'
+        +   (next.optional ? ' <span class="next-opt-pill">Optional</span>' : '')
+        + '</div>'
         + '<div class="next-time">' + formatTime12(next.time) + ' · ' + whenStr + '</div>'
         + '<div class="next-title">' + next.title + '</div>'
         + (next.subtitle ? '<div class="next-sub">' + next.subtitle + '</div>' : '');
@@ -4512,15 +4608,19 @@
       else if (mm >= now - 15 && mm <= now + 15) stateClass = 'now';
 
       const hasNav = item.navMi !== undefined || item.navTo;
-      const row = el('button',
-        'tl-item type-' + item.type + ' ' + stateClass + (hasNav ? '' : ' no-nav'));
+      const classes = ['tl-item', 'type-' + item.type, stateClass];
+      if (!hasNav) classes.push('no-nav');
+      if (item.optional) classes.push('is-optional');
+      const row = el('button', classes.join(' '));
+      const titleHtml = item.title
+        + (item.optional ? ' <span class="tl-opt-pill">Optional</span>' : '');
       row.innerHTML =
         '<div class="tl-time">' + formatTime12(item.time) + '</div>'
         + '<div class="tl-line"><div class="tl-dot"></div></div>'
         + '<div class="tl-content">'
         +   '<div class="tl-icon">' + iconForTimelineType(item.type) + '</div>'
         +   '<div class="tl-text">'
-        +     '<div class="tl-title">' + item.title + '</div>'
+        +     '<div class="tl-title">' + titleHtml + '</div>'
         +     (item.subtitle ? '<div class="tl-sub">' + item.subtitle + '</div>' : '')
         +   '</div>'
         +   (hasNav ? '<div class="tl-arrow">›</div>' : '')
@@ -5514,23 +5614,26 @@
 
     root.appendChild(stockCard);
 
-    // === Weekly shopping list ===
-    // Counts + toolbar
-    let total = 0, done = 0;
-    SHOPPING.forEach((sec, si) => {
-      sec.items.forEach((_, ii) => {
-        total++;
-        if (state.shopping[sec.cat.toLowerCase().replace(/\s+/g, '_') + '-' + si + '-' + ii]) done++;
-      });
-    });
+    // === Weekly stock (computed from the active meal plan × 7 days) ===
+    const weekGroups = buildStockForWeek();
+    // Flatten for counting + category checks
+    const flatKeys = [];
+    weekGroups.forEach(g => g.items.forEach(i => flatKeys.push(keyShopWeek(i))));
+    const total = flatKeys.length;
+    let done = 0;
+    flatKeys.forEach(k => { if (state.shopping[k]) done++; });
 
-    const pct = total > 0 ? Math.round(100*done/total) : 0;
+    const pct = total > 0 ? Math.round(100 * done / total) : 0;
+    const modeLabel = state.mealMode === 'simple' ? 'Simple Mode' : 'Full Mode';
     const status = el('div', 'card shop-status');
     status.innerHTML =
       '<div class="row-flex-between">'
       +   '<div>'
-      +     '<h2 style="margin-bottom:4px">Weekly list</h2>'
-      +     '<div class="muted small"><b style="color:var(--text)">' + done + '</b> of ' + total + ' checked</div>'
+      +     '<h2 style="margin-bottom:4px">Weekly stock · ' + modeLabel + '</h2>'
+      +     '<div class="muted small">'
+      +       '<b style="color:var(--text)">' + done + '</b> of ' + total + ' checked · '
+      +       'computed from your <b style="color:var(--text)">7-day plan</b>'
+      +     '</div>'
       +   '</div>'
       +   '<div class="shop-status-ring" style="--pct:' + pct + '%"><span>' + pct + '%</span></div>'
       + '</div>';
@@ -5546,11 +5649,7 @@
     });
     const allBtn = el('button', 'shop-btn primary', 'Check all');
     allBtn.addEventListener('click', () => {
-      SHOPPING.forEach((sec, si) => {
-        sec.items.forEach((_, ii) => {
-          state.shopping[keyShop(sec, si, ii)] = true;
-        });
-      });
+      flatKeys.forEach(k => { state.shopping[k] = true; });
       save(STORAGE.shopping, state.shopping);
       renderShopping();
     });
@@ -5558,25 +5657,23 @@
     toolbar.appendChild(allBtn);
     root.appendChild(toolbar);
 
-    SHOPPING.forEach((sec, si) => {
+    weekGroups.forEach(g => {
       const card = el('div', 'card shop-section');
       let secDone = 0;
-      sec.items.forEach((_, ii) => {
-        if (state.shopping[keyShop(sec, si, ii)]) secDone++;
-      });
+      g.items.forEach(i => { if (state.shopping[keyShopWeek(i)]) secDone++; });
       const h = el('h3');
       h.innerHTML =
-        '<span>' + sec.cat + '</span>'
-        + '<span class="count">' + secDone + '/' + sec.items.length + '</span>';
+        '<span>' + g.label + '</span>'
+        + '<span class="count">' + secDone + '/' + g.items.length + '</span>';
       card.appendChild(h);
-      sec.items.forEach((it, ii) => {
-        const k = keyShop(sec, si, ii);
+      g.items.forEach(i => {
+        const k = keyShopWeek(i);
         const isChecked = !!state.shopping[k];
         const row = el('button', 'shop-item' + (isChecked ? ' checked' : ''));
         row.innerHTML =
           '<span class="shop-check' + (isChecked ? ' checked' : '') + '"></span>'
-          + '<span class="shop-name">' + it.name + '</span>'
-          + '<span class="shop-qty">' + it.qty + '</span>';
+          + '<span class="shop-name">' + i.name + '</span>'
+          + '<span class="shop-qty">' + formatStockQty(i.qty, i.unit) + '</span>';
         row.addEventListener('click', () => {
           if (state.shopping[k]) delete state.shopping[k];
           else state.shopping[k] = true;
@@ -5589,8 +5686,10 @@
     });
   }
 
-  function keyShop(sec, si, ii) {
-    return sec.cat.toLowerCase().replace(/\s+/g, '_') + '-' + si + '-' + ii;
+  // Check-off key for weekly shopping — stable across weeks, scoped by mode
+  // so Simple-mode checks don't leak to Full-mode.
+  function keyShopWeek(item) {
+    return state.mealMode + '|' + item.name + '|' + item.unit;
   }
 
   /* ============================================================
