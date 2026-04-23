@@ -359,36 +359,57 @@ Replaces chaas during adaptation. After 2 weeks, can reintroduce chaas if gut to
 | Sat | Long cardio intervals | Morning, 50 min |
 | Sun | Rest (opt 20-min walk) | — |
 
-### Starting weights — per exercise
+### Dumbbell shopping — what to buy (one-time purchase)
 
-For a 40yo beginner at ~103 kg with possible hyperthyroid (muscle weakness
-present) and B12 deficiency. Progress 1-2 kg per dumbbell every 2 weeks
-only if form is clean, no palpitations during/after, and next-day soreness
-is <4/10. Shoulder press progresses slowest; don't chase the number.
+**Goal:** fat loss 103 → 70 kg, then lifetime maintenance. NOT hypertrophy.
+**Max load ever needed: 10 kg per dumbbell.** Don't buy anything heavier.
+
+**Option A — 3 fixed pairs (simplest):**
+- 5 kg pair — shoulder press, starter lunge/floor press/RDL
+- 8 kg pair — mid-range: row, press, lunge, RDL at progression
+- 10 kg pair — goblet squat, deadlift, lifetime cap
+
+Total iron ~46 kg. Cost: ₹8,000-12,000 PVC, ₹15,000-22,000 cast iron.
+
+**Option B — 1 adjustable set (recommended):**
+- Kore / Decathlon Domyos / AmazonBasics 20 kg adjustable pair
+- Each dumbbell adjusts ~2 kg to 10 kg in 1 kg increments
+- Cost: ₹4,500-6,500 for the pair
+- Covers every weight in the program, takes less space
+
+If choosing PVC, weigh it on a kitchen scale — cheap PVC is often ±10% off.
+
+### Exact weights per exercise (start → cap)
+
+For a 40yo at ~103 kg, possible hyperthyroid + B12 deficiency. Progress
+1 kg per dumbbell every 2 weeks only if form is clean, no palpitations,
+next-day soreness <4/10. **Stop at cap — more load has zero extra benefit
+for fat loss / maintenance goal, just injury risk.**
 
 ### Strength A (Mon + Fri)
 Warm-up 5 min treadmill 4.5 km/h.
-1. Goblet Squat — 3×12, **7-8 kg (1 dumbbell at chest)**, rest 60s
-2. Floor Press — 3×10, **5-6 kg each**, rest 60s
-3. One-Arm Row — 3×10 each side, **7-8 kg**, rest 60s
-4. Romanian Deadlift — 3×10, **5-7 kg each**, rest 60s
-5. Plank — 3×30sec bodyweight, rest 45s
+1. Goblet Squat — 3×12 — start **7 kg**, cap **10 kg** (1 dumbbell) — rest 60s
+2. Floor Press — 3×10 — start **5 kg each**, cap **8 kg each** — rest 60s
+3. One-Arm Row — 3×10 each side — start **7 kg**, cap **10 kg** — rest 60s
+4. Romanian Deadlift — 3×10 — start **5 kg each**, cap **10 kg each** — rest 60s
+5. Plank — 3×30sec bodyweight — rest 45s
 Cool-down 10 min at 5 km/h.
 
 ### Strength B (Wed)
 Warm-up 5 min at 4.5 km/h.
-1. Deadlift — 3×10, **7-8 kg each**, rest 60s
-2. Shoulder Press — 3×10, **4-5 kg each**, rest 60s
-3. Reverse Lunge — 3×10 each, **5-6 kg each**, rest 60s
-4. Bent-Over Row — 3×10, **5-6 kg each**, rest 60s
-5. Dead Bug — 3×10 each bodyweight, rest 45s
+1. Deadlift — 3×10 — start **7 kg each**, cap **10 kg each** — rest 60s
+2. Shoulder Press — 3×10 — start **4 kg each**, cap **7 kg each** — rest 60s
+3. Reverse Lunge — 3×10 each — start **5 kg each**, cap **8 kg each** — rest 60s
+4. Bent-Over Row — 3×10 — start **5 kg each**, cap **8 kg each** — rest 60s
+5. Dead Bug — 3×10 each bodyweight — rest 45s
 Cool-down 10 min at 5 km/h.
 
-### Progression rules (apply to both A and B)
-- Add weight only when you can complete all 3 sets at target reps with 1-2 reps left in reserve (i.e. not grinding the last rep)
-- Track RPE (rate of perceived exertion, 1-10). Target 6-7 for strength, 7-8 peak.
-- If resting HR >85 BPM the morning after a session, cut next session's weight by 10-15% and mention to endocrinologist. Possible thyroid-driven overreaching.
-- Shoulder press: stall at 6 kg is common — hold for 4-6 weeks before pushing to 7 kg.
+### Progression rules
+- Add 1 kg (not 2) every 2 weeks, only when you complete all 3 sets at target reps with 1-2 reps in reserve (not grinding the last rep)
+- Target RPE 6-7 (somewhat hard, not near failure)
+- If resting HR >85 BPM the morning after lifting, cut next session's weight by 10-15% and mention to endocrinologist. Possible thyroid-driven overreaching.
+- You'll hit the caps in ~12-16 weeks. Then stop adding weight. Do the same weights forever. That's the whole plan.
+- Deadlift at 10 kg each = 20 kg total is genuinely light for a 70 kg man, but you don't need more. If bored, add reps (3×15 instead of 3×10), not weight.
 
 ### Cardio (Tue/Thu)
 20 min AM + 20 min PM at 5 km/h. Target 10,000 steps/day total.
