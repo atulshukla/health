@@ -44,7 +44,7 @@
 | **TSH** | 0.0984 μIU/mL | Suppressed — possible hyperthyroid | **See endocrinologist within 2 weeks** |
 | **T3 Total** | 1.71 ng/mL | Slightly elevated | Same as above |
 | **Vitamin D (25-OH)** | 28.6 ng/mL | Insufficient | Uprise-D weekly, retest Week 12 |
-| **HDL cholesterol** | 41 mg/dL | Low (<50) | Exercise + omega-3, will improve |
+| **HDL cholesterol** | 41 mg/dL | Low (<50) | Exercise + weight loss (primary drivers). Algae-based EPA/DHA supplement if seriously wanting marine omega-3 — chia ALA is too weak. |
 | **ALT (liver)** | 51 U/L | Marginally high | Early fatty liver — low-fat diet |
 | **Total Bilirubin** | 1.4 mg/dL | Marginally high | Monitor |
 | **Eosinophils** | 9.0% / AEC 502 | Slightly raised | Monitor, mention to doctor |
@@ -59,8 +59,8 @@ HbA1c 5.3%, Glucose 95, Total chol 142, LDL 82, TG 98, Creatinine 0.9, eGFR 111,
 - Muscle weakness climbing stairs/lifting (possible hyperthyroid)
 - Sleeps 4-5 hours, feels fresh (possible hyperthyroid)
 - Post-lunch sleepiness (caused by earlier heavy plan, now being fixed)
-- Bloating and gas (caused by earlier high-legume + high-dairy plan, now being fixed)
-- Frequent bowel movements — resolved with chia water + salads + chaas
+- Bloating and gas (caused by earlier high-legume + high-dairy plan, now being fixed by cutting legumes to ≤2/day, dairy to ≤2/day, shrinking lunch, and the eating-order rule). Chia is NOT what fixed the bloat — dropping load did.
+- Frequent bowel movements — settled after broader plan change (lower dairy volume, more salads, gut adaptation over 2-3 weeks). Cannot isolate chia as the cause; more likely the plan redesign + time.
 
 ### Pending medical actions
 
@@ -87,10 +87,17 @@ HbA1c 5.3%, Glucose 95, Total chol 142, LDL 82, TG 98, Creatinine 0.9, eGFR 111,
 - Empty into 30 ml toned milk, stir, drink at end of meal
 - **Must be with fat** (Sunday lunch has paneer sabzi specifically for this)
 
-### Chia seeds (daily, already working)
+### Chia seeds (daily)
 - 1 tbsp (15g) soaked overnight in 250 ml water
-- 6:30 AM on waking, 90 min before Nurokind
-- For fiber, omega-3 ALA, satiety, regularity
+- 6:30 AM on waking. Timing around Nurokind doesn't matter — sublingual B12 absorbs through oral mucosa, not stomach. The old "90 min before" rule was wrong.
+- **What chia actually does (evidence-based):**
+  - ✅ Satiety — mucilage slows gastric emptying (solid evidence)
+  - ✅ Stool regularity — firms loose stools, softens hard ones (solid evidence)
+  - ✅ Mild post-meal glucose blunting when eaten with carbs (moderate evidence)
+- **What chia does NOT reliably do (despite being popular claims):**
+  - ❌ Reduce bloating — no good evidence; can increase gas in some people via fermentation
+  - ❌ Meaningfully raise HDL via omega-3 — ALA→EPA/DHA conversion <10%; 15g chia ≈ 0.5g EPA/DHA equivalent, near-zero cardiovascular impact
+- Keep chia for the real benefits, don't credit it for bloat fix or HDL.
 
 ### Digestive enzyme (temporary, 2 weeks only)
 - Unienzyme or Aristozyme, 1 tablet with lunch and dinner
@@ -252,7 +259,7 @@ Replaces chaas during adaptation. After 2 weeks, can reintroduce chaas if gut to
 
 ### Sunday — Flex day + Uprise-D
 
-**8:30 AM:** Moong dal chilla (50g batter) + 50g paneer stuffing + 5 ml oil + 100g low-fat curd + Nurokind-OD
+**9:00 AM:** Moong dal chilla (50g batter) + 50g paneer stuffing + 5 ml oil + Nurokind-OD (Sunday breakfast is 30 min later than weekdays — flex day)
 
 **11:00 AM:** 1 fruit (optional)
 
@@ -352,26 +359,36 @@ Replaces chaas during adaptation. After 2 weeks, can reintroduce chaas if gut to
 | Sat | Long cardio intervals | Morning, 50 min |
 | Sun | Rest (opt 20-min walk) | — |
 
-### Starting weights
-5-7 kg per dumbbell for 40yo beginner. Progress only if no palpitations/fatigue.
+### Starting weights — per exercise
+
+For a 40yo beginner at ~103 kg with possible hyperthyroid (muscle weakness
+present) and B12 deficiency. Progress 1-2 kg per dumbbell every 2 weeks
+only if form is clean, no palpitations during/after, and next-day soreness
+is <4/10. Shoulder press progresses slowest; don't chase the number.
 
 ### Strength A (Mon + Fri)
 Warm-up 5 min treadmill 4.5 km/h.
-1. Goblet Squat — 3×12, rest 60s
-2. Floor Press — 3×10, rest 60s
-3. One-Arm Row — 3×10 each side, rest 60s
-4. Romanian Deadlift — 3×10, rest 60s
-5. Plank — 3×30sec, rest 45s
+1. Goblet Squat — 3×12, **7-8 kg (1 dumbbell at chest)**, rest 60s
+2. Floor Press — 3×10, **5-6 kg each**, rest 60s
+3. One-Arm Row — 3×10 each side, **7-8 kg**, rest 60s
+4. Romanian Deadlift — 3×10, **5-7 kg each**, rest 60s
+5. Plank — 3×30sec bodyweight, rest 45s
 Cool-down 10 min at 5 km/h.
 
 ### Strength B (Wed)
 Warm-up 5 min at 4.5 km/h.
-1. Deadlift — 3×10, rest 60s
-2. Shoulder Press — 3×10, rest 60s
-3. Reverse Lunge — 3×10 each, rest 60s
-4. Bent-Over Row — 3×10, rest 60s
-5. Dead Bug — 3×10 each, rest 45s
+1. Deadlift — 3×10, **7-8 kg each**, rest 60s
+2. Shoulder Press — 3×10, **4-5 kg each**, rest 60s
+3. Reverse Lunge — 3×10 each, **5-6 kg each**, rest 60s
+4. Bent-Over Row — 3×10, **5-6 kg each**, rest 60s
+5. Dead Bug — 3×10 each bodyweight, rest 45s
 Cool-down 10 min at 5 km/h.
+
+### Progression rules (apply to both A and B)
+- Add weight only when you can complete all 3 sets at target reps with 1-2 reps left in reserve (i.e. not grinding the last rep)
+- Track RPE (rate of perceived exertion, 1-10). Target 6-7 for strength, 7-8 peak.
+- If resting HR >85 BPM the morning after a session, cut next session's weight by 10-15% and mention to endocrinologist. Possible thyroid-driven overreaching.
+- Shoulder press: stall at 6 kg is common — hold for 4-6 weeks before pushing to 7 kg.
 
 ### Cardio (Tue/Thu)
 20 min AM + 20 min PM at 5 km/h. Target 10,000 steps/day total.
