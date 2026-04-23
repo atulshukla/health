@@ -3972,7 +3972,7 @@
     meta: 'Treadmill · 40 min split',
     exercises: [
       { name: 'Morning walk', desc: '7 AM — 20 min at 5 km/h', sets: '20 min', rest: '—' },
-      { name: 'Evening walk', desc: '9 PM post-dinner — 20 min at 5 km/h', sets: '20 min', rest: '—' },
+      { name: 'Post-dinner walk (counts as PM split)', desc: '9 PM — 20 min at 5 km/h. This IS the evening cardio; no separate 15-min post-dinner walk on Tue/Thu.', sets: '20 min', rest: '—' },
       { name: 'Daily step goal', desc: 'Hit 10,000 steps total across the day', sets: '10k steps', rest: '—' },
     ],
   };
@@ -4595,9 +4595,8 @@
        supp-<mi>-<ii>      → supplement row derived from meal.items[ii]
        walk-morning        → morning treadmill or Sat long cardio
        walk-postlunch      → 10-min post-lunch walk
-       walk-postdinner     → 15-min post-dinner walk
+       walk-postdinner     → 15-min post-dinner walk (Tue/Thu = 20-min, doubles as PM cardio split)
        workout-main        → Mon/Wed/Fri strength
-       workout-evening     → Tue/Thu PM-split cardio
        water-<hhmm>        → each fixed water slot
        sleep               → bedtime sleep marker
 
@@ -4879,17 +4878,17 @@
                    navTo: 'exercise' });
     }
 
-    // Post-dinner walk
-    items.push({ id: 'walk-postdinner', plannedTime: '21:00', type: 'walk',
-                 title: '15-min walk after dinner',
-                 subtitle: null,
-                 navTo: 'exercise' });
-
-    // Tue/Thu evening cardio split (PM half of the 20+20 split)
+    // Post-dinner walk — on Tue/Thu this doubles as the PM cardio split,
+    // so it's one longer walk, not two back-to-back events.
     if (isCardioSplit) {
-      items.push({ id: 'workout-evening', plannedTime: '21:05', type: 'workout',
-                   title: 'Evening walk (PM split)',
-                   subtitle: '20 min at 5 km/h',
+      items.push({ id: 'walk-postdinner', plannedTime: '21:00', type: 'walk',
+                   title: '20-min walk after dinner',
+                   subtitle: '5 km/h · PM cardio split + glucose control',
+                   navTo: 'exercise' });
+    } else {
+      items.push({ id: 'walk-postdinner', plannedTime: '21:00', type: 'walk',
+                   title: '15-min walk after dinner',
+                   subtitle: null,
                    navTo: 'exercise' });
     }
 
