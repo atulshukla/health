@@ -162,12 +162,28 @@ Earlier plans had these problems. Fixed iteratively:
 - No milk (reducing dairy)
 - ~18g protein, ~400 kcal
 
-**Option B (Tue/Fri) — Poha or Upma:**
-- 50g raw poha OR 50g raw suji
-- 5 ml oil + onion + curry leaves + 10g peanuts (poha only)
+**Option B1 (Tue) — Dalia veg tahri:**
+- 40g dry dalia (broken wheat) cooked pulao-style with 80g mixed veg + turmeric/jeera
+- 5 ml oil
 - 200 ml toned milk on side
 - Nurokind-OD sublingual
-- ~13g protein, ~380 kcal
+- ~13g protein, ~330 kcal
+- *No legume added — Tue stays at 2 legumes (toor lunch + rajma dinner)*
+
+**Option B2 (Fri) — Dalia khichdi:**
+- 40g dry dalia + 30g moong dal cooked together soft, with 50g veg + 5 ml oil
+- 100g low-fat curd on side (replaces milk — keeps dairy events at 2)
+- Nurokind-OD sublingual
+- ~17g protein, ~380 kcal
+- *Adds 1 legume event — Fri dinner dal dropped to compensate (tofu bumped 150g → 200g)*
+
+**Option B3 (swap, any day) — Rava idli:**
+- 3 rava idlis (from 50g batter) + 30g coconut chutney
+- 200 ml toned milk on side
+- ~13g protein, ~320 kcal
+- *No legume (skip sambhar). Fallback when dalia out of stock.*
+
+**Note:** Poha dropped v4.3 — was duplicated Tue=Fri identically, and at 7g protein BF was the weakest slot. Dalia replaces it as the Indian-family equivalent of oats (higher fibre, same kitchen staple status).
 
 **Option C (Wed) — Moong chilla + paneer:**
 - 50g moong dal batter made into chilla on tawa
@@ -222,13 +238,22 @@ Replaces chaas during adaptation. After 2 weeks, can reintroduce chaas if gut to
 
 #### 8:30 PM — DINNER (biggest meal)
 
-**Option D1 (Mon/Fri) — Tofu + dal:**
+**Option D1a (Mon) — Tofu + dal:**
 - 150g firm tofu (tikka/bhurji/palak) + 5 ml oil
 - 1 katori dal (150g moong)
 - 1 roti
 - 150g salad
 - 100g low-fat curd (only dairy of dinner)
 - ~41g protein, ~500 kcal
+
+**Option D1b (Fri) — Tofu + sabzi (no dal, post-khichdi BF):**
+- **200g** firm tofu bhurji + 5 ml oil (bumped from 150g to hold protein)
+- 150g mixed low-FODMAP sabzi + 5 ml oil
+- 1 roti
+- 150g salad
+- 100g low-fat curd
+- ~36g protein, ~520 kcal
+- *Dal dropped intentionally:* Fri has moong in BF khichdi + moong at lunch. Third legume = bloat risk.
 
 **Option D2 (Wed) — Tofu + veg (no dal):**
 - 150g firm tofu (bhurji/tikka) + 5 ml oil
@@ -320,9 +345,8 @@ Replaces chaas during adaptation. After 2 weeks, can reintroduce chaas if gut to
 | 30g dry dal | 150g cooked | 1 katori |
 | 40g dry rajma/chole (soaked) | 150g cooked | 1 katori |
 | 45g raw rice | 100g cooked | ½ plate |
-| 50g raw poha | 150g cooked | 1 plate |
+| 40g dry dalia | ~140g cooked tahri/khichdi | 1 plate |
 | 50g raw suji | 150g cooked upma | 1 plate |
-| 40g oats | ~250g porridge | 1 bowl |
 | 50g dry soya chunks | 150g soaked | 1 serving |
 | 30g dough | 1 roti (~25g cooked) | 1 roti |
 
@@ -453,11 +477,12 @@ Warm-up 5 min 4.5 km/h → intervals 2 min @ 6 km/h + 2 min @ 4.5 km/h × 10 = 4
 - Roasted chana with skin: 250g
 
 ### Grains
-- Atta 5 kg, basmati rice 1 kg, poha 500g, suji 500g, ragi flour 500g, daliya 500g
+- Atta 5 kg, basmati rice 1 kg, daliya 1 kg, suji 500g, ragi flour 500g, idli batter 500g (fresh, Tue/Fri swap)
 - **Dropped from v4.1:** rolled oats, quinoa, chia pudding base (not Indian-family staples)
+- **Dropped from v4.3:** poha (weakest protein BF, duplicated Tue=Fri — replaced by dalia tahri/khichdi)
 
 ### Nuts
-- Peanuts: 100g (only 10-15g 2x/week in poha)
+- Peanuts: 100g (10-15g topping for dalia tahri or as snack, 1-2x/week)
 - Almonds: 200g
 
 ### Low-FODMAP veggies
