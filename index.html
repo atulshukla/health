@@ -3086,11 +3086,23 @@
     ],
 
     mid_morning: [
+      { name: '150g Greek yogurt + 10g whey stirred in', p: 23, f: 2, c: 7 },
       { name: 'Whey 25g + 200ml water (if hungry)', p: 21, f: 1, c: 3 },
+      { name: 'Whey 20g + 200ml water', p: 17, f: 1, c: 2 },
       { name: '150g plain Greek yogurt', p: 15, f: 2, c: 6 },
       { name: '100g low-fat curd', p: 4, f: 1, c: 5 },
       { name: '10g almonds (~8 pcs)', p: 2, f: 6, c: 2 },
       { name: 'Skip (best if not hungry)', p: 0, f: 0, c: 0 },
+    ],
+
+    /* Cardio-day non-workout whey top-up (Tue/Thu 5 PM, Sat 11 AM post-long-cardio). */
+    cardio_whey: [
+      { name: 'Whey 20g + 200ml water', p: 17, f: 1, c: 2 },
+      { name: 'Whey 25g + 200ml water', p: 21, f: 1, c: 3 },
+      { name: 'Whey 15g + 200ml water', p: 13, f: 0, c: 2 },
+      { name: '150g Greek yogurt + 10g whey stirred in', p: 23, f: 2, c: 7 },
+      { name: '10g almonds (~8 pcs)', p: 2, f: 6, c: 2 },
+      { name: 'Skip (if not hungry)', p: 0, f: 0, c: 0 },
     ],
 
     toned_milk_200: [
@@ -3172,13 +3184,20 @@
   /* Each meal: { time, title, items: [{ name, p, f, c, altKey?, supp? }], optional? }
      Macro totals computed from items at render time.
 
-     v4.1 plan (simple middle-class Indian family edition, Apr 2026):
+     v4.2 plan (whey added on cardio days, Apr 23 2026):
+     - Tue/Thu 11AM: GY + 10g whey stirred in (was GY only) — 23g protein
+     - Tue/Thu 5PM: coffee + 20g whey shake (was coffee + almonds) — 17g protein
+     - Sat 11AM: 20g whey + papaya (was papaya only) — post-long-cardio timing
+     - Weekly avg protein: ~103g → ~113g. Hits 110g target.
+     - Whey load: 55g peak (strength days), 30g cardio, 20g Sat, 0 Sun.
+
+     v4.1 plan (simple middle-class Indian family edition, Apr 22 2026):
      - Dropped oats / quinoa / chia pudding / almond milk (not kitchen staples)
      - Wed BF: moong chilla + paneer (was oats + whey)
      - Sat BF: paneer paratha (was oats + whey)
      - Sat dinner: soya chunk curry (was paneer sabzi) — keeps dairy ≤ 2
      - Wed dinner: dal dropped — prevents 3rd legume serving of day
-     - Tue/Thu 11AM: 150g Greek yogurt daily (was curd/almonds) — fixes low-protein cardio days
+     - Tue/Thu 11AM: 150g Greek yogurt daily (was curd/almonds)
      Light lunch, bigger dinner. Built for a 40yo software builder —
      protects afternoon focus, respects lactose sensitivity, keeps legumes
      ≤ 2/day, runs on low-FODMAP veg + moong/toor/masoor dal while gut adapts.
@@ -3236,12 +3255,13 @@
         ]},
     ],
 
-    /* Tue — Cardio day (30-40 min walk/cycle after work).
-       Dairy events: 200ml milk BF + 150g Greek yogurt 11AM + curd 100g dinner = 3.
+    /* Tue — Cardio day (20 min AM + 20 min PM walks).
+       Dairy events: 200ml milk BF + (GY+whey) 11AM + curd 100g dinner = 3.
          GY is low-lactose (<1g per 150g, strained) so gut load ≈ 2 regular events.
          If bloat, first drop is the dinner curd.
        Legumes: toor lunch + rajma dinner = 2.
-       Protein: ~76g (cardio day — target lower than strength days). */
+       Whey: 10g (11AM in GY) + 20g (5PM shake) = 30g total. Safe.
+       Protein: ~99g (v4.2 — whey added at 11AM + 5PM to close the cardio-day gap). */
     tue: [
       { time: '6:30 AM', title: 'Wake',
         items: [
@@ -3256,7 +3276,7 @@
         ]},
       { time: '11:00 AM', title: 'Mid-morning',
         items: [
-          { name: '150g plain Greek yogurt', p: 15, f: 2, c: 6, altKey: 'mid_morning' },
+          { name: '150g Greek yogurt + 10g whey stirred in', p: 23, f: 2, c: 7, altKey: 'mid_morning' },
         ]},
       { time: '1:30 PM', title: 'Lunch',
         items: [
@@ -3269,10 +3289,10 @@
         items: [
           { name: 'Fennel-ajwain tea (300ml)', p: 0, f: 0, c: 0, altKey: 'fennel_tea' },
         ]},
-      { time: '5:00 PM', title: 'Evening',
+      { time: '5:00 PM', title: 'Evening shake',
         items: [
           { name: '150ml black coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
-          { name: '10g almonds (~8 pcs)', p: 2, f: 6, c: 2, altKey: 'evening_snack' },
+          { name: 'Whey 20g + 200ml water', p: 17, f: 1, c: 2, altKey: 'cardio_whey' },
         ]},
       { time: '8:30 PM', title: 'Dinner',
         items: [
@@ -3333,11 +3353,12 @@
         ]},
     ],
 
-    /* Thu — Cardio day.
-       Dairy events: 80g paneer BF + 150g Greek yogurt 11AM + curd 100g dinner = 3.
+    /* Thu — Cardio day (20 min AM + 20 min PM walks).
+       Dairy events: 80g paneer BF + (GY+whey) 11AM + curd 100g dinner = 3.
          GY is low-lactose, gut load ≈ 2 regular events. Drop dinner curd if bloat.
        Legumes: toor lunch + chole dinner = 2.
-       Protein: ~81g (cardio day). */
+       Whey: 10g (11AM in GY) + 20g (5PM shake) = 30g total.
+       Protein: ~104g (v4.2 — whey added at 11AM + 5PM). */
     thu: [
       { time: '6:30 AM', title: 'Wake',
         items: [
@@ -3352,7 +3373,7 @@
         ]},
       { time: '11:00 AM', title: 'Mid-morning',
         items: [
-          { name: '150g plain Greek yogurt', p: 15, f: 2, c: 6, altKey: 'mid_morning' },
+          { name: '150g Greek yogurt + 10g whey stirred in', p: 23, f: 2, c: 7, altKey: 'mid_morning' },
         ]},
       { time: '1:30 PM', title: 'Lunch',
         items: [
@@ -3365,10 +3386,10 @@
         items: [
           { name: 'Fennel-ajwain tea (300ml)', p: 0, f: 0, c: 0, altKey: 'fennel_tea' },
         ]},
-      { time: '5:00 PM', title: 'Evening',
+      { time: '5:00 PM', title: 'Evening shake',
         items: [
           { name: '150ml black coffee', p: 0, f: 0, c: 0, altKey: 'coffee_150' },
-          { name: '10g almonds (~8 pcs)', p: 2, f: 6, c: 2, altKey: 'evening_snack' },
+          { name: 'Whey 20g + 200ml water', p: 17, f: 1, c: 2, altKey: 'cardio_whey' },
         ]},
       { time: '8:30 PM', title: 'Dinner',
         items: [
@@ -3428,10 +3449,11 @@
         ]},
     ],
 
-    /* Sat — Cardio day (longer walk 45-60 min or outdoor activity).
+    /* Sat — Long cardio day (intervals 50 min, morning session).
        Dairy events: 60g paneer BF (paneer paratha) + curd 100g dinner = 2.
        Legumes: masoor lunch + soya chunks dinner = 2.
-       Protein: ~86g (cardio day, boosted by soya chunks at dinner). */
+       Whey: 20g (11AM post-long-cardio shake) = 20g total.
+       Protein: ~103g (v4.2 — 11AM shake uses actual post-workout window). */
     sat: [
       { time: '6:30 AM', title: 'Wake',
         items: [
@@ -3443,9 +3465,10 @@
           { name: 'Paneer paratha (1 × 40g atta + 60g paneer + 5ml oil)', p: 15, f: 18, c: 28, altKey: 'sunday_chilla' },
           { name: 'Nurokind-OD 1500 mcg sublingual', p: 0, f: 0, c: 0, supp: true },
         ]},
-      { time: '11:00 AM', title: 'Mid-morning (optional)', optional: true,
+      { time: '11:00 AM', title: 'Post-cardio shake',
         items: [
-          { name: '150g papaya cubes', p: 1, f: 0, c: 15, altKey: 'mid_morning' },
+          { name: 'Whey 20g + 200ml water', p: 17, f: 1, c: 2, altKey: 'cardio_whey' },
+          { name: '150g papaya cubes', p: 1, f: 0, c: 15 },
         ]},
       { time: '1:30 PM', title: 'Lunch',
         items: [
@@ -3838,6 +3861,9 @@
 
     // v4 mid-morning
     'Whey 25g + 200ml water (if hungry)': [['Whey protein', 25, 'g']],
+    'Whey 20g + 200ml water': [['Whey protein', 20, 'g']],
+    'Whey 15g + 200ml water': [['Whey protein', 15, 'g']],
+    '150g Greek yogurt + 10g whey stirred in': [['Greek yogurt', 150, 'g'], ['Whey protein', 10, 'g']],
     '100g low-fat curd': [['Low-fat curd', 100, 'g']],
     '100g low-fat curd (skip if not hungry)': [['Low-fat curd', 100, 'g']],
     '100g regular curd': [['Regular curd', 100, 'g']],

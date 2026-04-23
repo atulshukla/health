@@ -126,13 +126,20 @@ Earlier plans had these problems. Fixed iteratively:
 
 ---
 
-## 7. Current meal plan (v4.1 — simple Indian-family revision, Apr 2026)
+## 7. Current meal plan (v4.2 — whey added to cardio days, Apr 2026)
 
-> v4.1 change log: dropped oats/quinoa/chia-pudding/almond-milk swap options (not
-> part of a simple middle-class Indian kitchen). Wed/Sat breakfasts replaced with
-> Indian staples. Tue/Thu 11AM upgraded from curd/almonds → 150g Greek yogurt
-> (fixes low-protein cardio days). Wed dinner dal dropped (3→2 legume servings
-> to prevent bloat). Sat dinner swapped paneer → soya to keep dairy ≤ 2.
+> v4.2 change log (Apr 23): added whey on cardio days to close protein gap.
+> Tue/Thu 11AM now "GY + 10g whey" (23g up from 15g). Tue/Thu 5PM now
+> "coffee + 20g whey shake" (replaces almonds). Sat 11AM now
+> "20g whey + papaya" (uses actual post-long-cardio window). Weekly avg
+> protein lifted from ~103g → ~113g. Peak whey load stays safe: 55g/day
+> on strength days, 30g on cardio, 20g on Sat, 0 on Sun.
+
+> v4.1 change log (Apr 22): dropped oats/quinoa/chia-pudding/almond-milk swap
+> options (not part of a simple middle-class Indian kitchen). Wed/Sat breakfasts
+> replaced with Indian staples. Tue/Thu 11AM upgraded from curd/almonds → 150g
+> Greek yogurt. Wed dinner dal dropped (3→2 legume servings to prevent bloat).
+> Sat dinner swapped paneer → soya to keep dairy ≤ 2.
 
 ### Daily structure Mon-Sat
 
@@ -172,8 +179,9 @@ Earlier plans had these problems. Fixed iteratively:
 #### 11:00 AM — Mid-morning
 
 - **Strength days (Mon/Wed/Fri):** 25g whey + 200 ml water (optional if not hungry) — ~21g protein
-- **Cardio days (Tue/Thu):** 150g plain Greek yogurt (daily, not optional) — ~15g protein
-- **Sat/Sun:** 150g papaya (optional)
+- **Cardio days (Tue/Thu):** 150g Greek yogurt + 10g whey stirred in (daily) — ~23g protein
+- **Sat (long cardio):** Whey 20g + 200ml water + 150g papaya (post-workout timing) — ~18g protein
+- **Sun:** 150g papaya (optional)
 - Greek yogurt is low-lactose (<1g per 150g) — safer than curd/milk for back-to-back dairy days
 
 #### 1:30 PM — LIGHT LUNCH (critical)
@@ -193,9 +201,12 @@ Same simple structure daily:
 #### 2:00 PM — 10-min treadmill walk + fennel-ajwain tea
 Replaces chaas during adaptation. After 2 weeks, can reintroduce chaas if gut tolerates.
 
-#### 5:00 PM — Training days only (Mon/Wed/Fri)
-150 ml black coffee + 1 small banana or apple (pre-workout).
-Non-training days: skip or just coffee.
+#### 5:00 PM — Pre-workout / Evening shake
+
+- **Strength days (Mon/Wed/Fri):** 150 ml black coffee + 1 small banana or apple (pre-workout)
+- **Cardio days (Tue/Thu):** 150 ml black coffee + Whey 20g + 200 ml water (evening shake — closes protein gap on non-strength days)
+- **Sat:** 150 ml green tea + 30g roasted chana (chana brings ~10g protein)
+- **Sun:** 150 ml coffee + 30g roasted chana
 
 #### 7:00 PM — Post-workout shake (Mon/Wed/Fri only)
 - 30g whey (1 scoop) + 250 ml **water** (not milk — reducing dairy)
