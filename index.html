@@ -1303,6 +1303,76 @@
     padding: 0;
   }
   .tl-shift-btn:active { background: var(--primary-soft); transform: scale(0.92); }
+
+  /* Checkbox (per row) — purely visual tracker, resets daily */
+  .tl-check {
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--border-strong);
+    background: #fff;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  }
+  .tl-check:active { transform: scale(0.88); }
+  .tl-check.checked {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  /* Done row styling: strikethrough + soft green wash, keeps checkmark prominent */
+  .tl-item.is-done .tl-content {
+    background: rgba(39, 174, 96, 0.06);
+    border-color: rgba(39, 174, 96, 0.28);
+  }
+  .tl-item.is-done .tl-title,
+  .tl-item.is-done .tl-sub {
+    text-decoration: line-through;
+    text-decoration-color: rgba(39, 174, 96, 0.55);
+    color: var(--muted);
+  }
+  .tl-item.is-done .tl-icon { opacity: 0.55; }
+  /* When a past row is marked done, keep the green wash instead of the
+     faded past treatment — rewards the checkmark. */
+  .tl-item.is-done.past .tl-content {
+    background: rgba(39, 174, 96, 0.06);
+    border-color: rgba(39, 174, 96, 0.28);
+  }
+  .tl-item.is-done.past .tl-title,
+  .tl-item.is-done.past .tl-sub,
+  .tl-item.is-done.past .tl-icon { opacity: 0.75; }
+
+  /* D3 indicator pill — small warm yellow, shown on highest-fat meal.
+     `.low` variant = best available meal but fat <15g (absorption target).
+     Orange/red tint signals "suboptimal — swap for more fat if dosing D". */
+  .tl-d3-pill, .meal-d3-pill {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    background: #fff4d6;
+    color: #a26f12;
+    border: 1px solid #f1d88a;
+    vertical-align: 2px;
+    white-space: nowrap;
+  }
+  .tl-d3-pill.low, .meal-d3-pill.low {
+    background: #ffe8d6;
+    color: #a84a0e;
+    border-color: #f0b28a;
+  }
+  .meal-d3-pill { vertical-align: 1px; }
   .tl-item.is-shifted .tl-shift-btn {
     background: var(--primary-soft);
     color: var(--primary-3);
@@ -4065,6 +4135,7 @@
     planStart: 'atul_plan_start',
     enzyme:    'atul_enzyme_log',
     shifts:    'atul_today_shifts',
+    done:      'atul_today_done',
   };
 
   function load(key, fallback) {
@@ -4095,6 +4166,7 @@
     planStart: load(STORAGE.planStart, null),
     enzyme:    load(STORAGE.enzyme, {}),
     shifts:    load(STORAGE.shifts, {}),
+    done:      load(STORAGE.done, {}),
   };
 
   /* ============================================================
@@ -4423,6 +4495,35 @@
     if (changed) save(STORAGE.shifts, state.shifts);
   }
 
+  /* ---------- Today-done (checkbox) helpers ----------
+     state.done = { 'YYYY-MM-DD': { eventId: true } }
+     Purely visual tracker — does NOT drive hydration card or any other
+     metric. Resets at midnight (same as shifts). Covers every timeline row
+     (meals, water, walks, supps, workouts, sleep).
+  */
+  function todayDoneMap() {
+    return state.done[todayISO()] || {};
+  }
+  function writeTodayDone(map) {
+    const today = todayISO();
+    if (!map || Object.keys(map).length === 0) delete state.done[today];
+    else state.done[today] = map;
+    save(STORAGE.done, state.done);
+  }
+  function pruneOldDone() {
+    const today = todayISO();
+    let changed = false;
+    Object.keys(state.done).forEach(k => {
+      if (k !== today) { delete state.done[k]; changed = true; }
+    });
+    if (changed) save(STORAGE.done, state.done);
+  }
+  function toggleDone(id) {
+    const map = { ...todayDoneMap() };
+    if (map[id]) delete map[id]; else map[id] = true;
+    writeTodayDone(map);
+  }
+
   // Applies a shift map to a base timeline (items sorted by plannedTime).
   // Each item MUST have id, plannedTime, and optional anchor:true.
   // For each primary shift, computes delta from the item's current (possibly
@@ -4580,6 +4681,7 @@
     const isStrength = dayKey === 'mon' || dayKey === 'wed' || dayKey === 'fri';
     const isCardioSplit = dayKey === 'tue' || dayKey === 'thu';
     const meals = MEAL_PLAN[dayKey] || [];
+    const d3Best = findD3BestMeal(dayKey); // may be null if no meal ≥15g fat
     const items = [];
 
     // --- Meals from the active plan ---
@@ -4618,6 +4720,9 @@
         subtitle: buildMealSubtitleFromItems(meal),
         navMi: mi,
         optional: meal.optional === true,
+        d3Best: !!(d3Best && d3Best.mi === mi),
+        d3Fat:  (d3Best && d3Best.mi === mi) ? d3Best.fat : null,
+        d3Ok:   (d3Best && d3Best.mi === mi) ? d3Best.ok : null,
       });
 
       // Any supplement items become their own row at +5 min.
@@ -4910,6 +5015,7 @@
       }
     }
     const tl = el('div', 'timeline');
+    const doneMap = todayDoneMap();
     timeline.forEach(item => {
       const mm = minuteOfDay(item.time);
       let stateClass = 'future';
@@ -4917,15 +5023,24 @@
       else if (mm >= now - 15 && mm <= now + 15) stateClass = 'now';
 
       const hasNav = item.navMi !== undefined || item.navTo;
+      const isDone = !!doneMap[item.id];
       const classes = ['tl-item', 'type-' + item.type, stateClass];
       if (!hasNav) classes.push('no-nav');
       if (item.optional) classes.push('is-optional');
       if (item.shifted || item.cascaded) classes.push('is-shifted');
       if (item.anchor) classes.push('is-anchor');
+      if (isDone) classes.push('is-done');
       const row = el('div', classes.join(' '));
       const titleHtml = item.title
         + (item.optional ? ' <span class="tl-opt-pill">Optional</span>' : '')
-        + (item.anchor ? ' <span class="tl-anchor-pill" title="Medically anchored · cannot shift">⚓</span>' : '');
+        + (item.anchor ? ' <span class="tl-anchor-pill" title="Medically anchored · cannot shift">⚓</span>' : '')
+        + (item.d3Best
+            ? ' <span class="tl-d3-pill' + (item.d3Ok ? '' : ' low') + '" title="'
+                + (item.d3Ok
+                    ? 'Best meal of the day for vitamin D absorption (' + item.d3Fat + 'g fat)'
+                    : 'Best available meal for D today, but only ' + item.d3Fat + 'g fat — below the 15g absorption target. Swap for more fat if dosing D today.')
+                + '">☀ D</span>'
+            : '');
       const timeDisplayHtml = '<div class="tl-time-new">' + formatTime12(item.time) + '</div>'
         + ((item.shifted || item.cascaded)
             ? '<div class="tl-time-was">was ' + formatTime12(item.plannedTime) + '</div>'
@@ -4934,6 +5049,11 @@
         '<div class="tl-time-col">' + timeDisplayHtml + '</div>'
         + '<div class="tl-line"><div class="tl-dot"></div></div>'
         + '<div class="tl-content">'
+        +   '<button class="tl-check' + (isDone ? ' checked' : '') + '" type="button"'
+        +     ' aria-label="' + (isDone ? 'Mark not done' : 'Mark done') + '"'
+        +     ' aria-pressed="' + (isDone ? 'true' : 'false') + '">'
+        +     (isDone ? '✓' : '')
+        +   '</button>'
         +   '<div class="tl-icon">' + iconForTimelineType(item.type) + '</div>'
         +   '<div class="tl-text">'
         +     '<div class="tl-title">' + titleHtml + '</div>'
@@ -4948,8 +5068,9 @@
         + '</div>';
       if (hasNav) {
         row.addEventListener('click', (e) => {
-          // Don't nav if the shift button was tapped
+          // Don't nav if the shift/check button was tapped
           if (e.target.closest('.tl-shift-btn')) return;
+          if (e.target.closest('.tl-check')) return;
           navFromTimeline(item, dayKey);
         });
       }
@@ -4958,6 +5079,14 @@
         shiftBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           openShiftSheet(item);
+        });
+      }
+      const checkBtn = row.querySelector('.tl-check');
+      if (checkBtn) {
+        checkBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleDone(item.id);
+          renderToday();
         });
       }
       tl.appendChild(row);
@@ -5014,6 +5143,33 @@
       P += item.p; F += item.f; C += item.c;
     });
     return { p: P, f: F, c: C, cal: calOf(P, F, C) };
+  }
+
+  /* Best meal of the day for vitamin D absorption.
+     D is fat-soluble — co-ingestion with ≥15g fat meaningfully improves
+     absorption; above 15g, absorption plateaus.
+     Returns { mi, fat, ok } for the highest-fat main meal (or null if the
+     day has no main meals). `ok` = true when fat ≥15g.
+     Always picks *some* meal so the indicator never disappears — Atul
+     manages his own D3 cycle (currently Thu-to-Thu), and on low-fat days
+     he can see that the best available meal is suboptimal (amber coloring)
+     and decide whether to swap for more fat before dosing.
+     Skips: wake, snacks (mid-morning / evening), digestive tea, pre/post-workout. */
+  function findD3BestMeal(dayKey) {
+    const meals = MEAL_PLAN[dayKey] || [];
+    let best = null;
+    meals.forEach((meal, mi) => {
+      const t = (meal.title || '').toLowerCase();
+      if (t.indexOf('wake') >= 0) return;
+      if (t.indexOf('mid-morning') >= 0) return;
+      if (t.indexOf('evening') >= 0) return;
+      if (t.indexOf('digestive') >= 0) return;
+      if (t.indexOf('pre-workout') >= 0 || t.indexOf('post-workout') >= 0) return;
+      const m = mealMacros(dayKey, mi);
+      if (!best || m.f > best.fat) best = { mi, fat: m.f };
+    });
+    if (best) best.ok = best.fat >= 15;
+    return best;
   }
 
   function renderMeals() {
@@ -5202,11 +5358,22 @@
     const card = el('div', classes.join(' '));
     card.id = 'meal-' + dayKey + '-' + mi;
 
+    const d3Best = findD3BestMeal(dayKey);
+    const isD3Meal = d3Best && d3Best.mi === mi;
+    const d3PillHtml = isD3Meal
+      ? ' <span class="meal-d3-pill' + (d3Best.ok ? '' : ' low') + '" title="'
+          + (d3Best.ok
+              ? 'Best meal of the day for vitamin D absorption (' + d3Best.fat + 'g fat)'
+              : 'Best available meal for D today, but only ' + d3Best.fat + 'g fat — below the 15g absorption target.')
+          + '">☀ D</span>'
+      : '';
+
     const head = el('div', 'meal-head');
     head.innerHTML =
       '<div class="meal-title-wrap">'
       +   '<div class="meal-eyebrow">' + mealEyebrow(meal)
       +     (meal.optional ? ' <span class="optional-pill">Optional</span>' : '')
+      +     d3PillHtml
       +   '</div>'
       +   '<div class="meal-title">' + meal.title + '</div>'
       + '</div>'
@@ -6735,6 +6902,8 @@
 
   // Clear any shifts from previous days (shifts are day-scoped, not cumulative)
   pruneOldShifts();
+  // Same policy for timeline checkboxes — today-only, fresh every morning.
+  pruneOldDone();
 
   let initial = 'today';
   try {
